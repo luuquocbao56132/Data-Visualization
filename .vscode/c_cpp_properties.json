@@ -6,6 +6,7 @@
                 "../SFML/include",
                 "./include",
                 ".",
+                //"C:/mingw64/include",
                 "${default}"
             ],
             "defines": [
