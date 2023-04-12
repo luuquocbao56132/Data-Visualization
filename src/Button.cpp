@@ -3,7 +3,7 @@
 Button::Button(){};
 
 Button::Button(const sf::Vector2f& position, const sf::Vector2f& size,
-           const std::string& text, const sf::Font& font, unsigned int characterSize):
+           const std::string& text, const sf::Font& font, unsigned int characterSize, int numInput):
     m_size(size),
     m_rect(size),
     m_text(text, font, characterSize),
@@ -14,6 +14,7 @@ Button::Button(const sf::Vector2f& position, const sf::Vector2f& size,
     m_rect.setOutlineColor(sf::Color::Black);
     m_text.setFillColor(sf::Color::Black);
     setPosition(position);
+    isInput = numInput;
 }
 
 void Button::centerOrigin(const sf::Vector2f& pos) {
@@ -74,4 +75,36 @@ void Button::unhover() {
 
 sf::FloatRect Button::getGlobalBounds() const {
     return getTransform().transformRect(m_rect.getGlobalBounds());
+}
+
+void Button::createMinButton(std::vector <std::string> Name, std::vector <int> numInput){
+    sf::Vector2f prevPos = getPosition();
+    sf::Vector2f prevSize = getSize();
+
+    // Calculate the position and size of the new button
+    sf::Vector2f newPos(prevPos.x + prevSize.x + 10.f, prevPos.y);
+    sf::Vector2f newSize(prevSize.x, prevSize.y);
+    for (int i = 0; i < Name.size(); ++i) {
+        std::shared_ptr<Button> newButton (new Button(newPos, newSize, Name[i], ResourceManager::getFont(), 16, numInput[i]));
+        newButton -> setSize(sf::Vector2f(newButton->m_text.getGlobalBounds().width,newButton->getSize().y));
+        minButton.push_back(newButton);
+        std::cout << newPos.x << '\n';
+
+        prevPos = newButton->getPosition();
+        prevSize = newButton->getSize();
+
+        newPos = sf::Vector2f(prevPos.x + prevSize.x + 10.f, prevPos.y);
+        newSize = sf::Vector2f(prevSize.x, prevSize.y);
+    }
+    //std::cout<<minButton.size();
+}
+
+void Button::checkHover(sf::Vector2f mousePos){
+    if (getGlobalBounds().contains(mousePos))hover(); 
+        else unhover();
+}
+
+bool Button::checkPress(sf::Vector2f mousePos){
+    if (getGlobalBounds().contains(mousePos))return 1; 
+        else return 0;
 }

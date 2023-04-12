@@ -1,6 +1,6 @@
 #include <Game.hpp>
 
-Game::Game(): mWindow (sf::VideoMode(1400,800), "Data Visualization"), mWorld{}{
+Game::Game(): mWindow (sf::VideoMode(1600,800), "Data Visualization"), mWorld{}{
 
 }
     
@@ -32,7 +32,7 @@ void Game::processEvents(){
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Left){
                     sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(mWindow)); 
-                    
+                    mWorld.checkPress(mousePos);
                 } 
                 break;
             case sf::Event::MouseMoved:
