@@ -52,29 +52,23 @@ void DynArrow::setPartialColor(float percentage){
 
 void DynArrow::minimizeArrow(float length){
     m_length -= length;
+    //std::cout << m_length << '\n';
     sf::Vector2f res = m_head.getPoint(0);
     res = m_head.getPosition();
     float Sinn = std::sin(m_body.getRotation() * M_PI / 180.f), Coss = std::cos(m_body.getRotation() * M_PI / 180.f);
-    // m_head.setPoint(0, sf::Vector2f(res.x-length*Sinn,res.y-length*Coss));
-    // res = m_head.getPoint(1);
-    // m_head.setPoint(1, sf::Vector2f(res.x-length*Sinn,res.y-length*Coss));
-    // res = m_head.getPoint(2);
-    // m_head.setPoint(2, sf::Vector2f(res.x-length*Sinn,res.y-length*Coss));
-
-    //std::cout << m_length << " " << length * Sinn << " " << res.x << '\n';
-
     m_head.setPosition(sf::Vector2f(res.x - length*Coss, res.y - length*Sinn));
 
     res = m_body.getPosition();
     m_body.setSize(sf::Vector2f(m_length,3.f));
 
-    std::cout << m_length << " " << length * Sinn << " " << res.x << '\n';
+    //std::cout << m_length << " " << length * Sinn << " " << res.x << '\n';
 
 }
 
 float DynArrow::getLength(){
     return m_length;
 }
+
 
 void DynArrow::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     states.transform *= getTransform();

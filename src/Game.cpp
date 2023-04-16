@@ -48,7 +48,7 @@ void Game::update(sf::Time TimePerFrame){
 }
 
 void Game::render(){
-    mWindow.clear(sf::Color::White);
+    mWindow.clear(sf::Color(238,238,238));
     mWindow.draw(mWorld);
     mWindow.display();
 }

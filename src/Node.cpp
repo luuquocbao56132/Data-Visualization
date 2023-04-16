@@ -24,7 +24,7 @@ Node::Node(float radius, const std::string& text, const sf::Font& font, float te
     m_text_directions[TOP].setPosition(sf::Vector2f(position.x, position.y - radius - text_size));
     setDirectionColor(sf::Color::Black,TOP);
     // east text
-    m_text_directions[RIGHT].setString("E");
+    m_text_directions[RIGHT].setString("");
     m_text_directions[RIGHT].setPosition(sf::Vector2f(position.x + radius + text_size, position.y));
     // south text
     m_text_directions[BOT].setString("S");
@@ -33,7 +33,7 @@ Node::Node(float radius, const std::string& text, const sf::Font& font, float te
     m_text_directions[BOT].setPosition(sf::Vector2f(position.x, position.y + radius + text_size));
     setDirectionColor(sf::Color::Red,BOT);
     // west text
-    m_text_directions[LEFT].setString("W");
+    m_text_directions[LEFT].setString("");
     m_text_directions[LEFT].setOrigin(m_text_directions[LEFT].getLocalBounds().width / 2.f, m_text_directions[LEFT].getLocalBounds().height);
     m_text_directions[LEFT].setPosition(sf::Vector2f(position.x - radius - text_size, position.y));
 
@@ -41,10 +41,23 @@ Node::Node(float radius, const std::string& text, const sf::Font& font, float te
     nextNode = nullptr;
 }
 
+sf::Color Node::changeColor(sf::Color startColor, sf::Color endColor, float transitionTime, int time){
+    float dr = time*(float)((int)endColor.r - (int)startColor.r) / (transitionTime * 60);
+    float dg = time*(float)((int)endColor.g - (int)startColor.g) / (transitionTime * 60);
+    float db = time*(float)((int)endColor.b - (int)startColor.b) / (transitionTime * 60);
+
+    sf::Color currentColor = sf::Color((int)startColor.r + (int)dr, (int)startColor.g + (int)dg, (int)startColor.b + (int)db);
+    return currentColor;
+}
+
 void Node::setColor(const sf::Color& color){
     m_color = color;
     m_circle.setFillColor(color);
     m_arrow.setColor(color);
+}
+
+float Node::getRad(){
+    return m_circle.getRadius();
 }
 
 float dist2Node(sf::Vector2f x, sf::Vector2f y){
@@ -58,6 +71,22 @@ float rad2Node(sf::Vector2f x, sf::Vector2f y){
     if (angle < 0)angle += 180;
     if (height < 0)angle += 180; 
     return angle;
+}
+
+void Node::changeSizeNode(float rad){
+    float rate = (m_radius-rad) / m_radius;
+    sf::Vector2f position = m_circle.getPosition();
+    m_circle.setRadius(m_radius - rad);
+    m_radius -= rad;
+    m_circle.setOrigin(sf::Vector2f(m_radius, m_radius));
+    m_circle.setPosition(position);
+    std::cout << rate << '\n';
+
+    m_text.setCharacterSize(m_text.getCharacterSize()*rate);
+    m_text.setPosition(position);
+    for (int i = 0; i < 4; ++i)m_text_directions[i].setCharacterSize(m_text_directions[i].getCharacterSize()*rate);
+    
+    m_arrow.minimizeArrow(m_arrow.getLength() - m_arrow.getLength()*rate); 
 }
 
 void Node::setArrow(){

@@ -24,13 +24,19 @@ public:
 
     void changeSizeArrow(float );
 
+    void changeSizeNode(float);
+
     float getLengthArrow();
+
+    float getRad();
 
     sf::Vector2f getNodePosition();
 
     bool getString(int);
 
     void changeText(Direction, std::string );
+
+    sf::Color changeColor(sf::Color, sf::Color, float, int);
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
