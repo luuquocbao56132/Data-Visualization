@@ -5,7 +5,7 @@ sf::Font& ResourceManager::getFont() {
     static bool loaded = false;
 
     if (!loaded) {
-        if (!font.loadFromFile("arial.ttf")) {
+        if (!font.loadFromFile("consolas.ttf")) {
             // handle error
         }
 

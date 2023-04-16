@@ -1,6 +1,6 @@
 #include <Game.hpp>
 
-Game::Game(): mWindow (sf::VideoMode(1600,800), "Data Visualization"), mWorld{}{
+Game::Game(): mWindow(sf::VideoMode(1600,800), "Data Visualization", sf::Style::Default, sf::ContextSettings(0, 0, 15)), mWorld{}{
 
 }
     
