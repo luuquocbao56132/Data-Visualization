@@ -22,7 +22,7 @@ private:
     sf::Text m_text;
     sf::Text m_textLeft;
     sf::RectangleShape m_cursor;
-    int m_value, m_cursorPos, valueLimit;
+    int m_value, m_cursorPos, valueLimit, charLength;
 };
 
 #endif // InputBox_hpp

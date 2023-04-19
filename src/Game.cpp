@@ -39,9 +39,9 @@ void Game::processEvents(){
                 sf::Vector2f mousePos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
                 mWorld.HoverCheck(mousePos);
                 break;
+        }
         if (event.type == sf::Event::KeyPressed){
                 mWorld.liveData->checkKeyInput(event);
-            }
         }
     }
 }

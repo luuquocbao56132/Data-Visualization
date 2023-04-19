@@ -37,7 +37,7 @@ std::shared_ptr<Node> Graph::randomNode(int x){
 void Graph::init(int x){
     listNode.clear();
     n = x;
-    leftBound = 700 - (100*n - 60 ) / 2;
+    leftBound = 800 - (100*n - 60 ) / 2;
     if (!x)return;
     listNode.push_back(randomNode(leftBound+10));
     for (int i = 1; i < n; ++i){
