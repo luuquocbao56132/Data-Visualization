@@ -16,20 +16,21 @@
 
 class World: public sf::Drawable, private sf::NonCopyable {
 public:
-    LL nLL;
-    DLL nDLL;
-    CLL nCLL;
-    DynArr nDynArr;
-    StaArr nStaArr;
-    Stack nStack;
-    Queue nQueue;
-    std::unique_ptr <DataTypes> liveData;
+    std::shared_ptr <LL> nLL;
+    std::shared_ptr <DLL> nDLL;
+    std::shared_ptr <CLL> nCLL;
+    std::shared_ptr <DynArr> nDynArr;
+    std::shared_ptr <StaArr> nStaArr;
+    std::shared_ptr <Stack> nStack;
+    std::shared_ptr <Queue> nQueue;
+    std::shared_ptr <DataTypes> liveData;
 
 public:
     World();
     void HoverCheck(sf::Vector2f);
     void draw(sf::RenderTarget& , sf::RenderStates ) const override;
     void checkPress(sf::Vector2f);
+    void checkText(char );
 };
 
 #endif //World_hpp

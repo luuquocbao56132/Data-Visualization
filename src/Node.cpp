@@ -11,15 +11,15 @@ Node::Node(float radius, const std::string& text, const sf::Font& font, float te
     m_circle.setRadius(radius);
     m_circle.setOrigin(sf::Vector2f(radius,radius));
     m_circle.setPosition(position);
-    m_circle.setOutlineColor(color);
+    m_circle.setOutlineColor(sf::Color::Black);
     m_circle.setOutlineThickness(3.f);
-    m_circle.setFillColor(sf::Color::White);
+    m_circle.setFillColor(color);
 
       // Set the position and color of the text
     m_text.setFillColor(sf::Color::Black);
     setText(text);
 
-    m_text_directions[TOP].setString("N");
+    m_text_directions[TOP].setString("");
     m_text_directions[TOP].setOrigin(m_text_directions[TOP].getLocalBounds().width / 2.f, m_text_directions[TOP].getLocalBounds().height);
     m_text_directions[TOP].setPosition(sf::Vector2f(position.x, position.y - radius - text_size));
     setDirectionColor(sf::Color::Black,TOP);
@@ -27,7 +27,7 @@ Node::Node(float radius, const std::string& text, const sf::Font& font, float te
     m_text_directions[RIGHT].setString("");
     m_text_directions[RIGHT].setPosition(sf::Vector2f(position.x + radius + text_size, position.y));
     // south text
-    m_text_directions[BOT].setString("S");
+    m_text_directions[BOT].setString("");
     m_text_directions[BOT].setStyle(sf::Text::Bold);
     m_text_directions[BOT].setOrigin(m_text_directions[BOT].getLocalBounds().width / 2.f, m_text_directions[BOT].getLocalBounds().height);
     m_text_directions[BOT].setPosition(sf::Vector2f(position.x, position.y + radius + text_size));
@@ -37,7 +37,7 @@ Node::Node(float radius, const std::string& text, const sf::Font& font, float te
     m_text_directions[LEFT].setOrigin(m_text_directions[LEFT].getLocalBounds().width / 2.f, m_text_directions[LEFT].getLocalBounds().height);
     m_text_directions[LEFT].setPosition(sf::Vector2f(position.x - radius - text_size, position.y));
 
-    m_arrow = DynArrow(60, color, sf::Vector2f(position.x + radius, position.y), 0.f);
+    m_arrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x + radius, position.y), 0.f);
     nextNode = nullptr;
 }
 
@@ -107,6 +107,17 @@ void Node::setText(const std::string& text){
     m_text.setString(text);
     m_text.setOrigin(m_text.getLocalBounds().width / 2.f, m_text.getLocalBounds().height);
     m_text.setPosition(m_position);
+}
+
+void Node::setTextBot(std::string text){
+    m_text_directions[BOT].setString(text);
+    m_text_directions[BOT].setOrigin(m_text_directions[BOT].getLocalBounds().width / 2.f, m_text_directions[BOT].getLocalBounds().height);
+    m_text_directions[BOT].setPosition(sf::Vector2f(m_position.x, m_position.y + m_radius + textSize));
+}
+void Node::setTextTop(std::string text){
+    m_text_directions[TOP].setString(text);
+    m_text_directions[TOP].setOrigin(m_text_directions[TOP].getLocalBounds().width / 2.f, m_text_directions[TOP].getLocalBounds().height);
+    m_text_directions[TOP].setPosition(sf::Vector2f(m_position.x, m_position.y - m_radius - textSize));
 }
 
 void Node::setDirectionColor(const sf::Color& color, unsigned int direction){

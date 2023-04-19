@@ -13,6 +13,8 @@ public:
     void setColor(const sf::Color& );
 
     void setText(const std::string& );
+    void setTextBot(std::string );
+    void setTextTop(std::string );
 
     void setArrow();
 
@@ -38,9 +40,11 @@ public:
 
     sf::Color changeColor(sf::Color, sf::Color, float, int);
 
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    void draw(sf::RenderTarget& , sf::RenderStates ) const override;
 
     std::shared_ptr <Node> nextNode;
+
+    sf::Text m_text_directions[4];
 
 private:
     sf::CircleShape m_circle;
@@ -48,7 +52,6 @@ private:
     sf::Vector2f m_position;
     sf::Text m_text;
     float m_radius;
-    sf::Text m_text_directions[4];
     DynArrow m_arrow;
 };
 

@@ -4,6 +4,8 @@
 #include <BaseHeader.hpp>
 #include <string>
 
+class InputBox;
+
 class Button : public sf::Drawable, public sf::Transformable {
 public:
     Button();
@@ -45,8 +47,9 @@ public:
     sf::RectangleShape m_rect;
     sf::Text m_text;
     std::vector < std::shared_ptr<Button> > minButton;
+    std::vector < std::shared_ptr<InputBox> > inputButton;
     int isInput;
-    bool m_isHovered;
+    bool m_isHovered, onInput;
 };
 
 #endif //Button_hpp

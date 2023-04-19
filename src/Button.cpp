@@ -7,7 +7,8 @@ Button::Button(const sf::Vector2f& position, const sf::Vector2f& size,
     m_size(size),
     m_rect(size),
     m_text(text, font, characterSize),
-    m_isHovered(false)
+    m_isHovered(false),
+    onInput(1)
 {
     m_rect.setFillColor(sf::Color::White);
     m_rect.setOutlineThickness(2.f);
@@ -26,8 +27,7 @@ void Button::centerOrigin(const sf::Vector2f& pos) {
 void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform *= getTransform();
     target.draw(m_rect, states);
-    target.draw(m_text, states);
-    if (m_rect.getFillColor() == sf::Color(250,100,250)) std::cout << 3;
+    target.draw(m_text, states);    
 }
 
 void Button::setFillColor(const sf::Color& color) {

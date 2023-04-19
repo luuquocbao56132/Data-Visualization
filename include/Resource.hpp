@@ -6,6 +6,8 @@
 class ResourceManager {
 public:
     static sf::Font& getFont();
+    static int random(int, int);
+    static int StringtoInt(std::string);
 };
 
 #endif //Resource_hpp
