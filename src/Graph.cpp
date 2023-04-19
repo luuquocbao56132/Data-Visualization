@@ -12,6 +12,20 @@ Graph::Graph(int x){
     setNode();
 }
 
+Graph::Graph(int x, std::vector <std::string> s){
+    n = x;
+    if (!n)return;
+    leftBound = 800 - (100*n - 60 ) / 2;
+    listNode.push_back(std::make_shared <Node> (19.f, s[0], ResourceManager::getFont(), 
+                                    textSize, backgroundColor,sf::Vector2f(leftBound + 10, 250.f)));
+    for (int i = 1; i < s.size(); ++i){
+        listNode.push_back(std::make_shared <Node> (19.f, s[i], ResourceManager::getFont(), 
+                                    textSize, backgroundColor,sf::Vector2f(leftBound + 10 + 100*i, 250.f)));
+        listNode[i-1]->nextNode = listNode[i];
+    }        
+    setNode();              
+}
+
 bool Graph::checkSameNum(int x){
     if (setNumber.find(x) != setNumber.end())return 1;
     return 0;

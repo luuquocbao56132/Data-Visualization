@@ -67,6 +67,34 @@ void LL::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(LLgraph);
 }
 
+void LL::getFromFile(){
+    std::ifstream file("customInput.txt"); // open the file
+    std::string line;
+    if (file.is_open()) { // check if the file is successfully opened
+        while (std::getline(file, line)) { // read the file line by line
+            std::cout << line << '\n'; // print each line to the console
+        }
+        file.close(); // close the file
+    }
+    else {
+        std::cerr << "Unable to open file\n";
+    }
+
+    std::string c;
+    std::vector <std::string> list;
+    for (int i = 0; i < line.size(); ++i){
+        if (line[i] >= '0' && line[i] <= '9')c += line[i]; else
+        if (line[i] == ';'){
+            if (c.empty())return;
+            while (c[0] == '0')c.erase(0);
+            if (c.size() > 2)return;
+            if (c.size() == 0)c = "0";
+            list.push_back(c); c = "";
+        } else return;
+    }
+    LLgraph = Graph(list.size(), list);
+}
+
 void LL::checkPress(sf::Vector2f mousePos){
     DataTypes::checkPress(mousePos);
     if (DataTypes::buttonState != -1){
@@ -79,6 +107,7 @@ void LL::checkPress(sf::Vector2f mousePos){
                     inputBox = res->minButton[2]->inputButton;  
                     for (auto i : inputBox)i->resetValue();
                 }
+                if (res->minButton[3]->checkPress(mousePos))getFromFile();
                 if (!inputBox.empty() && inputBox[0] == res->minButton[2]->inputButton[0]){
                     inputBox[0]->checkPress(mousePos);
                     if (inputBox[0]->Go->checkPress(mousePos))

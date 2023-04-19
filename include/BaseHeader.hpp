@@ -13,6 +13,7 @@
 #include <array>
 #include <string.h>
 #include <set>
+#include <fstream>
 #include <memory>
 
 enum Direction{

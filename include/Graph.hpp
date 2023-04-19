@@ -8,6 +8,7 @@ class Graph: public sf::Transformable, public sf::Drawable {
 public:
     Graph();
     Graph(int );
+    Graph(int, std::vector <std::string> );
     void init(int );
     void setNode();
     bool checkSameNum(int );
