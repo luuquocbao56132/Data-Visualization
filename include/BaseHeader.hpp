@@ -23,6 +23,13 @@ enum Direction{
         LEFT
     };
 
+enum Function{
+    CREATE,
+    SEARCH,
+    INSERT,
+    REMOVE
+};
+
 static float CircleRad = 19;
 static float nodeDistance = 60;
 static float textSize = 19;
@@ -31,6 +38,8 @@ static sf::Color textColorEnd = sf::Color::White;
 static sf::Color backgroundColor(238,238,238);
 static sf::Color endStateColor(255, 138, 39);
 static sf::Vector2f inputButtonSize = sf::Vector2f(60,50);
+static int maxValue = 99;
+static int maxSize = 15;
 
 //static float M_PI = 3.14159;
 

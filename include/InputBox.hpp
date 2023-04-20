@@ -10,7 +10,8 @@ public:
     void setValue(int);
     int getValue();
     void resetValue();
-    void setValueLimit(int );
+    void setValueLimit(std::shared_ptr <int> );
+    
     bool cursorOn;
     sf::FloatRect getGlobalBounds() const;
     void checkPress(sf::Vector2f );
@@ -22,7 +23,8 @@ private:
     sf::Text m_text;
     sf::Text m_textLeft;
     sf::RectangleShape m_cursor;
-    int m_value, m_cursorPos, valueLimit, charLength;
+    int m_value, m_cursorPos, charLength;
+    std::shared_ptr<int> valueLimit;
 };
 
 #endif // InputBox_hpp

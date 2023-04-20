@@ -7,17 +7,18 @@
 class Graph: public sf::Transformable, public sf::Drawable {
 public:
     Graph();
-    Graph(int );
-    Graph(int, std::vector <std::string> );
+    void init(int, std::vector <std::string> );
     void init(int );
+    void init();
     void setNode();
     bool checkSameNum(int );
     std::shared_ptr <Node> randomNode(int );
     void draw(sf::RenderTarget& , sf::RenderStates ) const override;
     void removeNode(int );
     int getSize();
+    std::shared_ptr <int> n;
 private:
-    int leftBound,n;
+    int leftBound;
     std::vector <std::shared_ptr <Node>> listNode;
     std::set <int> setNumber;
 };

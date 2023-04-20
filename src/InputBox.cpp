@@ -1,7 +1,7 @@
 #include <InputBox.hpp>
 
 InputBox::InputBox (sf::Vector2f position, sf::Vector2f size, std::string textLeft, bool isGo): 
-    cursorOn(0), valueLimit(99)
+    cursorOn(0), valueLimit(std::make_shared <int> (maxValue))
 {
     m_box.setFillColor(sf::Color::Black);
     m_box.setOutlineColor(sf::Color::White);
@@ -61,7 +61,7 @@ void InputBox::handleEvent(const sf::Event& event){
             std::string t = m_text.getString();
             int intInput = event.key.code - sf::Keyboard::Num0;
             t.insert(m_cursorPos, std::to_string(intInput));
-            if (t.size() > 2 || ResourceManager::StringtoInt(t) > valueLimit)return;
+            if (t.size() > 2 || ResourceManager::StringtoInt(t) > *valueLimit)return;
             m_text.setString(t);
             m_value = ResourceManager::StringtoInt(t);
             m_cursorPos++; m_cursor.setPosition(m_cursor.getPosition() + sf::Vector2f(charLength,0));
@@ -78,11 +78,11 @@ void InputBox::handleEvent(const sf::Event& event){
 }
 
 void InputBox::resetValue(){
-    m_value = ResourceManager::random(1,valueLimit);
+    m_value = ResourceManager::random(1,*valueLimit);
     m_text.setString(std::to_string(m_value));
 }
 
-void InputBox::setValueLimit(int x){valueLimit = x;}
+void InputBox::setValueLimit(std::shared_ptr <int> x){valueLimit = x;}
 
 void InputBox::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(m_box);
