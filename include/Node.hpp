@@ -17,6 +17,9 @@ public:
     void setTextTop(std::string );
 
     void setArrow();
+    void setNodeColor(sf::Color );
+    void setOutlineColor(sf::Color );
+    void setTextColor(sf::Color );
 
     void setDirectionColor(const sf::Color& , unsigned int );
 
@@ -36,6 +39,8 @@ public:
 
     bool getString(int);
 
+    int getValue();
+
     void changeText(Direction, std::string );
 
     sf::Color changeColor(sf::Color, sf::Color, float, int);
@@ -45,6 +50,8 @@ public:
     std::shared_ptr <Node> nextNode;
 
     sf::Text m_text_directions[4];
+
+    int numArrow;
 
 private:
     sf::CircleShape m_circle;

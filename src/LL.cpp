@@ -1,4 +1,7 @@
 #include <LL.hpp>
+#include <Game.hpp>
+
+extern std::shared_ptr <Game> gameGlobal;
 
 LL::LL(){};
 
@@ -95,6 +98,40 @@ void LL::getFromFile(){
     LLgraph.init(list.size(), list);
 }
 
+void LL::LetsSearch(int X){
+    if (LLgraph.getSize() == 0)return;
+    std::cout << "LLgraph size: " << X;
+    int flag = 100;
+    
+    for (int vtx = 0; vtx < LLgraph.getSize(); ++vtx){
+        if (LLgraph.getValue(vtx) == X){flag = vtx; break;}
+
+        LLgraph.setSearchingNode(vtx);
+        // gameGlobal->render(vtx); 
+        Sleep(timeLength*xtime);
+        //std::cout << 1 << '\n';
+
+        LLgraph.removeSearchingNode(vtx);
+        LLgraph.setArrowColor(vtx);
+        // gameGlobal->render(vtx);
+        Sleep(timeLength*xtime);
+    }
+
+    // int vtx = 2;
+    // LLgraph.setSearchingNode(vtx);
+    //     gameGlobal->render(); 
+    //     Sleep(timeLength*xtime);
+    //     std::cout << 1 << '\n';
+
+    //     LLgraph.removeSearchingNode(vtx);
+    //     LLgraph.setArrowColor(vtx);
+    //     gameGlobal->render();
+    //     Sleep(timeLength*xtime);
+
+    if (flag != 100)LLgraph.setFoundNode(flag);
+    gameGlobal->runBreak();
+}
+
 void LL::checkPress(sf::Vector2f mousePos){
     DataTypes::checkPress(mousePos);
     if (DataTypes::buttonState != -1){
@@ -119,8 +156,10 @@ void LL::checkPress(sf::Vector2f mousePos){
                     inputBox = res->inputButton; 
                     for (auto i : inputBox)i->resetValue();
                 }
-                if (!inputBox.empty() && inputBox[0] == res->inputButton[0])
+                if (!inputBox.empty() && inputBox[0] == res->inputButton[0]){
                     inputBox[0]->checkPress(mousePos);
+                    if (inputBox[0]->Go->checkPress(mousePos))LetsSearch(inputBox[0]->getValue());
+                }
                 break;
             case INSERT:
                 for (int i = 0; i < 3; ++i){

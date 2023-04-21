@@ -1,10 +1,13 @@
 #include <Game.hpp>
 
-Game::Game(): mWindow(sf::VideoMode(1600,800), "Data Visualization", sf::Style::Default, sf::ContextSettings(0, 0, 15)), mWorld{}{
+extern std::shared_ptr <Game> gameGlobal;
 
-}
+Game::Game(): mWindow(sf::VideoMode(1600,800), "Data Visualization", sf::Style::Default, sf::ContextSettings(0, 0, 15)), mWorld{}{
     
+}
+
 void Game::run(){
+    std::cout << "Game pointer: " << gameGlobal << '\n';
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
     sf::Time TimePerFrame = sf::milliseconds(8);
@@ -18,6 +21,25 @@ void Game::run(){
         }
         update(TimePerFrame);
         render();
+    }
+}
+
+void Game::runBreak(){
+    std::cout << "Game pointer: " << gameGlobal << '\n';
+    sf::Clock clock;
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;
+    sf::Time TimePerFrame = sf::milliseconds(8);
+    while (mWindow.isOpen()){
+        processEvents();
+        timeSinceLastUpdate += clock.restart();
+        while (timeSinceLastUpdate > TimePerFrame){
+            timeSinceLastUpdate -= TimePerFrame;
+            processEvents();
+            update(TimePerFrame);
+        }
+        update(TimePerFrame);
+        render(); 
+        break; 
     }
 }
 
@@ -43,6 +65,7 @@ void Game::processEvents(){
         if (event.type == sf::Event::KeyPressed){
                 mWorld.liveData->checkKeyInput(event);
         }
+        // std::cout << "event" << '\n';
     }
 }
 
@@ -51,6 +74,13 @@ void Game::update(sf::Time TimePerFrame){
 }
 
 void Game::render(){
+    mWindow.clear(sf::Color(238,238,238));
+    mWindow.draw(mWorld);
+    mWindow.display();
+}
+
+void Game::render(int x){
+    std::cout << x << '\n';
     mWindow.clear(sf::Color(238,238,238));
     mWindow.draw(mWorld);
     mWindow.display();

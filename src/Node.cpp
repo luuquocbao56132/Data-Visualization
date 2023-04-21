@@ -37,7 +37,7 @@ Node::Node(float radius, const std::string& text, const sf::Font& font, float te
     m_text_directions[LEFT].setOrigin(m_text_directions[LEFT].getLocalBounds().width / 2.f, m_text_directions[LEFT].getLocalBounds().height);
     m_text_directions[LEFT].setPosition(sf::Vector2f(position.x - radius - text_size, position.y));
 
-    m_arrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x + radius, position.y), 0.f);
+    m_arrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x + radius + 3, position.y), 0.f);
     nextNode = nullptr;
 }
 
@@ -54,6 +54,19 @@ void Node::setColor(const sf::Color& color){
     m_color = color;
     m_circle.setFillColor(color);
     m_arrow.setColor(color);
+}
+
+void Node::setNodeColor(sf::Color color){
+    m_color = color;
+    m_circle.setFillColor(color);
+}
+
+void Node::setOutlineColor(sf::Color color){
+    m_circle.setOutlineColor(color);
+}
+
+void Node::setTextColor(sf::Color color){
+    m_text.setFillColor(color);
 }
 
 float Node::getRad(){
@@ -143,6 +156,10 @@ float Node::getLengthArrow(){
 
 sf::Vector2f Node::getNodePosition(){
     return m_circle.getPosition();
+}
+
+int Node::getValue(){
+    return ResourceManager::StringtoInt(m_text.getString());
 }
 
 bool Node::getString(int t){

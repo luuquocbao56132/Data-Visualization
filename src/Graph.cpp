@@ -1,4 +1,7 @@
 #include <Graph.hpp>
+#include <Game.hpp>
+
+extern std::shared_ptr <Game> gameGlobal;
 
 Graph::Graph(){
     n = std::make_shared <int> (ResourceManager::random(2,5));
@@ -70,10 +73,22 @@ void Graph::setNode(){
     for (int i = 0; i < nn; ++i){
         listNode[i]->setArrow();
         listNode[i]->setTextBot("");
+        listNode[i]->setTextTop(std::to_string(i));
     }
     if (listNode.empty())return;
     listNode[nn-1]->setTextBot("tail");
     listNode[0]->setTextBot("head");
+}
+
+void Graph::setNodeColor(int vtx, sf::Color color){
+    listNode[vtx]->setNodeColor(color);
+}
+
+int Graph::getValue(int vtx){return listNode[vtx]->getValue();}
+
+void Graph::setArrowColor(int vtx){
+    //if (listNode[vtx]->)
+    listNode[vtx]->setPartialColor(100);
 }
 
 void Graph::removeNode(int vt){
@@ -84,6 +99,34 @@ void Graph::removeNode(int vt){
     listNode[nn-1] = nullptr;
     --(*n);
     setNode();
+}
+
+void Graph::setSearchingNode(int vtx){
+    listNode[vtx]->setOutlineColor(SearchingNodeColor);
+    listNode[vtx]->setNodeColor(SearchingNodeColor);
+    listNode[vtx]->setTextColor(backgroundColor);
+    gameGlobal->runBreak();
+}
+
+void Graph::removeSearchingNode(int vtx){
+    listNode[vtx]->setOutlineColor(SearchingNodeColor);
+    listNode[vtx]->setNodeColor(backgroundColor);
+    listNode[vtx]->setTextColor(SearchingNodeColor);
+    gameGlobal->runBreak();
+}
+
+void Graph::setFoundNode(int vtx){
+    listNode[vtx]->setOutlineColor(FoundNodeColor);
+    listNode[vtx]->setNodeColor(FoundNodeColor);
+    listNode[vtx]->setTextColor(backgroundColor);
+    gameGlobal->runBreak();
+}
+
+void Graph::removeFoundNode(int vtx){
+    listNode[vtx]->setOutlineColor(FoundNodeColor);
+    listNode[vtx]->setNodeColor(backgroundColor);
+    listNode[vtx]->setTextColor(FoundNodeColor);
+    gameGlobal->runBreak();
 }
 
 void Graph::draw(sf::RenderTarget& target, sf::RenderStates states) const {

@@ -1,9 +1,9 @@
 #ifndef Game_hpp
 #define Game_hpp
 
-#include <BaseHeader.hpp>
+// #include <BaseHeader.hpp>
+#include <SFML/Graphics.hpp>
 #include <World.hpp>
-#include <Button.hpp>
 
 class Game{
     sf::RenderWindow mWindow;
@@ -11,11 +11,13 @@ class Game{
 
     void processEvents();
     void update(sf::Time);
-    void render();
 
     public:
     Game();
+    void render();
+    void render(int );
     void run();
+    void runBreak();
 };
 
 #endif //Game_hpp

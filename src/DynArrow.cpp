@@ -18,7 +18,7 @@ DynArrow::DynArrow(float length, sf::Color color, sf::Vector2f position, float a
     m_head.setPoint(2, sf::Vector2f(length-12, 7.5));
     m_head.setOrigin(length-12.f, 1.5f);
 
-    m_particle.setFillColor(sf::Color::Yellow);
+    m_particle.setFillColor(SearchingNodeColor);
     m_particle.setSize(sf::Vector2f(0.f,3.f));
     setPosition(position);
 }
@@ -74,8 +74,8 @@ void DynArrow::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     states.transform *= getTransform();
     if (m_length < 12)return;
     target.draw(m_body, states);
-    target.draw(m_head, states);
     if (m_particle.getSize().y > 0)target.draw(m_particle, states);
+    target.draw(m_head, states);
 }
 
 

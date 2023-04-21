@@ -1,9 +1,14 @@
 #include <Game.hpp>
 
+std::shared_ptr <Game> gameGlobal = std::make_shared<Game>();;
+
 int main() {
     srand(time(NULL));
-    Game game;
-    game.run();
+    // gameGlobal = std::make_shared <Game> ();
+    std::cout << "Game pointer: " << gameGlobal << '\n';
+    // gameGlobal = game;
+    // std::cout << "Game pointer: " << game << " " << gameGlobal << '\n';
+    gameGlobal->run();
 
     return 0;
 }

@@ -2,7 +2,6 @@
 #define Button_hpp
 
 #include <BaseHeader.hpp>
-#include <string>
 
 class InputBox;
 
