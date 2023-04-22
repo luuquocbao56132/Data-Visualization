@@ -9,6 +9,7 @@ class Game;
 class Graph: public sf::Transformable, public sf::Drawable {
 public:
     Graph();
+    Graph& operator=(Graph& other);
     void init(int, std::vector <std::string> );
     void init(int );
     void init();
@@ -24,6 +25,7 @@ public:
     void setFoundNode(int);
     void removeFoundNode(int);
     int getValue(int );
+    void setValue(int,int);
     int getSize();
     std::shared_ptr <int> n;
 private:

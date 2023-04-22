@@ -99,6 +99,7 @@ void LL::getFromFile(){
 }
 
 void LL::LetsSearch(int X){
+    LLgraph = firstGraph;
     if (LLgraph.getSize() == 0)return;
     std::cout << "LLgraph size: " << X;
     int flag = 100;
@@ -108,13 +109,13 @@ void LL::LetsSearch(int X){
 
         LLgraph.setSearchingNode(vtx);
         // gameGlobal->render(vtx); 
-        Sleep(timeLength*xtime);
+        Sleep(timeLength/xtime);
         //std::cout << 1 << '\n';
 
         LLgraph.removeSearchingNode(vtx);
         LLgraph.setArrowColor(vtx);
         // gameGlobal->render(vtx);
-        Sleep(timeLength*xtime);
+        Sleep(timeLength/xtime);
     }
 
     // int vtx = 2;
@@ -131,6 +132,7 @@ void LL::LetsSearch(int X){
     if (flag != 100)LLgraph.setFoundNode(flag);
     gameGlobal->runBreak();
 }
+
 
 void LL::checkPress(sf::Vector2f mousePos){
     DataTypes::checkPress(mousePos);
@@ -150,6 +152,7 @@ void LL::checkPress(sf::Vector2f mousePos){
                     if (inputBox[0]->Go->checkPress(mousePos))
                         LLgraph.init(inputBox[0]->getValue()), inputBox.clear();
                 }
+                firstGraph = LLgraph;
                 break;
             case SEARCH:
                 if (res->checkPress(mousePos)){

@@ -44,8 +44,8 @@ static sf::Color NewNodeColor(82, 188, 105);
 static sf::Vector2f inputButtonSize = sf::Vector2f(60,50);
 static int maxValue = 99;
 static int maxSize = 15;
-static int timeLength = 1000;
-static int xtime = 1;
+static float timeLength = 1000;
+extern float xtime;
 
 //static float M_PI = 3.14159;
 // #include "Game.hpp"

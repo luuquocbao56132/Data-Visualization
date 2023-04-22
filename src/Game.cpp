@@ -7,11 +7,11 @@ Game::Game(): mWindow(sf::VideoMode(1600,800), "Data Visualization", sf::Style::
 }
 
 void Game::run(){
-    std::cout << "Game pointer: " << gameGlobal << '\n';
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
     sf::Time TimePerFrame = sf::milliseconds(8);
     while (mWindow.isOpen()){
+            // std::cout << "xTime: " << xtime << '\n';
         processEvents();
         timeSinceLastUpdate += clock.restart();
         while (timeSinceLastUpdate > TimePerFrame){

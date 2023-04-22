@@ -4,6 +4,7 @@
 #include <BaseHeader.hpp>
 #include <Button.hpp>
 #include <InputBox.hpp>
+#include <Graph.hpp>
 
 class DataTypes: public sf::Drawable, public sf::Transformable{
 public:
@@ -17,9 +18,11 @@ public:
     virtual void resetAll();
     std::vector <std::shared_ptr<Button>> BaseButton, functionButton;
     std::vector <std::shared_ptr<InputBox>> inputBox;
-    Button mainButton;
+    Button mainButton, upSpeed, downSpeed;
+    sf::Text timeText;
     // InputBox inpBox;
     int buttonState;
+    Graph firstGraph;
     //Graph xyz
     sf::Vector2f buttonSize, buttonSpacing, buttonPosition, buttonRange;
 };

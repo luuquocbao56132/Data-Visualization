@@ -1,6 +1,8 @@
 #include <Game.hpp>
+#include <BaseHeader.hpp>
 
-std::shared_ptr <Game> gameGlobal = std::make_shared<Game>();;
+float xtime = 1.f;
+std::shared_ptr <Game> gameGlobal = std::make_shared<Game>();
 
 int main() {
     srand(time(NULL));

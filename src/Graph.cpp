@@ -9,6 +9,15 @@ Graph::Graph(){
     setNode();
 }
 
+Graph& Graph::operator=(Graph& other) {
+    if (this != &other) { 
+        init(other.getSize());
+        for (int i = 0; i < listNode.size(); ++i)
+            listNode[i]->setText(std::to_string(other.getValue(i)));
+    }
+    return *this;
+}
+
 void Graph::init(){
     init(ResourceManager::random(2,6));
 }
@@ -37,6 +46,11 @@ void Graph::init(int x, std::vector <std::string> s){
         listNode[i-1]->nextNode = listNode[i];
     }        
     setNode();              
+}
+
+void Graph::setValue(int vtx, int value){
+    if (vtx >= listNode.size())return;
+    listNode[vtx]->setText(std::to_string(value));
 }
 
 bool Graph::checkSameNum(int x){

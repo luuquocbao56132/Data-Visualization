@@ -24,3 +24,7 @@ int ResourceManager::StringtoInt(std::string s){
     for (int i = s.size()-1; i >= 0; --i)res += t * (int)(s[i] - '0'), t *= 10;
     return res;
 }
+
+// void ResourceManager::changeXtime(float x){ResourceManager::changeXtime(x);}
+
+// float ResourceManager::getXtime(){return xtime;}
