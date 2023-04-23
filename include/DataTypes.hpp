@@ -21,7 +21,7 @@ public:
     Button mainButton, upSpeed, downSpeed;
     sf::Text timeText;
     // InputBox inpBox;
-    int buttonState;
+    int buttonState, typeGraph;
     Graph firstGraph, mainGraph;
     //Graph xyz
     sf::Vector2f buttonSize, buttonSpacing, buttonPosition, buttonRange;

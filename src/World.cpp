@@ -50,15 +50,11 @@ void World::HoverCheck(sf::Vector2f mousePos){
 
 void World::checkPress(sf::Vector2f mousePos){
     liveData->checkPress(mousePos);
-    if (nLL->mainButton.checkPress(mousePos))liveData = nLL, nLL->resetAll();
-    if (nDLL->mainButton.checkPress(mousePos))liveData = nDLL, nDLL->resetAll();
-    if (nCLL->mainButton.checkPress(mousePos))liveData = nCLL, nCLL->resetAll();
-    if (nQueue->mainButton.checkPress(mousePos))liveData = nQueue, nQueue->resetAll();
-    if (nStack->mainButton.checkPress(mousePos))liveData = nStack, nStack->resetAll();
-    if (nDynArr->mainButton.checkPress(mousePos))liveData = nDynArr, nDynArr->resetAll();
-    if (nStaArr->mainButton.checkPress(mousePos))liveData = nStaArr, nStaArr->resetAll();
-}
-
-void World::checkText(char c){
-    
+    if (nLL->mainButton.checkPress(mousePos))liveData->resetAll(), liveData = nLL;
+    if (nDLL->mainButton.checkPress(mousePos))liveData->resetAll(), liveData = nDLL;
+    if (nCLL->mainButton.checkPress(mousePos))liveData->resetAll(), liveData = nCLL;
+    if (nQueue->mainButton.checkPress(mousePos))liveData->resetAll(), liveData = nQueue;
+    if (nStack->mainButton.checkPress(mousePos))liveData->resetAll(), liveData = nStack;
+    if (nDynArr->mainButton.checkPress(mousePos))liveData->resetAll(), liveData = nDynArr;
+    if (nStaArr->mainButton.checkPress(mousePos))liveData->resetAll(), liveData = nStaArr;
 }

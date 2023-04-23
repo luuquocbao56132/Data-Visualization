@@ -32,7 +32,6 @@ public:
     int stateGraph, numArrow;
     std::shared_ptr <int> n;
     std::vector <std::shared_ptr <Node>> listNode;
-private:
     int leftBound;
     std::set <int> setNumber;
 };

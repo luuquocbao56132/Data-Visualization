@@ -8,7 +8,7 @@ DataTypes::DataTypes(const sf::Vector2f& position, const sf::Vector2f& size,
         buttonSize(sf::Vector2f(90.f, 50.f)), buttonSpacing(sf::Vector2f(0.f, 5.f)),
         buttonPosition(sf::Vector2f(10.f, 450.f)), buttonRange(buttonSize + buttonSpacing),
         buttonState(-1),
-        mainGraph(graphType){
+        mainGraph(graphType), typeGraph(graphType){
             upSpeed = Button(sf::Vector2f(980,10), sf::Vector2f(mainButton.getSize().y/2,mainButton.getSize().y/2), 
                             "U", ResourceManager::getFont(), 15, 0);
             downSpeed = Button(sf::Vector2f(980,10+mainButton.getSize().y/2), sf::Vector2f(mainButton.getSize().y/2,mainButton.getSize().y/2), 
@@ -22,6 +22,15 @@ void DataTypes::resetAll(){
     buttonState = -1;
     xtime = 1.f; numFrame = 60;
     inputBox.clear();
+    Graph newGraph = Graph(typeGraph);
+    mainGraph = newGraph;
+    std::cout << "size node of mainGraph: \n";
+    for (int i = 0; i < mainGraph.listNode.size(); ++i)
+        std::cout << mainGraph.listNode[i]->getRad() << " "; std::cout << '\n';
+    
+    // firstGraph = mainGraph;
+    // for (int i = 0; i < firstGraph.listNode.size(); ++i)
+    //     std::cout << firstGraph.listNode[i]->getValue() << " "; std::cout << '\n';
 }
 
 void DataTypes::draw(sf::RenderTarget& target, sf::RenderStates states) const{

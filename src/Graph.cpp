@@ -4,25 +4,28 @@
 extern std::shared_ptr <Game> gameGlobal;
 
 Graph::Graph(){
-    n = std::make_shared <int> (ResourceManager::random(2,5));
+    n = std::make_shared <int> (ResourceManager::random(3,8));
     init(*n);
 }
 
 Graph::Graph(int state){
     stateGraph = state;
-    n = std::make_shared <int> (ResourceManager::random(2,5));
+    n = std::make_shared <int> (ResourceManager::random(3,8));
     init(*n);
 }
 
 // check firstgraph co dung gia tri sau khi gan = chua
-// Check ham random
 
 Graph& Graph::operator=(Graph& other) {
     if (this != &other) { 
         this->stateGraph = other.stateGraph;
         this->init(other.getSize());
-        for (int i = 0; i < listNode.size(); ++i)
-            this->listNode[i]->setText(std::to_string(other.getValue(i)));
+        //kich co size text thay doi nen setText trong node se gap van de
+        for (int i = 0; i < other.listNode.size(); ++i)
+            this->listNode[i]->changeSizeNode(this->listNode[i]->getRad() - CircleRad),
+            this->listNode[i]->setText(std::to_string(other.getValue(i))),
+            this->listNode[i]->changeSizeNode(this->listNode[i]->getRad() - other.listNode[i]->getRad()),
+            std::cout << std::to_string(other.getValue(i)) << " "; std::cout << '\n';
         this->setNumber = other.setNumber;
     }
     return *this;
@@ -34,24 +37,20 @@ void Graph::init(){
 
 void Graph::init(int x){
     std::vector <std::string> s;
-    for (int i = 0; i < x; ++i)s.push_back(std::to_string(ResourceManager::random(1,maxValue)));
+    for (int i = 0; i < x; ++i)s.push_back(std::to_string(randomNodeValue()));
     init(x,s);
 }
 
 void Graph::init(int x, std::vector <std::string> s){
     *n = x; listNode.clear();
     if (!n)return;
-    leftBound = 800 - (100*(*n) - 60 ) / 2;
-    // listNode.push_back(std::make_shared <Node> (19.f, s[0], ResourceManager::getFont(), 
-    //                                 textSize, backgroundColor,sf::Vector2f(leftBound + 10, 250.f)));
+
+    leftBound = 800 - (100*(*n) - arrowLength ) / 2;
     for (int i = 0; i < s.size(); ++i){
         listNode.push_back(std::make_shared <Node> (19.f, s[i], ResourceManager::getFont(), 
                                     textSize, backgroundColor,sf::Vector2f(leftBound + 10 + 100*i, 250.f)));
     }        
-
-    // std::cout << "numFrame: " << numFrame;
     setNode();              
-
     for (int i = 0; i < s.size(); ++i)listNode[i]->changeSizeNode(CircleRad / numFrame * (numFrame-1));
 }
 

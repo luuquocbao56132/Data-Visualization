@@ -97,7 +97,8 @@ void Node::changeSizeNode(float rad){
     m_circle.setOrigin(sf::Vector2f(m_radius, m_radius));
     m_circle.setPosition(position);
 
-    m_text.setCharacterSize(std::min(std::ceil(m_text.getCharacterSize()*rate), textSize));
+    // m_text.setCharacterSize(std::min(std::ceil(m_text.getCharacterSize()*rate), textSize));
+    m_text.setCharacterSize(m_radius/CircleRad * textSize);
     m_text.setPosition(position);
     for (int i = 0; i < 4; ++i)m_text_directions[i].setCharacterSize(std::min(std::ceil(m_text_directions[i].getCharacterSize()*rate), textSize));
     

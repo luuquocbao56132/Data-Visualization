@@ -40,7 +40,6 @@ void Game::processEventsBreak(){
                 mWindow.close();
                 break;
         }
-        std::cout << "event" << '\n';
     }
 }
 
@@ -94,7 +93,6 @@ void Game::render(){
 }
 
 void Game::render(int x){
-    std::cout << x << '\n';
     mWindow.clear(sf::Color(238,238,238));
     mWindow.draw(mWorld);
     mWindow.display();

@@ -30,7 +30,6 @@ public:
     void HoverCheck(sf::Vector2f);
     void draw(sf::RenderTarget& , sf::RenderStates ) const override;
     void checkPress(sf::Vector2f);
-    void checkText(char );
 };
 
 #endif //World_hpp

@@ -95,7 +95,12 @@ void LL::getFromFile(){
             list.push_back(c); c = "";
         } else return;
     }
+    std::set <int> sameNum;
+    for (int i = 0; i < list.size(); ++i)
+        if (sameNum.find(ResourceManager::StringtoInt(list[i])) != sameNum.end())return;
+    mainGraph.setNumber = sameNum;
     mainGraph.init(list.size(), list);
+    firstGraph = mainGraph;
 }
 
 void LL::LetsSearch(int X){
