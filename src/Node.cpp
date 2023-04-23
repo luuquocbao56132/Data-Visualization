@@ -37,8 +37,9 @@ Node::Node(float radius, const std::string& text, const sf::Font& font, float te
     m_text_directions[LEFT].setOrigin(m_text_directions[LEFT].getLocalBounds().width / 2.f, m_text_directions[LEFT].getLocalBounds().height);
     m_text_directions[LEFT].setPosition(sf::Vector2f(position.x - radius - text_size, position.y));
 
-    m_arrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x + radius + 3, position.y), 0.f);
-    nextNode = nullptr;
+    nextArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x + radius + 3, position.y), 0.f);
+    prevArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x - radius - 3, position.y), 0.f);
+    nextNode = nullptr; prevNode = nullptr;
 }
 
 sf::Color Node::changeColor(sf::Color startColor, sf::Color endColor, float transitionTime, int time){
@@ -53,7 +54,7 @@ sf::Color Node::changeColor(sf::Color startColor, sf::Color endColor, float tran
 void Node::setColor(const sf::Color& color){
     m_color = color;
     m_circle.setFillColor(color);
-    m_arrow.setColor(color);
+    nextArrow.setColor(color);
 }
 
 void Node::setNodeColor(sf::Color color){
@@ -89,27 +90,34 @@ float rad2Node(sf::Vector2f x, sf::Vector2f y){
 void Node::changeSizeNode(float rad){
     float rate = (m_radius-rad) / m_radius;
     sf::Vector2f position = m_circle.getPosition();
-    m_circle.setRadius(m_radius - rad);
+    // std::cout << " (m_radius-rad) / m_radius: " << rate << '\n';
     m_radius -= rad;
+    
+    m_circle.setRadius(m_radius);
     m_circle.setOrigin(sf::Vector2f(m_radius, m_radius));
     m_circle.setPosition(position);
-    std::cout << rate << '\n';
 
-    m_text.setCharacterSize(m_text.getCharacterSize()*rate);
+    m_text.setCharacterSize(std::min(std::ceil(m_text.getCharacterSize()*rate), textSize));
     m_text.setPosition(position);
-    for (int i = 0; i < 4; ++i)m_text_directions[i].setCharacterSize(m_text_directions[i].getCharacterSize()*rate);
+    for (int i = 0; i < 4; ++i)m_text_directions[i].setCharacterSize(std::min(std::ceil(m_text_directions[i].getCharacterSize()*rate), textSize));
     
-    m_arrow.minimizeArrow(m_arrow.getLength() - m_arrow.getLength()*rate); 
+    nextArrow.minimizeArrow(nextArrow.getLength() - nextArrow.getLength()*rate); 
+    prevArrow.minimizeArrow(prevArrow.getLength() - prevArrow.getLength()*rate); 
+
+    // std::cout << "m_radius: " << m_radius <<" rad: " << rad << " charsize: " << m_text.getCharacterSize() << '\n';
+
 }
 
 void Node::setArrow(){
     if (nextNode == nullptr)return;
-
     float length = dist2Node(getNodePosition(), nextNode->getNodePosition());
-    
     rotateArrow(rad2Node(getNodePosition(), nextNode->getNodePosition()));
-    m_arrow.minimizeArrow(m_arrow.getLength() - length);
+    nextArrow.minimizeArrow(nextArrow.getLength() - length);
 
+    if (prevNode == nullptr)return;
+    length = dist2Node(getNodePosition(), prevNode->getNodePosition());
+    rotateArrow(rad2Node(getNodePosition(), prevNode->getNodePosition()));
+    prevArrow.minimizeArrow(prevArrow.getLength() - length);
 }
 
 void Node::changeText(Direction i, std::string text){
@@ -138,20 +146,20 @@ void Node::setDirectionColor(const sf::Color& color, unsigned int direction){
 }
 
 void Node::setPartialColor(float percentage){
-    m_arrow.setPartialColor(percentage);
+    nextArrow.setPartialColor(percentage);
 }
 
 void Node::rotateArrow(float degrees){
-    m_arrow.setRotation(degrees);
-    m_arrow.setPosition(sf::Vector2f(m_position.x + m_radius * std::cos(degrees * M_PI / 180.f), m_position.y + m_radius * std::sin(degrees * M_PI / 180.f)));
+    nextArrow.setRotation(degrees);
+    nextArrow.setPosition(sf::Vector2f(m_position.x + m_radius * std::cos(degrees * M_PI / 180.f), m_position.y + m_radius * std::sin(degrees * M_PI / 180.f)));
 }
 
 void Node::changeSizeArrow(float length){
-    m_arrow.minimizeArrow(length);
+    nextArrow.minimizeArrow(length);
 }
 
 float Node::getLengthArrow(){
-    return m_arrow.getLength();
+    return nextArrow.getLength();
 }
 
 sf::Vector2f Node::getNodePosition(){
@@ -172,7 +180,8 @@ bool Node::getString(int t){
 void Node::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform *= getTransform();
     target.draw(m_circle, states);
-    if (nextNode != nullptr)target.draw(m_arrow, states);
+    if (nextNode != nullptr)target.draw(nextArrow, states);
+    if (prevNode != nullptr)target.draw(prevArrow, states);
     target.draw(m_text, states);
     for (const auto& text : m_text_directions)
     {

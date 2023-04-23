@@ -52,7 +52,7 @@ void DynArrow::setPartialColor(float percentage){
 
 void DynArrow::minimizeArrow(float length){
     m_length -= length;
-    //std::cout << m_length << '\n';
+    // std::cout << "mlength: " << m_length << '\n';
     sf::Vector2f res = m_head.getPoint(0);
     res = m_head.getPosition();
     float Sinn = std::sin(m_body.getRotation() * M_PI / 180.f), Coss = std::cos(m_body.getRotation() * M_PI / 180.f);

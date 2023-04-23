@@ -4,7 +4,7 @@ DynArr::DynArr(){};
 
 DynArr::DynArr(const sf::Vector2f& position, const sf::Vector2f& size,
            const std::string& text, const sf::Font& font, unsigned int characterSize):
-        DataTypes(position, size, "DynArr", ResourceManager::getFont(), characterSize,0){
+        DataTypes(position, size, "DynArr", ResourceManager::getFont(), characterSize,0,ARRAY){
 
             std::shared_ptr<Button> Create (new Button(buttonPosition + sf::Vector2f(buttonPosition.x, buttonRange.y*1),
                             buttonSize, "Create", font, 20,0));

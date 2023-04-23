@@ -9,13 +9,15 @@ class Game;
 class Graph: public sf::Transformable, public sf::Drawable {
 public:
     Graph();
+    Graph(int);
     Graph& operator=(Graph& other);
     void init(int, std::vector <std::string> );
     void init(int );
+    void initnodraw(int );
     void init();
     void setNode();
     bool checkSameNum(int );
-    std::shared_ptr <Node> randomNode(int );
+    int randomNodeValue();
     void draw(sf::RenderTarget& , sf::RenderStates ) const override;
     void removeNode(int );
     void setNodeColor(int, sf::Color);
@@ -27,10 +29,11 @@ public:
     int getValue(int );
     void setValue(int,int);
     int getSize();
+    int stateGraph, numArrow;
     std::shared_ptr <int> n;
+    std::vector <std::shared_ptr <Node>> listNode;
 private:
     int leftBound;
-    std::vector <std::shared_ptr <Node>> listNode;
     std::set <int> setNumber;
 };
 

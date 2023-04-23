@@ -11,7 +11,6 @@ public:
     LL();
     LL(const sf::Vector2f& , const sf::Vector2f& ,
         const std::string& , const sf::Font& , unsigned int );
-    Graph LLgraph;
     void draw(sf::RenderTarget& , sf::RenderStates ) const override;
     void getFromFile();
     void LetsSearch(int );

@@ -11,7 +11,6 @@ void Game::run(){
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
     sf::Time TimePerFrame = sf::milliseconds(8);
     while (mWindow.isOpen()){
-            // std::cout << "xTime: " << xtime << '\n';
         processEvents();
         timeSinceLastUpdate += clock.restart();
         while (timeSinceLastUpdate > TimePerFrame){
@@ -25,21 +24,23 @@ void Game::run(){
 }
 
 void Game::runBreak(){
-    std::cout << "Game pointer: " << gameGlobal << '\n';
-    sf::Clock clock;
-    sf::Time timeSinceLastUpdate = sf::Time::Zero;
-    sf::Time TimePerFrame = sf::milliseconds(8);
     while (mWindow.isOpen()){
-        processEvents();
-        timeSinceLastUpdate += clock.restart();
-        while (timeSinceLastUpdate > TimePerFrame){
-            timeSinceLastUpdate -= TimePerFrame;
-            processEvents();
-            update(TimePerFrame);
-        }
-        update(TimePerFrame);
-        render(); 
+        processEventsBreak();
+        render(4); 
         break; 
+    }
+}
+
+void Game::processEventsBreak(){
+    sf::Event event;
+
+    while (mWindow.pollEvent(event)){
+        switch (event.type){
+            case sf::Event::Closed:
+                mWindow.close();
+                break;
+        }
+        std::cout << "event" << '\n';
     }
 }
 
@@ -75,6 +76,19 @@ void Game::update(sf::Time TimePerFrame){
 
 void Game::render(){
     mWindow.clear(sf::Color(238,238,238));
+    if (!mWorld.liveData->mainGraph.listNode.empty() && mWorld.liveData->mainGraph.listNode[0]->getRad() != CircleRad){
+        sf::Clock clock;
+        float timeSinceLastUpdate = 0; clock.restart();
+        // std::cout << "radius first: " << mWorld.liveData->mainGraph.listNode[0]->getRad() << '\n'; Sleep(3000);
+        for (int stt = 2; stt <= numFrame; ++stt){
+            for (int i = 0; i < mWorld.liveData->mainGraph.listNode.size(); ++i)
+                mWorld.liveData->mainGraph.listNode[i]->changeSizeNode(-CircleRad / numFrame);
+            // std::cout << "radius last: " << mWorld.liveData->mainGraph.listNode[0]->getRad() << '\n';
+            // std::cout << "stt " << stt << "\n";
+            gameGlobal->runBreak();
+        }
+        mWorld.liveData->mainGraph.setNode();
+    }
     mWindow.draw(mWorld);
     mWindow.display();
 }

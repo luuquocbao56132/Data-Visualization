@@ -2,6 +2,7 @@
 #include <BaseHeader.hpp>
 
 float xtime = 1.f;
+float numFrame = 60.f;
 std::shared_ptr <Game> gameGlobal = std::make_shared<Game>();
 
 int main() {

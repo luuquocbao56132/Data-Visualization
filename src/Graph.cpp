@@ -6,14 +6,24 @@ extern std::shared_ptr <Game> gameGlobal;
 Graph::Graph(){
     n = std::make_shared <int> (ResourceManager::random(2,5));
     init(*n);
-    setNode();
 }
+
+Graph::Graph(int state){
+    stateGraph = state;
+    n = std::make_shared <int> (ResourceManager::random(2,5));
+    init(*n);
+}
+
+// check firstgraph co dung gia tri sau khi gan = chua
+// Check ham random
 
 Graph& Graph::operator=(Graph& other) {
     if (this != &other) { 
-        init(other.getSize());
+        this->stateGraph = other.stateGraph;
+        this->init(other.getSize());
         for (int i = 0; i < listNode.size(); ++i)
-            listNode[i]->setText(std::to_string(other.getValue(i)));
+            this->listNode[i]->setText(std::to_string(other.getValue(i)));
+        this->setNumber = other.setNumber;
     }
     return *this;
 }
@@ -23,29 +33,26 @@ void Graph::init(){
 }
 
 void Graph::init(int x){
-    listNode.clear(); *n = x;
-    leftBound = 800 - (100*x - 60 ) / 2;
-    if (!x)return;
-    listNode.push_back(randomNode(leftBound+10));
-    for (int i = 1; i < x; ++i){
-        listNode.push_back(randomNode(leftBound+10+100*i));
-        listNode[i-1]->nextNode = listNode[i];
-    }
-    setNode();
+    std::vector <std::string> s;
+    for (int i = 0; i < x; ++i)s.push_back(std::to_string(ResourceManager::random(1,maxValue)));
+    init(x,s);
 }
 
 void Graph::init(int x, std::vector <std::string> s){
     *n = x; listNode.clear();
     if (!n)return;
     leftBound = 800 - (100*(*n) - 60 ) / 2;
-    listNode.push_back(std::make_shared <Node> (19.f, s[0], ResourceManager::getFont(), 
-                                    textSize, backgroundColor,sf::Vector2f(leftBound + 10, 250.f)));
-    for (int i = 1; i < s.size(); ++i){
+    // listNode.push_back(std::make_shared <Node> (19.f, s[0], ResourceManager::getFont(), 
+    //                                 textSize, backgroundColor,sf::Vector2f(leftBound + 10, 250.f)));
+    for (int i = 0; i < s.size(); ++i){
         listNode.push_back(std::make_shared <Node> (19.f, s[i], ResourceManager::getFont(), 
                                     textSize, backgroundColor,sf::Vector2f(leftBound + 10 + 100*i, 250.f)));
-        listNode[i-1]->nextNode = listNode[i];
     }        
+
+    // std::cout << "numFrame: " << numFrame;
     setNode();              
+
+    for (int i = 0; i < s.size(); ++i)listNode[i]->changeSizeNode(CircleRad / numFrame * (numFrame-1));
 }
 
 void Graph::setValue(int vtx, int value){
@@ -67,12 +74,11 @@ std::string convertIntString(int x){
     return res;
 }
 
-std::shared_ptr<Node> Graph::randomNode(int x){
-    int t = ResourceManager::random(1, 99);
+int Graph::randomNodeValue(){
+    int t = ResourceManager::random(1,maxValue);
     while (checkSameNum(t))t = ResourceManager::random(1, 99);
     setNumber.insert(t);
-    return std::make_shared <Node> (19.f, convertIntString(t), ResourceManager::getFont(), 
-                                    textSize, backgroundColor,sf::Vector2f(x, 250.f));
+    return t;
 }
 
 int Graph::getSize(){
@@ -82,9 +88,16 @@ int Graph::getSize(){
 void Graph::setNode(){
     int nn = *n;
     if (!nn){listNode.clear(); return;}
-    for (int i = 0; i < nn-1; ++i)listNode[i]->nextNode = listNode[i+1];
-    listNode[nn-1]->nextNode = nullptr;
+    if (stateGraph != ARRAY){
+        for (int i = 0; i < nn-1; ++i)listNode[i]->nextNode = listNode[i+1];
+        listNode[nn-1]->nextNode = nullptr;
+    }
+    if (stateGraph == DOUBLYLINKEDLIST){
+        for (int i = 1; i < nn; ++i)listNode[i]->prevNode = listNode[i-1];
+        listNode[0]->prevNode = nullptr;
+    }
     for (int i = 0; i < nn; ++i){
+        listNode[i]->changeSizeNode(listNode[i]->getRad() - CircleRad);
         listNode[i]->setArrow();
         listNode[i]->setTextBot("");
         listNode[i]->setTextTop(std::to_string(i));

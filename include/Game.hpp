@@ -10,6 +10,7 @@ class Game{
     World mWorld;
 
     void processEvents();
+    void processEventsBreak();
     void update(sf::Time);
 
     public:

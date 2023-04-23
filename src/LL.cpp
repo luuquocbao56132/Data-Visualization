@@ -7,8 +7,8 @@ LL::LL(){};
 
 LL::LL(const sf::Vector2f& position, const sf::Vector2f& size,
            const std::string& text, const sf::Font& font, unsigned int characterSize):
-        DataTypes(position, size, "LL", ResourceManager::getFont(), characterSize,0),
-        LLgraph(){
+        DataTypes(position, size, "LL", ResourceManager::getFont(), characterSize,0, LINKEDLIST)
+        {
 
             std::shared_ptr<Button> Create (new Button(buttonPosition + sf::Vector2f(buttonPosition.x, buttonRange.y*1),
                             buttonSize, "Create", font, 20,0));
@@ -49,7 +49,7 @@ LL::LL(const sf::Vector2f& position, const sf::Vector2f& size,
                 sf::Vector2f(Insert->minButton[2]->getPosition().x + 20, 
                             Insert->minButton[2]->getPosition().y + Insert->minButton[2]->getSize().y + 5), 
                         inputButtonSize, "i = ", 0));
-            Insert->minButton[2]->inputButton[0]->setValueLimit(LLgraph.n);
+            Insert->minButton[2]->inputButton[0]->setValueLimit(mainGraph.n);
             Insert->minButton[2]->inputButton.push_back(std::make_shared <InputBox>(
                 sf::Vector2f(Insert->minButton[2]->getPosition().x + Insert->minButton[2]->getSize().x / 2 + 25, 
                             Insert->minButton[2]->getPosition().y + Insert->minButton[2]->getSize().y + 5), 
@@ -61,13 +61,13 @@ LL::LL(const sf::Vector2f& position, const sf::Vector2f& size,
                         sf::Vector2f(Remove->minButton[2]->getPosition().x + 35, 
                             Remove->minButton[2]->getPosition().y + Remove->minButton[2]->getSize().y + 5), 
                         inputButtonSize,"i = ",1));
-            Remove->minButton[2]->inputButton[0]->setValueLimit(LLgraph.n);
+            Remove->minButton[2]->inputButton[0]->setValueLimit(mainGraph.n);
             // isTurn = 0;
         }
 
 void LL::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     DataTypes::draw(target, states);
-    target.draw(LLgraph);
+    target.draw(mainGraph);
 }
 
 void LL::getFromFile(){
@@ -95,41 +95,41 @@ void LL::getFromFile(){
             list.push_back(c); c = "";
         } else return;
     }
-    LLgraph.init(list.size(), list);
+    mainGraph.init(list.size(), list);
 }
 
 void LL::LetsSearch(int X){
-    LLgraph = firstGraph;
-    if (LLgraph.getSize() == 0)return;
-    std::cout << "LLgraph size: " << X;
+    mainGraph = firstGraph;
+    if (mainGraph.getSize() == 0)return;
+    std::cout << "mainGraph size: " << X;
     int flag = 100;
     
-    for (int vtx = 0; vtx < LLgraph.getSize(); ++vtx){
-        if (LLgraph.getValue(vtx) == X){flag = vtx; break;}
+    for (int vtx = 0; vtx < mainGraph.getSize(); ++vtx){
+        if (mainGraph.getValue(vtx) == X){flag = vtx; break;}
 
-        LLgraph.setSearchingNode(vtx);
+        mainGraph.setSearchingNode(vtx);
         // gameGlobal->render(vtx); 
         Sleep(timeLength/xtime);
         //std::cout << 1 << '\n';
 
-        LLgraph.removeSearchingNode(vtx);
-        LLgraph.setArrowColor(vtx);
+        mainGraph.removeSearchingNode(vtx);
+        mainGraph.setArrowColor(vtx);
         // gameGlobal->render(vtx);
         Sleep(timeLength/xtime);
     }
 
     // int vtx = 2;
-    // LLgraph.setSearchingNode(vtx);
+    // mainGraph.setSearchingNode(vtx);
     //     gameGlobal->render(); 
     //     Sleep(timeLength*xtime);
     //     std::cout << 1 << '\n';
 
-    //     LLgraph.removeSearchingNode(vtx);
-    //     LLgraph.setArrowColor(vtx);
+    //     mainGraph.removeSearchingNode(vtx);
+    //     mainGraph.setArrowColor(vtx);
     //     gameGlobal->render();
     //     Sleep(timeLength*xtime);
 
-    if (flag != 100)LLgraph.setFoundNode(flag);
+    if (flag != 100)mainGraph.setFoundNode(flag);
     gameGlobal->runBreak();
 }
 
@@ -140,8 +140,8 @@ void LL::checkPress(sf::Vector2f mousePos){
         auto res = BaseButton[buttonState];
         switch (buttonState){
             case CREATE:
-                if (res->minButton[0]->checkPress(mousePos))LLgraph.init(0), inputBox.clear();
-                if (res->minButton[1]->checkPress(mousePos))LLgraph.init(), inputBox.clear();
+                if (res->minButton[0]->checkPress(mousePos))mainGraph.init(0), inputBox.clear();
+                if (res->minButton[1]->checkPress(mousePos))mainGraph.init(), inputBox.clear();
                 if (res->minButton[2]->checkPress(mousePos)){
                     inputBox = res->minButton[2]->inputButton;  
                     for (auto i : inputBox)i->resetValue();
@@ -150,9 +150,9 @@ void LL::checkPress(sf::Vector2f mousePos){
                 if (!inputBox.empty() && inputBox[0] == res->minButton[2]->inputButton[0]){
                     inputBox[0]->checkPress(mousePos);
                     if (inputBox[0]->Go->checkPress(mousePos))
-                        LLgraph.init(inputBox[0]->getValue()), inputBox.clear();
+                        mainGraph.init(inputBox[0]->getValue()), inputBox.clear();
                 }
-                firstGraph = LLgraph;
+                firstGraph = mainGraph;
                 break;
             case SEARCH:
                 if (res->checkPress(mousePos)){
@@ -177,8 +177,8 @@ void LL::checkPress(sf::Vector2f mousePos){
                 }
                 break;
             case REMOVE:
-                if (res->minButton[0]->checkPress(mousePos))LLgraph.removeNode(0), inputBox.clear();
-                if (res->minButton[1]->checkPress(mousePos))LLgraph.removeNode(LLgraph.getSize()-1), inputBox.clear();;
+                if (res->minButton[0]->checkPress(mousePos))mainGraph.removeNode(0), inputBox.clear();
+                if (res->minButton[1]->checkPress(mousePos))mainGraph.removeNode(mainGraph.getSize()-1), inputBox.clear();;
                 if (res->minButton[2]->checkPress(mousePos)){
                     inputBox = res->minButton[2]->inputButton;  
                     for (auto i : inputBox)i->resetValue();

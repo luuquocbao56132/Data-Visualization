@@ -10,7 +10,7 @@ class DataTypes: public sf::Drawable, public sf::Transformable{
 public:
     DataTypes();
     DataTypes(const sf::Vector2f& , const sf::Vector2f& ,
-        const std::string& , const sf::Font& , unsigned int ,int );
+        const std::string& , const sf::Font& , unsigned int ,int , int);
     virtual void draw(sf::RenderTarget& , sf::RenderStates ) const override;
     void checkHover(sf::Vector2f);
     void checkKeyInput(sf::Event& );
@@ -22,7 +22,7 @@ public:
     sf::Text timeText;
     // InputBox inpBox;
     int buttonState;
-    Graph firstGraph;
+    Graph firstGraph, mainGraph;
     //Graph xyz
     sf::Vector2f buttonSize, buttonSpacing, buttonPosition, buttonRange;
 };

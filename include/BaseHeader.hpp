@@ -31,6 +31,17 @@ enum Function{
     REMOVE
 };
 
+enum AroundNode{
+    Prev,
+    Next
+};
+
+enum TypeGraph{
+    ARRAY,
+    LINKEDLIST,
+    DOUBLYLINKEDLIST
+};
+
 static float CircleRad = 19;
 static float nodeDistance = 60;
 static float textSize = 19;
@@ -45,6 +56,10 @@ static sf::Vector2f inputButtonSize = sf::Vector2f(60,50);
 static int maxValue = 99;
 static int maxSize = 15;
 static float timeLength = 1000;
+static float arrowLength = 60;
+static float nodeRadius = 19;
+static float TimePerFrame = 1/60;
+extern float numFrame;
 extern float xtime;
 
 //static float M_PI = 3.14159;

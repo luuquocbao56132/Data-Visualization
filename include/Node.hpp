@@ -47,7 +47,9 @@ public:
 
     void draw(sf::RenderTarget& , sf::RenderStates ) const override;
 
-    std::shared_ptr <Node> nextNode;
+    std::shared_ptr <Node> nextNode, prevNode;
+
+    DynArrow nextArrow, prevArrow;
 
     sf::Text m_text_directions[4];
 
@@ -59,7 +61,6 @@ private:
     sf::Vector2f m_position;
     sf::Text m_text;
     float m_radius;
-    DynArrow m_arrow;
 };
 
 #endif // Node_hpp
