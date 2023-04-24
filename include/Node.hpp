@@ -43,8 +43,6 @@ public:
 
     void changeText(Direction, std::string );
 
-    sf::Color changeColor(sf::Color, sf::Color, float, int);
-
     void draw(sf::RenderTarget& , sf::RenderStates ) const override;
 
     std::shared_ptr <Node> nextNode, prevNode;

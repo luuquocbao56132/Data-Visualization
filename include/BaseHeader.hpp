@@ -49,6 +49,7 @@ static sf::Color textColorStart = sf::Color::Black;
 static sf::Color textColorEnd = sf::Color::White;
 static sf::Color backgroundColor(238,238,238);
 static sf::Color endStateColor(255, 138, 39);
+static sf::Color FirstNodeColor(238, 238, 238);
 static sf::Color SearchingNodeColor(255, 138, 39);
 static sf::Color FoundNodeColor(46, 187, 209);
 static sf::Color NewNodeColor(82, 188, 105);

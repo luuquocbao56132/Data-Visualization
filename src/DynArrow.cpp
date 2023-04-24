@@ -45,8 +45,8 @@ void DynArrow::setPosition(sf::Vector2f position){
                         position.y + triPosition * Sinn + 1.5*Coss);
 }
 
-void DynArrow::setPartialColor(float percentage){
-    float length = m_length * percentage / 100.f;
+void DynArrow::setPartialColor(float ratio){
+    float length = m_length * ratio;
     m_particle.setSize(sf::Vector2f(length, 3.f));
 }
 

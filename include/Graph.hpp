@@ -21,11 +21,11 @@ public:
     void draw(sf::RenderTarget& , sf::RenderStates ) const override;
     void removeNode(int );
     void setNodeColor(int, sf::Color);
-    void setArrowColor(int);
-    void setSearchingNode(int);
-    void removeSearchingNode(int);
-    void setFoundNode(int);
-    void removeFoundNode(int);
+    void setArrowColor(int, float);
+    void setSearchingNode(int, float);
+    void removeSearchingNode(int, float);
+    void setFoundNode(int, float);
+    void removeFoundNode(int, float);
     int getValue(int );
     void setValue(int,int);
     int getSize();

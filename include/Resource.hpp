@@ -8,6 +8,7 @@ public:
     static sf::Font& getFont();
     static int random(int, int);
     static int StringtoInt(std::string);
+    static sf::Color changeColor(sf::Color , sf::Color , float );
 //     static void changeXtime(float);
 //     static float getXtime();
 // private:

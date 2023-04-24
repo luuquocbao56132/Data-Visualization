@@ -112,9 +112,9 @@ void Graph::setNodeColor(int vtx, sf::Color color){
 
 int Graph::getValue(int vtx){return listNode[vtx]->getValue();}
 
-void Graph::setArrowColor(int vtx){
+void Graph::setArrowColor(int vtx, float ratio){
     //if (listNode[vtx]->)
-    listNode[vtx]->setPartialColor(100);
+    listNode[vtx]->setPartialColor(ratio);
 }
 
 void Graph::removeNode(int vt){
@@ -127,28 +127,25 @@ void Graph::removeNode(int vt){
     setNode();
 }
 
-void Graph::setSearchingNode(int vtx){
-    listNode[vtx]->setOutlineColor(SearchingNodeColor);
-    listNode[vtx]->setNodeColor(SearchingNodeColor);
-    listNode[vtx]->setTextColor(backgroundColor);
-    gameGlobal->runBreak();
+void Graph::setSearchingNode(int vtx, float ratio){
+    listNode[vtx]->setOutlineColor(ResourceManager::changeColor(sf::Color::Black, SearchingNodeColor, ratio));
+    listNode[vtx]->setNodeColor(ResourceManager::changeColor(FirstNodeColor, SearchingNodeColor, ratio));
+    listNode[vtx]->setTextColor(ResourceManager::changeColor(textColorStart, textColorEnd, ratio));
+    if (vtx && stateGraph != ARRAY)setArrowColor(vtx-1, ratio);
 }
 
-void Graph::removeSearchingNode(int vtx){
-    listNode[vtx]->setOutlineColor(SearchingNodeColor);
-    listNode[vtx]->setNodeColor(backgroundColor);
-    listNode[vtx]->setTextColor(SearchingNodeColor);
-    gameGlobal->runBreak();
+void Graph::removeSearchingNode(int vtx, float ratio){
+    listNode[vtx]->setNodeColor(ResourceManager::changeColor(SearchingNodeColor, FirstNodeColor, ratio));
+    listNode[vtx]->setTextColor(ResourceManager::changeColor(textColorEnd, SearchingNodeColor, ratio));
 }
 
-void Graph::setFoundNode(int vtx){
-    listNode[vtx]->setOutlineColor(FoundNodeColor);
-    listNode[vtx]->setNodeColor(FoundNodeColor);
-    listNode[vtx]->setTextColor(backgroundColor);
-    gameGlobal->runBreak();
+void Graph::setFoundNode(int vtx, float ratio){
+    listNode[vtx]->setOutlineColor(ResourceManager::changeColor(sf::Color::Black, FoundNodeColor, ratio));
+    listNode[vtx]->setNodeColor(ResourceManager::changeColor(FirstNodeColor, FoundNodeColor, ratio));
+    listNode[vtx]->setTextColor(ResourceManager::changeColor(textColorStart, textColorEnd, ratio));
 }
 
-void Graph::removeFoundNode(int vtx){
+void Graph::removeFoundNode(int vtx, float ratio){
     listNode[vtx]->setOutlineColor(FoundNodeColor);
     listNode[vtx]->setNodeColor(backgroundColor);
     listNode[vtx]->setTextColor(FoundNodeColor);

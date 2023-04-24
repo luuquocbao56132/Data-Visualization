@@ -63,6 +63,7 @@ LL::LL(const sf::Vector2f& position, const sf::Vector2f& size,
                         inputButtonSize,"i = ",1));
             Remove->minButton[2]->inputButton[0]->setValueLimit(mainGraph.n);
             // isTurn = 0;
+            firstGraph = mainGraph;
         }
 
 void LL::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -106,36 +107,27 @@ void LL::getFromFile(){
 void LL::LetsSearch(int X){
     mainGraph = firstGraph;
     if (mainGraph.getSize() == 0)return;
-    std::cout << "mainGraph size: " << X;
+
+    std::cout << "List rad of search graph: \n";
+    for (int i = 0; i < mainGraph.getSize(); ++i)
+        mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad),
+        std::cout << mainGraph.listNode[i]->getRad() << " "; std::cout << '\n';
+
+    std::cout << "value to find: " << X << '\n';
     int flag = 100;
-    
+    std::cout << "numFrame: " << numFrame << '\n';
     for (int vtx = 0; vtx < mainGraph.getSize(); ++vtx){
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.setSearchingNode(vtx, stt/numFrame);
+            gameGlobal->runBreak();
+        }
         if (mainGraph.getValue(vtx) == X){flag = vtx; break;}
-
-        mainGraph.setSearchingNode(vtx);
-        // gameGlobal->render(vtx); 
-        Sleep(timeLength/xtime);
-        //std::cout << 1 << '\n';
-
-        mainGraph.removeSearchingNode(vtx);
-        mainGraph.setArrowColor(vtx);
-        // gameGlobal->render(vtx);
-        Sleep(timeLength/xtime);
+        
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.removeSearchingNode(vtx, stt/numFrame);
+            gameGlobal->runBreak();
+        }
     }
-
-    // int vtx = 2;
-    // mainGraph.setSearchingNode(vtx);
-    //     gameGlobal->render(); 
-    //     Sleep(timeLength*xtime);
-    //     std::cout << 1 << '\n';
-
-    //     mainGraph.removeSearchingNode(vtx);
-    //     mainGraph.setArrowColor(vtx);
-    //     gameGlobal->render();
-    //     Sleep(timeLength*xtime);
-
-    if (flag != 100)mainGraph.setFoundNode(flag);
-    gameGlobal->runBreak();
 }
 
 
@@ -145,8 +137,8 @@ void LL::checkPress(sf::Vector2f mousePos){
         auto res = BaseButton[buttonState];
         switch (buttonState){
             case CREATE:
-                if (res->minButton[0]->checkPress(mousePos))mainGraph.init(0), inputBox.clear();
-                if (res->minButton[1]->checkPress(mousePos))mainGraph.init(), inputBox.clear();
+                if (res->minButton[0]->checkPress(mousePos))mainGraph.init(0), inputBox.clear(), firstGraph = mainGraph;
+                if (res->minButton[1]->checkPress(mousePos))mainGraph.init(), inputBox.clear(), firstGraph = mainGraph;
                 if (res->minButton[2]->checkPress(mousePos)){
                     inputBox = res->minButton[2]->inputButton;  
                     for (auto i : inputBox)i->resetValue();
@@ -155,9 +147,8 @@ void LL::checkPress(sf::Vector2f mousePos){
                 if (!inputBox.empty() && inputBox[0] == res->minButton[2]->inputButton[0]){
                     inputBox[0]->checkPress(mousePos);
                     if (inputBox[0]->Go->checkPress(mousePos))
-                        mainGraph.init(inputBox[0]->getValue()), inputBox.clear();
+                        mainGraph.init(inputBox[0]->getValue()), inputBox.clear(), firstGraph = mainGraph;
                 }
-                firstGraph = mainGraph;
                 break;
             case SEARCH:
                 if (res->checkPress(mousePos)){

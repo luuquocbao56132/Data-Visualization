@@ -24,11 +24,13 @@ void DataTypes::resetAll(){
     inputBox.clear();
     Graph newGraph = Graph(typeGraph);
     mainGraph = newGraph;
-    std::cout << "size node of mainGraph: \n";
-    for (int i = 0; i < mainGraph.listNode.size(); ++i)
-        std::cout << mainGraph.listNode[i]->getRad() << " "; std::cout << '\n';
+    // std::cout << "size node of mainGraph: \n";
+    // for (int i = 0; i < mainGraph.listNode.size(); ++i)
+    //     std::cout << mainGraph.listNode[i]->getRad() << " "; std::cout << '\n';
     
-    // firstGraph = mainGraph;
+    firstGraph = mainGraph;
+    for (int i = 0; i < firstGraph.listNode.size(); ++i)
+        firstGraph.listNode[i]->changeSizeNode(firstGraph.listNode[i]->getRad() - CircleRad);
     // for (int i = 0; i < firstGraph.listNode.size(); ++i)
     //     std::cout << firstGraph.listNode[i]->getValue() << " "; std::cout << '\n';
 }

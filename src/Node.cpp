@@ -42,15 +42,6 @@ Node::Node(float radius, const std::string& text, const sf::Font& font, float te
     nextNode = nullptr; prevNode = nullptr;
 }
 
-sf::Color Node::changeColor(sf::Color startColor, sf::Color endColor, float transitionTime, int time){
-    float dr = time*(float)((int)endColor.r - (int)startColor.r) / (transitionTime * 60);
-    float dg = time*(float)((int)endColor.g - (int)startColor.g) / (transitionTime * 60);
-    float db = time*(float)((int)endColor.b - (int)startColor.b) / (transitionTime * 60);
-
-    sf::Color currentColor = sf::Color((int)startColor.r + (int)dr, (int)startColor.g + (int)dg, (int)startColor.b + (int)db);
-    return currentColor;
-}
-
 void Node::setColor(const sf::Color& color){
     m_color = color;
     m_circle.setFillColor(color);
@@ -146,8 +137,8 @@ void Node::setDirectionColor(const sf::Color& color, unsigned int direction){
     m_text_directions[direction].setFillColor(color);
 }
 
-void Node::setPartialColor(float percentage){
-    nextArrow.setPartialColor(percentage);
+void Node::setPartialColor(float ratio){
+    nextArrow.setPartialColor(ratio);
 }
 
 void Node::rotateArrow(float degrees){

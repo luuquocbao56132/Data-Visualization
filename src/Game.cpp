@@ -3,7 +3,7 @@
 extern std::shared_ptr <Game> gameGlobal;
 
 Game::Game(): mWindow(sf::VideoMode(1600,800), "Data Visualization", sf::Style::Default, sf::ContextSettings(0, 0, 15)), mWorld{}{
-    
+    mWindow.setFramerateLimit(105);
 }
 
 void Game::run(){

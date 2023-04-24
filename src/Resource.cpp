@@ -25,6 +25,14 @@ int ResourceManager::StringtoInt(std::string s){
     return res;
 }
 
+sf::Color ResourceManager::changeColor(sf::Color startColor, sf::Color endColor, float ratio){
+    float dr = ratio*(float)((int)endColor.r - (int)startColor.r);
+    float dg = ratio*(float)((int)endColor.g - (int)startColor.g);
+    float db = ratio*(float)((int)endColor.b - (int)startColor.b);
+
+    sf::Color currentColor = sf::Color((int)startColor.r + (int)dr, (int)startColor.g + (int)dg, (int)startColor.b + (int)db);
+    return currentColor;
+}
 // void ResourceManager::changeXtime(float x){ResourceManager::changeXtime(x);}
 
 // float ResourceManager::getXtime(){return xtime;}
