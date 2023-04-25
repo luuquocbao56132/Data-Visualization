@@ -104,32 +104,6 @@ void LL::getFromFile(){
     firstGraph = mainGraph;
 }
 
-void LL::LetsSearch(int X){
-    mainGraph = firstGraph;
-    if (mainGraph.getSize() == 0)return;
-
-    std::cout << "List rad of search graph: \n";
-    for (int i = 0; i < mainGraph.getSize(); ++i)
-        mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad),
-        std::cout << mainGraph.listNode[i]->getRad() << " "; std::cout << '\n';
-
-    std::cout << "value to find: " << X << '\n';
-    int flag = 100;
-    std::cout << "numFrame: " << numFrame << '\n';
-    for (int vtx = 0; vtx < mainGraph.getSize(); ++vtx){
-        for (int stt = 1; stt <= numFrame; ++stt){
-            mainGraph.setSearchingNode(vtx, stt/numFrame);
-            gameGlobal->runBreak();
-        }
-        if (mainGraph.getValue(vtx) == X){flag = vtx; break;}
-        
-        for (int stt = 1; stt <= numFrame; ++stt){
-            mainGraph.removeSearchingNode(vtx, stt/numFrame);
-            gameGlobal->runBreak();
-        }
-    }
-}
-
 
 void LL::checkPress(sf::Vector2f mousePos){
     DataTypes::checkPress(mousePos);
@@ -163,13 +137,24 @@ void LL::checkPress(sf::Vector2f mousePos){
             case INSERT:
                 for (int i = 0; i < 3; ++i){
                     if (res->minButton[i]->checkPress(mousePos)){
+                        if (!mainGraph.getSize() && i == 2)continue;
                         inputBox = res->minButton[i]->inputButton;
                         for (auto ii : inputBox) ii->resetValue();
-                        std::cout << "InputBox: " << inputBox.size();
-                    } if (!inputBox.empty())
-                    for (int j = 0; j < inputBox.size(); ++j) 
-                        if (inputBox[j] == res->minButton[i]->inputButton[j])
-                        inputBox[j]->checkPress(mousePos);
+                        // std::cout << "InputBox: " << inputBox.size();
+                    } 
+                    if (!inputBox.empty())
+                        for (int j = 0; j < inputBox.size(); ++j) {
+                            if (inputBox[j] == res->minButton[i]->inputButton[j]){
+                                inputBox[j]->checkPress(mousePos);
+                                if (i < 2 && inputBox[j]->Go->checkPress(mousePos)){
+                                    if (mainGraph.getSize() == maxSize)break;
+                                    if (i == 0)LetsInsert(0,inputBox[j]->getValue());
+                                    if (i == 1)LetsInsert(mainGraph.getSize(),inputBox[j]->getValue());
+                                }
+                                if (i == 2 && j == 1 && inputBox[j]->Go->checkPress(mousePos) && mainGraph.getSize() < maxSize && mainGraph.getSize())
+                                    LetsInsert(inputBox[j-1]->getValue(),inputBox[j]->getValue());
+                            } else break;
+                        }
                 }
                 break;
             case REMOVE:

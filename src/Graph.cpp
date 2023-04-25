@@ -27,16 +27,17 @@ Graph& Graph::operator=(Graph& other) {
             this->listNode[i]->changeSizeNode(this->listNode[i]->getRad() - other.listNode[i]->getRad()),
             std::cout << std::to_string(other.getValue(i)) << " "; std::cout << '\n';
         this->setNumber = other.setNumber;
+        this->newNode = other.newNode;
     }
     return *this;
 }
 
 void Graph::init(){
-    init(ResourceManager::random(2,6));
+    init(ResourceManager::random(2,7));
 }
 
 void Graph::init(int x){
-    std::vector <std::string> s;
+    std::vector <std::string> s; setNumber.clear();
     for (int i = 0; i < x; ++i)s.push_back(std::to_string(randomNodeValue()));
     init(x,s);
 }
@@ -50,6 +51,7 @@ void Graph::init(int x, std::vector <std::string> s){
         listNode.push_back(std::make_shared <Node> (19.f, s[i], ResourceManager::getFont(), 
                                     textSize, backgroundColor,sf::Vector2f(leftBound + 10 + 100*i, 250.f)));
     }        
+    // std::cout << 3 << '\n';
     setNode();              
     for (int i = 0; i < s.size(); ++i)listNode[i]->changeSizeNode(CircleRad / numFrame * (numFrame-1));
 }
@@ -127,6 +129,35 @@ void Graph::removeNode(int vt){
     setNode();
 }
 
+void Graph::makeNewNode(int vtx, int value){
+    int nn = getSize()+1;
+    int hieu = abs(leftBound - (800 - (100*nn - arrowLength ) / 2));
+    leftBound = 800 - (100*nn - arrowLength ) / 2;
+    newNode = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
+                                    textSize, NewNodeColor,sf::Vector2f(leftBound + 10 + 100*vtx, 350.f));
+    newNode->setOutlineColor(NewNodeColor);
+    newNode->changeSizeNode(CircleRad / numFrame * (numFrame-1));
+    newNode->setTextColor(sf::Color::White);
+
+    std::vector <sf::Vector2f> startPos, endPos;
+    for (int i = 0; i < vtx; ++i){
+        startPos.push_back(listNode[i]->getNodePosition());
+        endPos.push_back(sf::Vector2f(listNode[i]->getNodePosition().x - hieu, listNode[i]->getNodePosition().y));
+    }
+
+    for (int i = vtx; i < getSize(); ++i){
+        startPos.push_back(listNode[i]->getNodePosition());
+        endPos.push_back(sf::Vector2f(listNode[i]->getNodePosition().x + hieu, listNode[i]->getNodePosition().y));
+    }
+
+    for (int i = 2; i < numFrame; ++i){
+        for (int j = 0; j < getSize(); ++j)listNode[j]->setPosition(ResourceManager::changePosition(startPos[j], endPos[j], ((float)i)/numFrame));
+        setNode();
+        newNode->changeSizeNode(-CircleRad/numFrame);
+        gameGlobal->runBreak();
+    }
+}
+
 void Graph::setSearchingNode(int vtx, float ratio){
     listNode[vtx]->setOutlineColor(ResourceManager::changeColor(sf::Color::Black, SearchingNodeColor, ratio));
     listNode[vtx]->setNodeColor(ResourceManager::changeColor(FirstNodeColor, SearchingNodeColor, ratio));
@@ -153,6 +184,7 @@ void Graph::removeFoundNode(int vtx, float ratio){
 }
 
 void Graph::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    if (newNode != nullptr)target.draw(*newNode);
     if (listNode.empty())return;
     for (int i = 0; i < *n; ++i)target.draw(*listNode[i]);
 }

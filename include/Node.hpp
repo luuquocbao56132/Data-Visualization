@@ -8,6 +8,7 @@ class Node;
 
 class Node : public sf::Drawable, public sf::Transformable{
 public:
+    Node();
     Node(float radius, const std::string& , const sf::Font& , float , const sf::Color& , const sf::Vector2f& );
 
     void setColor(const sf::Color& );
@@ -22,6 +23,8 @@ public:
     void setTextColor(sf::Color );
 
     void setDirectionColor(const sf::Color& , unsigned int );
+
+    void setPosition(sf::Vector2f );
 
     void setPartialColor(float );
 

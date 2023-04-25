@@ -5,6 +5,7 @@
 #include <Button.hpp>
 #include <InputBox.hpp>
 #include <Graph.hpp>
+#include <Node.hpp>
 
 class DataTypes: public sf::Drawable, public sf::Transformable{
 public:
@@ -16,8 +17,11 @@ public:
     void checkKeyInput(sf::Event& );
     virtual void checkPress(sf::Vector2f);
     virtual void resetAll();
+    void LetsSearch(int );
+    void LetsInsert(int, int);
     std::vector <std::shared_ptr<Button>> BaseButton, functionButton;
     std::vector <std::shared_ptr<InputBox>> inputBox;
+    std::shared_ptr <Node> newNode;
     Button mainButton, upSpeed, downSpeed;
     sf::Text timeText;
     // InputBox inpBox;

@@ -1,5 +1,7 @@
 #include <Node.hpp>
 
+Node::Node(){}
+
 Node::Node(float radius, const std::string& text, const sf::Font& font, float text_size, const sf::Color& color, const sf::Vector2f& position) :
     m_radius(radius),
     m_color(color),
@@ -98,6 +100,18 @@ void Node::changeSizeNode(float rad){
 
     // std::cout << "m_radius: " << m_radius <<" rad: " << rad << " charsize: " << m_text.getCharacterSize() << '\n';
 
+}
+
+void Node::setPosition(sf::Vector2f position){
+    m_position = position;
+    m_circle.setPosition(position);
+    m_text_directions[TOP].setPosition(sf::Vector2f(position.x, position.y - CircleRad - textSize));
+    m_text_directions[RIGHT].setPosition(sf::Vector2f(position.x + CircleRad + textSize, position.y));
+    m_text_directions[BOT].setPosition(sf::Vector2f(position.x, position.y + CircleRad + textSize));
+    m_text_directions[LEFT].setPosition(sf::Vector2f(position.x - CircleRad - textSize, position.y));
+    nextArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x + CircleRad + 3, position.y), 0.f);
+    prevArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x - CircleRad - 3, position.y), 0.f);
+    m_text.setPosition(m_position);
 }
 
 void Node::setArrow(){

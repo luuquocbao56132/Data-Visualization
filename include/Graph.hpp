@@ -26,12 +26,14 @@ public:
     void removeSearchingNode(int, float);
     void setFoundNode(int, float);
     void removeFoundNode(int, float);
+    void makeNewNode(int, int);
     int getValue(int );
     void setValue(int,int);
     int getSize();
     int stateGraph, numArrow;
     std::shared_ptr <int> n;
     std::vector <std::shared_ptr <Node>> listNode;
+    std::shared_ptr <Node> newNode;
     int leftBound;
     std::set <int> setNumber;
 };

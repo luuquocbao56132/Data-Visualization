@@ -13,7 +13,6 @@ public:
         const std::string& , const sf::Font& , unsigned int );
     void draw(sf::RenderTarget& , sf::RenderStates ) const override;
     void getFromFile();
-    void LetsSearch(int );
     void checkPress(sf::Vector2f ) override;
     // bool isTurn;
 };

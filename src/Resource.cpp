@@ -33,6 +33,14 @@ sf::Color ResourceManager::changeColor(sf::Color startColor, sf::Color endColor,
     sf::Color currentColor = sf::Color((int)startColor.r + (int)dr, (int)startColor.g + (int)dg, (int)startColor.b + (int)db);
     return currentColor;
 }
+
+sf::Vector2f ResourceManager::changePosition(sf::Vector2f startPos, sf::Vector2f endPos, float ratio){
+    float dx = ratio*(float)(endPos.x - startPos.x);
+    float dy = ratio*(float)(endPos.y - startPos.y);
+
+    sf::Vector2f currentPos = sf::Vector2f(startPos.x + dx, startPos.y + dy);
+    return currentPos;
+}
 // void ResourceManager::changeXtime(float x){ResourceManager::changeXtime(x);}
 
 // float ResourceManager::getXtime(){return xtime;}
