@@ -92,6 +92,26 @@ void DataTypes::LetsInsert(int vtx, int value){
     firstGraph = mainGraph;
 }
 
+void DataTypes::LetsRemove(int vtx){
+    mainGraph = firstGraph;
+    for (int i = 0; i < mainGraph.getSize(); ++i)
+        mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
+
+    for (int i = 0; i <= vtx - (vtx == 0 ? 0 : 1); ++i){
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.setSearchingNode(i, stt/numFrame);
+            gameGlobal->runBreak();
+        } 
+        if (i == vtx - (vtx == 0 ? 0 : 1))break;   
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.removeSearchingNode(i, stt/numFrame);
+            gameGlobal->runBreak();
+        }
+    }
+    mainGraph.removeNode(vtx);
+    firstGraph = mainGraph;
+}
+
 void DataTypes::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     // if (!isTurn)return;
     target.draw(mainButton); target.draw(timeText);

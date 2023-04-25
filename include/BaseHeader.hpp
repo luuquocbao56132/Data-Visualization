@@ -53,6 +53,7 @@ static sf::Color FirstNodeColor(238, 238, 238);
 static sf::Color SearchingNodeColor(255, 138, 39);
 static sf::Color FoundNodeColor(46, 187, 209);
 static sf::Color NewNodeColor(82, 188, 105);
+static sf::Color DelNodeColor(217, 81, 60);
 static sf::Vector2f inputButtonSize = sf::Vector2f(60,50);
 static int maxValue = 99;
 static int maxSize = 15;

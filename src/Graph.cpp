@@ -21,7 +21,7 @@ Graph& Graph::operator=(Graph& other) {
         this->stateGraph = other.stateGraph;
         this->init(other.getSize());
         //kich co size text thay doi nen setText trong node se gap van de
-        for (int i = 0; i < other.listNode.size(); ++i)
+        for (int i = 0; i < other.getSize(); ++i)
             this->listNode[i]->changeSizeNode(this->listNode[i]->getRad() - CircleRad),
             this->listNode[i]->setText(std::to_string(other.getValue(i))),
             this->listNode[i]->changeSizeNode(this->listNode[i]->getRad() - other.listNode[i]->getRad()),
@@ -43,7 +43,7 @@ void Graph::init(int x){
 }
 
 void Graph::init(int x, std::vector <std::string> s){
-    *n = x; listNode.clear();
+    *n = x; listNode.clear(); newNode = nullptr;
     if (!n)return;
 
     leftBound = 800 - (100*(*n) - arrowLength ) / 2;
@@ -57,7 +57,7 @@ void Graph::init(int x, std::vector <std::string> s){
 }
 
 void Graph::setValue(int vtx, int value){
-    if (vtx >= listNode.size())return;
+    if (vtx >= getSize())return;
     listNode[vtx]->setText(std::to_string(value));
 }
 
@@ -120,14 +120,75 @@ void Graph::setArrowColor(int vtx, float ratio){
     listNode[vtx]->setPartialColor(ratio);
 }
 
-void Graph::removeNode(int vt){
-    int nn = *n;
-    if (!nn)return;
-    listNode[vt] = nullptr;
-    for (int i = vt; i < nn-1; ++i)listNode[i] = listNode[i+1];
-    listNode[nn-1] = nullptr;
-    --(*n);
-    setNode();
+void Graph::removeNode(int vtx){
+    int nn = *n-1;
+    int hieu = abs(leftBound - (800 - (100*nn - arrowLength ) / 2));
+    leftBound = 800 - (100*nn - arrowLength ) / 2;
+    std::vector <sf::Vector2f> startPos, endPos;
+    for (int i = 0; i < vtx; ++i){
+        startPos.push_back(listNode[i]->getNodePosition());
+        endPos.push_back(sf::Vector2f(listNode[i]->getNodePosition().x + hieu, listNode[i]->getNodePosition().y));
+    }
+    for (int i = vtx+1; i < getSize(); ++i){
+        startPos.push_back(listNode[i]->getNodePosition());
+        endPos.push_back(sf::Vector2f(listNode[i]->getNodePosition().x - hieu, listNode[i]->getNodePosition().y));
+    }
+
+    if (!vtx){
+        if (getSize() > 2)listNode[1]->setTextBot("head"), listNode[0]->setTextBot("tmp");
+        gameGlobal->runBreak();
+        for (int i = 1; i < numFrame; ++i){
+            listNode[0]->changeSizeNode(CircleRad / numFrame);
+            gameGlobal->runBreak();
+        }
+        for (int i = 0; i < nn; ++i)listNode[i] = listNode[i+1]; listNode[nn] = nullptr;
+        *n = nn; setNode();
+        for (int i = 1; i < numFrame; ++i){
+            for (int j = 0; j < getSize(); ++j)listNode[j]->setPosition(ResourceManager::changePosition(startPos[j], endPos[j], ((float)i)/numFrame));
+            setNode();
+            gameGlobal->runBreak();
+        }
+        return;
+    }
+
+    sf::Vector2f startPosNew = listNode[vtx]->getNodePosition();
+    sf::Vector2f endPosNew = sf::Vector2f(listNode[vtx]->getNodePosition().x, 350.f);
+
+    //tmp = node[vtx].next;
+    for (int i = 1; i <= numFrame; ++i){
+        listNode[vtx]->setPosition(ResourceManager::changePosition(startPosNew, endPosNew, i/numFrame));
+        setDelNode(vtx,i/numFrame);
+        setNode();
+        gameGlobal->runBreak();
+    }
+    listNode[vtx]->setTextBot("tmp");
+    
+    //node[vtx].next = tmp.next;
+    std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(vtx), ResourceManager::getFont(), 
+                                    textSize, NewNodeColor,sf::Vector2f(listNode[vtx]->getNodePosition()));
+    listNode[vtx-1]->nextNode = res; listNode[vtx-1]->setArrow();
+    startPosNew = listNode[vtx]->getNodePosition();
+    if (vtx == nn)endPosNew = listNode[vtx-1]->getNodePosition(); 
+        else endPosNew = listNode[vtx+1]->getNodePosition();
+    for (int i = 1; i <= numFrame; ++i){
+        res->setPosition(ResourceManager::changePosition(startPosNew, endPosNew, i/numFrame));
+        listNode[vtx-1]->setArrow();
+        gameGlobal->runBreak();
+    }
+
+    //del(tmp)
+    newNode = listNode[vtx];
+    for (int i = vtx; i < nn; ++i)listNode[i] = listNode[i+1]; listNode[nn] = nullptr;
+    *n = nn; setNode();
+    for (int i = 1; i < numFrame; ++i){
+        for (int j = 0; j < getSize(); ++j)listNode[j]->setPosition(ResourceManager::changePosition(startPos[j], endPos[j], ((float)i)/numFrame));
+        newNode->changeSizeNode(CircleRad/numFrame);        
+        setNode();
+        gameGlobal->runBreak();
+    }
+    newNode = nullptr;
+    gameGlobal->runBreak();
+    std::cout << 1 << '\n'; 
 }
 
 void Graph::makeNewNode(int vtx, int value){
@@ -187,7 +248,7 @@ void Graph::makeNewNode(int vtx, int value){
     sf::Vector2f startPosNew = newNode->getNodePosition();
     sf::Vector2f endPosNew = sf::Vector2f(newNode->getNodePosition().x, 250.f);
 
-    listNode.push_back(std::make_shared <Node>());
+    if (getSize() == listNode.size())listNode.push_back(std::make_shared <Node>());
     *n = nn;
     for (int i = getSize() - 1; i > vtx; --i)listNode[i] = listNode[i-1];
     listNode[vtx] = newNode;
@@ -197,6 +258,7 @@ void Graph::makeNewNode(int vtx, int value){
         setNode();
         gameGlobal->runBreak();
     }
+    newNode = nullptr;
 }
 
 void Graph::setSearchingNode(int vtx, float ratio){
@@ -214,6 +276,12 @@ void Graph::removeSearchingNode(int vtx, float ratio){
 void Graph::setFoundNode(int vtx, float ratio){
     listNode[vtx]->setOutlineColor(ResourceManager::changeColor(sf::Color::Black, FoundNodeColor, ratio));
     listNode[vtx]->setNodeColor(ResourceManager::changeColor(FirstNodeColor, FoundNodeColor, ratio));
+    listNode[vtx]->setTextColor(ResourceManager::changeColor(textColorStart, textColorEnd, ratio));
+}
+
+void Graph::setDelNode(int vtx, float ratio){
+    listNode[vtx]->setOutlineColor(ResourceManager::changeColor(sf::Color::Black, DelNodeColor, ratio));
+    listNode[vtx]->setNodeColor(ResourceManager::changeColor(FirstNodeColor, DelNodeColor, ratio));
     listNode[vtx]->setTextColor(ResourceManager::changeColor(textColorStart, textColorEnd, ratio));
 }
 

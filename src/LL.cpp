@@ -55,7 +55,7 @@ LL::LL(const sf::Vector2f& position, const sf::Vector2f& size,
                             Insert->minButton[2]->getPosition().y + Insert->minButton[2]->getSize().y + 5), 
                         inputButtonSize, "v = ", 1));
 
-            Remove->createMinButton({"i = 0 (Head)", "i = N-1 (tail)", "i in {1..N-2}"},
+            Remove->createMinButton({"i = 0 (Head)", "i = N-1 (tail)", "i in {1..N-1}"},
                                     {0,0,1});
             Remove->minButton[2]->inputButton.push_back(std::make_shared <InputBox>(
                         sf::Vector2f(Remove->minButton[2]->getPosition().x + 35, 
@@ -148,24 +148,28 @@ void LL::checkPress(sf::Vector2f mousePos){
                                 inputBox[j]->checkPress(mousePos);
                                 if (i < 2 && inputBox[j]->Go->checkPress(mousePos)){
                                     if (mainGraph.getSize() == maxSize)break;
-                                    if (i == 0)LetsInsert(0,inputBox[j]->getValue());
-                                    if (i == 1)LetsInsert(mainGraph.getSize(),inputBox[j]->getValue());
+                                    if (i == 0)LetsInsert(0,inputBox[j]->getValue()), inputBox.clear();
+                                    if (i == 1)LetsInsert(mainGraph.getSize(),inputBox[j]->getValue()), inputBox.clear();
                                 }
                                 if (i == 2 && j == 1 && inputBox[j]->Go->checkPress(mousePos) && mainGraph.getSize() < maxSize && mainGraph.getSize())
-                                    LetsInsert(inputBox[j-1]->getValue(),inputBox[j]->getValue());
+                                    LetsInsert(inputBox[j-1]->getValue(),inputBox[j]->getValue()), inputBox.clear();
                             } else break;
                         }
                 }
                 break;
             case REMOVE:
-                if (res->minButton[0]->checkPress(mousePos))mainGraph.removeNode(0), inputBox.clear();
-                if (res->minButton[1]->checkPress(mousePos))mainGraph.removeNode(mainGraph.getSize()-1), inputBox.clear();;
-                if (res->minButton[2]->checkPress(mousePos)){
+                if (mainGraph.getSize() == 0)break;
+                if (res->minButton[0]->checkPress(mousePos))LetsRemove(0), inputBox.clear();
+                if (res->minButton[1]->checkPress(mousePos))LetsRemove(mainGraph.getSize()-1), inputBox.clear();
+                if (res->minButton[2]->checkPress(mousePos) && mainGraph.getSize() > 2){
                     inputBox = res->minButton[2]->inputButton;  
                     for (auto i : inputBox)i->resetValue();
                 }
-                if (!inputBox.empty() && inputBox[0] == res->minButton[2]->inputButton[0])
+                if (!inputBox.empty() && inputBox[0] == res->minButton[2]->inputButton[0]){
                     inputBox[0]->checkPress(mousePos);
+                    if (inputBox[0]->Go->checkPress(mousePos) && inputBox[0]->getValue() > 0 && inputBox[0]->getValue() < mainGraph.getSize())
+                        LetsRemove(inputBox[0]->getValue()), inputBox.clear();
+                }
                 break;
         }
     }
