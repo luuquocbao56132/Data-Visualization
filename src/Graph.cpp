@@ -88,6 +88,7 @@ int Graph::getSize(){
 
 void Graph::setNode(){
     int nn = *n;
+    // std::cout << nn << '\n';
     if (!nn){listNode.clear(); return;}
     if (stateGraph != ARRAY){
         for (int i = 0; i < nn-1; ++i)listNode[i]->nextNode = listNode[i+1];
@@ -154,6 +155,46 @@ void Graph::makeNewNode(int vtx, int value){
         for (int j = 0; j < getSize(); ++j)listNode[j]->setPosition(ResourceManager::changePosition(startPos[j], endPos[j], ((float)i)/numFrame));
         setNode();
         newNode->changeSizeNode(-CircleRad/numFrame);
+        gameGlobal->runBreak();
+    }
+
+     if (vtx < getSize()){
+        std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
+                                    textSize, NewNodeColor,sf::Vector2f(newNode->getNodePosition().x, 350.f));
+        newNode->nextNode = res; newNode->setArrow();
+
+        for (int i = 1; i <= numFrame; ++i){
+            res->setPosition(ResourceManager::changePosition(newNode->getNodePosition(), listNode[vtx]->getNodePosition(), i/numFrame));
+            newNode->setArrow();
+            gameGlobal->runBreak();
+        }
+        newNode->nextNode = listNode[vtx];
+    }
+
+    if (vtx-1 >= 0){
+        std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
+                                    textSize, NewNodeColor,sf::Vector2f(listNode[vtx-1]->getNodePosition()));
+        listNode[vtx-1]->nextNode = res; listNode[vtx-1]->setArrow();
+
+        for (int i = 1; i <= numFrame; ++i){
+            res->setPosition(ResourceManager::changePosition(listNode[vtx-1]->getNodePosition(), newNode->getNodePosition(), i/numFrame));
+            listNode[vtx-1]->setArrow();
+            gameGlobal->runBreak();
+        }
+        listNode[vtx-1]->nextNode = newNode;
+    }
+
+    sf::Vector2f startPosNew = newNode->getNodePosition();
+    sf::Vector2f endPosNew = sf::Vector2f(newNode->getNodePosition().x, 250.f);
+
+    listNode.push_back(std::make_shared <Node>());
+    *n = nn;
+    for (int i = getSize() - 1; i > vtx; --i)listNode[i] = listNode[i-1];
+    listNode[vtx] = newNode;
+
+    for (int i = 1; i <= numFrame; ++i){
+        newNode->setPosition(ResourceManager::changePosition(startPosNew, endPosNew, i/numFrame));
+        setNode();
         gameGlobal->runBreak();
     }
 }

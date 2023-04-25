@@ -89,41 +89,7 @@ void DataTypes::LetsInsert(int vtx, int value){
         }
 
     mainGraph.makeNewNode(vtx, value);
-
-    if (vtx < mainGraph.getSize()){
-        std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
-                                    textSize, NewNodeColor,sf::Vector2f(mainGraph.newNode->getNodePosition().x, 350.f));
-        mainGraph.newNode->nextNode = res; mainGraph.newNode->setArrow();
-
-        for (int i = 1; i <= numFrame; ++i){
-            res->setPosition(ResourceManager::changePosition(mainGraph.newNode->getNodePosition(), mainGraph.listNode[vtx]->getNodePosition(), i/numFrame));
-            mainGraph.newNode->setArrow();
-            gameGlobal->runBreak();
-        }
-        mainGraph.newNode->nextNode = mainGraph.listNode[vtx];
-    }
-
-    if (vtx-1 >= 0){
-        std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
-                                    textSize, NewNodeColor,sf::Vector2f(mainGraph.listNode[vtx-1]->getNodePosition()));
-        mainGraph.listNode[vtx-1]->nextNode = res; mainGraph.listNode[vtx-1]->setArrow();
-
-        for (int i = 1; i <= numFrame; ++i){
-            res->setPosition(ResourceManager::changePosition(mainGraph.listNode[vtx-1]->getNodePosition(), mainGraph.newNode->getNodePosition(), i/numFrame));
-            mainGraph.listNode[vtx-1]->setArrow();
-            gameGlobal->runBreak();
-        }
-        mainGraph.listNode[vtx-1]->nextNode = mainGraph.newNode;
-    }
-
-    sf::Vector2f startPos = mainGraph.newNode->getNodePosition();
-    sf::Vector2f endPos = sf::Vector2f(mainGraph.newNode->getNodePosition().x, 250.f);
-    for (int i = 1; i <= numFrame; ++i){
-        mainGraph.newNode->setPosition(ResourceManager::changePosition(startPos, endPos, i/numFrame));
-        mainGraph.newNode->setArrow(); 
-        if (vtx - 1 >= 0)mainGraph.listNode[vtx-1]->setArrow();
-        gameGlobal->runBreak();
-    }
+    firstGraph = mainGraph;
 }
 
 void DataTypes::draw(sf::RenderTarget& target, sf::RenderStates states) const{
