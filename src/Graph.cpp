@@ -58,7 +58,9 @@ void Graph::init(int x, std::vector <std::string> s){
 
 void Graph::setValue(int vtx, int value){
     if (vtx >= getSize())return;
+    setNumber.erase(listNode[vtx]->getValue());
     listNode[vtx]->setText(std::to_string(value));
+    setNumber.insert(value);
 }
 
 bool Graph::checkSameNum(int x){
@@ -186,6 +188,7 @@ void Graph::removeNode(int vtx){
         setNode();
         gameGlobal->runBreak();
     }
+    setNumber.erase(newNode->getValue());
     newNode = nullptr;
     gameGlobal->runBreak();
     std::cout << 1 << '\n'; 
@@ -258,6 +261,7 @@ void Graph::makeNewNode(int vtx, int value){
         setNode();
         gameGlobal->runBreak();
     }
+    setNumber.insert(value);
     newNode = nullptr;
 }
 

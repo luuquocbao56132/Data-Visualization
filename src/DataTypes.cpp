@@ -112,6 +112,13 @@ void DataTypes::LetsRemove(int vtx){
     firstGraph = mainGraph;
 }
 
+void DataTypes::LetsUpdate(int vtx, int value){
+    LetsSearch(mainGraph.listNode[vtx]->getValue());
+    mainGraph.setValue(vtx, value);
+    gameGlobal->runBreak();
+    firstGraph = mainGraph;
+}
+
 void DataTypes::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     // if (!isTurn)return;
     target.draw(mainButton); target.draw(timeText);

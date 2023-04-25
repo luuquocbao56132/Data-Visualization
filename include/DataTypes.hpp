@@ -20,6 +20,7 @@ public:
     void LetsSearch(int );
     void LetsInsert(int, int);
     void LetsRemove(int);
+    void LetsUpdate(int, int);
     std::vector <std::shared_ptr<Button>> BaseButton, functionButton;
     std::vector <std::shared_ptr<InputBox>> inputBox;
     std::shared_ptr <Node> newNode;

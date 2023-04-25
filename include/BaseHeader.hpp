@@ -28,7 +28,8 @@ enum Function{
     CREATE,
     SEARCH,
     INSERT,
-    REMOVE
+    REMOVE,
+    UPDATE
 };
 
 enum AroundNode{

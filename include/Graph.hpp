@@ -19,14 +19,17 @@ public:
     bool checkSameNum(int );
     int randomNodeValue();
     void draw(sf::RenderTarget& , sf::RenderStates ) const override;
+
     void removeNode(int );
     void setNodeColor(int, sf::Color);
     void setArrowColor(int, float);
+
     void setSearchingNode(int, float);
     void setDelNode(int, float);
     void removeSearchingNode(int, float);
     void setFoundNode(int, float);
     void removeFoundNode(int, float);
+    
     void makeNewNode(int, int);
     int getValue(int );
     void setValue(int,int);
