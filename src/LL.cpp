@@ -79,6 +79,89 @@ LL::LL(const sf::Vector2f& position, const sf::Vector2f& size,
             firstGraph = mainGraph;
         }
 
+void LL::LetsSearch(int X){
+    mainGraph = firstGraph; mainGraph.resetStep();
+    if (mainGraph.getSize() == 0)return;
+
+    // std::cout << "List rad of search graph: \n";
+    for (int i = 0; i < mainGraph.getSize(); ++i)
+        mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
+        // std::cout << mainGraph.listNode[i]->getRad() << " "; std::cout << '\n';
+
+    // std::cout << "value to find: " << X << '\n';
+    int flag = 100;
+    // std::cout << "numFrame: " << numFrame << '\n';
+    for (int vtx = 0; vtx < mainGraph.getSize(); ++vtx){
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.setSearchingNode(vtx, stt/numFrame);
+            gameGlobal->runBreak();
+        }
+        mainGraph.saveStep();
+        if (mainGraph.getValue(vtx) == X){flag = vtx; break;}
+        
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.removeSearchingNode(vtx, stt/numFrame);
+            gameGlobal->runBreak();
+        }
+        mainGraph.saveStep();
+    }
+}
+
+void LL::LetsInsert(int vtx, int value){
+    mainGraph = firstGraph; mainGraph.resetStep();
+    if (mainGraph.getSize() == maxSize)return;
+    for (int i = 0; i < mainGraph.getSize(); ++i)
+        mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
+
+    if (vtx != mainGraph.getSize())
+    for (int i = 0; i <= vtx; ++i){
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.setSearchingNode(i, stt/numFrame);
+            gameGlobal->runBreak();
+        } 
+        if (i == vtx)break;   
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.removeSearchingNode(i, stt/numFrame);
+            gameGlobal->runBreak();
+        }
+    }
+    if (vtx && vtx < mainGraph.getSize())
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.setFoundNode(vtx, stt/numFrame);
+            gameGlobal->runBreak();
+        }
+
+    mainGraph.makeNewNode(vtx, value);
+    firstGraph = mainGraph;
+}
+
+void LL::LetsRemove(int vtx){
+    mainGraph = firstGraph; mainGraph.resetStep();
+    for (int i = 0; i < mainGraph.getSize(); ++i)
+        mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
+
+    for (int i = 0; i <= vtx - (vtx == 0 ? 0 : 1); ++i){
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.setSearchingNode(i, stt/numFrame);
+            gameGlobal->runBreak();
+        } 
+        if (i == vtx - (vtx == 0 ? 0 : 1))break;   
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.removeSearchingNode(i, stt/numFrame);
+            gameGlobal->runBreak();
+        }
+    }
+    mainGraph.removeNode(vtx);
+    firstGraph = mainGraph;
+}
+
+void LL::LetsUpdate(int vtx, int value){
+    LetsSearch(mainGraph.listNode[vtx]->getValue());
+    mainGraph.setValue(vtx, value); mainGraph.saveStep();
+    gameGlobal->runBreak();
+    firstGraph = mainGraph;
+}
+
 void LL::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     DataTypes::draw(target, states);
     target.draw(mainGraph);
