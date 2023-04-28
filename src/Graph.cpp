@@ -37,12 +37,12 @@ void Graph::init(){
 }
 
 void Graph::init(int x){
-    std::vector <std::string> s; setNumber.clear();
+    LinkedList <std::string> s; setNumber.clear();
     for (int i = 0; i < x; ++i)s.push_back(std::to_string(randomNodeValue()));
     init(x,s);
 }
 
-void Graph::init(int x, std::vector <std::string> s){
+void Graph::init(int x, LinkedList <std::string> s){
     *n = x; listNode.clear(); newNode = nullptr; resetStep(); nowStep = -1;
     if (!n)return;
 
@@ -126,7 +126,7 @@ void Graph::removeNode(int vtx){
     int nn = *n-1;
     int hieu = abs(leftBound - (800 - (100*nn - arrowLength ) / 2));
     leftBound = 800 - (100*nn - arrowLength ) / 2;
-    std::vector <sf::Vector2f> startPos, endPos;
+    LinkedList <sf::Vector2f> startPos, endPos;
     for (int i = 0; i < vtx; ++i){
         startPos.push_back(listNode[i]->getNodePosition());
         endPos.push_back(sf::Vector2f(listNode[i]->getNodePosition().x + hieu, listNode[i]->getNodePosition().y));
@@ -204,7 +204,7 @@ void Graph::makeNewNode(int vtx, int value){
     newNode->changeSizeNode(CircleRad / numFrame * (numFrame-1));
     newNode->setTextColor(sf::Color::White);
 
-    std::vector <sf::Vector2f> startPos, endPos;
+    LinkedList <sf::Vector2f> startPos, endPos;
     for (int i = 0; i < vtx; ++i){
         startPos.push_back(listNode[i]->getNodePosition());
         endPos.push_back(sf::Vector2f(listNode[i]->getNodePosition().x - hieu, listNode[i]->getNodePosition().y));
@@ -278,7 +278,7 @@ void Graph::getStep(int dx){
 }
 
 void Graph::saveStep(){
-    std::vector <Node> res;
+    LinkedList <Node> res;
     for (int i = 0; i < listNode.size(); ++i)res.push_back(*listNode[i]);
     stepNode.push_back(res); ++nowStep;
 }

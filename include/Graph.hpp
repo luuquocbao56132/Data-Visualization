@@ -11,7 +11,7 @@ public:
     Graph();
     Graph(int);
     Graph& operator=(Graph& other);
-    void init(int, std::vector <std::string> );
+    void init(int, LinkedList <std::string> );
     void init(int );
     void initnodraw(int );
     void init();
@@ -41,9 +41,9 @@ public:
 
     int stateGraph, numArrow, nowStep;
     std::shared_ptr <int> n;
-    std::vector <std::shared_ptr <Node>> listNode;
-    std::vector < std::vector <Node> > stepNode;
-    std::vector <std::string> stepString;
+    LinkedList <std::shared_ptr <Node>> listNode;
+    LinkedList < LinkedList <Node> > stepNode;
+    LinkedList <std::string> stepString;
     std::shared_ptr <Node> newNode;
     int leftBound;
     std::set <int> setNumber;

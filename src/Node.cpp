@@ -111,6 +111,7 @@ void Node::setPosition(sf::Vector2f position){
     m_text_directions[LEFT].setPosition(sf::Vector2f(position.x - CircleRad - textSize, position.y));
     nextArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x + CircleRad + 3, position.y), 0.f);
     prevArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x - CircleRad - 3, position.y), 0.f);
+    prevArrow.setRotation(180);
     m_text.setPosition(m_position);
 }
 

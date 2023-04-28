@@ -1,6 +1,6 @@
 SHELL = powershell.exe
 
-CXXFLAGS = -g
+CXXFLAGS = -g -m64
 
 INC_DIRS = \
 	"../SFML/include" \

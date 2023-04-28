@@ -17,8 +17,8 @@ public:
     void checkKeyInput(sf::Event& );
     virtual void checkPress(sf::Vector2f);
     virtual void resetAll();
-    std::vector <std::shared_ptr<Button>> BaseButton, functionButton;
-    std::vector <std::shared_ptr<InputBox>> inputBox;
+    LinkedList <std::shared_ptr<Button>> BaseButton, functionButton;
+    LinkedList <std::shared_ptr<InputBox>> inputBox;
     std::shared_ptr <Node> newNode;
     Button mainButton, upSpeed, downSpeed, previousButton, nextButton;
     sf::Text timeText;

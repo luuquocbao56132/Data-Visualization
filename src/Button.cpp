@@ -77,7 +77,10 @@ sf::FloatRect Button::getGlobalBounds() const {
     return getTransform().transformRect(m_rect.getGlobalBounds());
 }
 
-void Button::createMinButton(std::vector <std::string> Name, std::vector <int> numInput){
+void Button::createMinButton(std::initializer_list<std::string> names, std::initializer_list<int> numInputs){
+    LinkedList <std::string> Name(names);
+    LinkedList <int> numInput(numInputs);
+
     sf::Vector2f prevPos = getPosition();
     sf::Vector2f prevSize = getSize();
 

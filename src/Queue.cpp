@@ -101,7 +101,7 @@ void Queue::getFromFile(){
     }
 
     std::string c;
-    std::vector <std::string> list;
+    LinkedList <std::string> list;
     for (int i = 0; i < line.size(); ++i){
         if (line[i] >= '0' && line[i] <= '9')c += line[i]; else
         if (line[i] == ';'){

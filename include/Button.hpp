@@ -31,7 +31,7 @@ public:
 
     sf::FloatRect getGlobalBounds() const ;
 
-    void createMinButton(std::vector <std::string>, std::vector <int>);
+    void createMinButton(std::initializer_list<std::string> , std::initializer_list<int> );
 
 // private:
     void centerOrigin(const sf::Vector2f& );
@@ -45,8 +45,8 @@ public:
     sf::Vector2f m_size;
     sf::RectangleShape m_rect;
     sf::Text m_text;
-    std::vector < std::shared_ptr<Button> > minButton;
-    std::vector < std::shared_ptr<InputBox> > inputButton;
+    LinkedList < std::shared_ptr<Button> > minButton;
+    LinkedList < std::shared_ptr<InputBox> > inputButton;
     int isInput;
     bool m_isHovered, onInput;
 };
