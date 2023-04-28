@@ -27,9 +27,13 @@ enum Direction{
 enum Function{
     CREATE,
     SEARCH,
+    PEEK = SEARCH,
     INSERT,
+    PUSH = INSERT,
     REMOVE,
-    UPDATE
+    POP = REMOVE,
+    UPDATE,
+    CLEAR = UPDATE
 };
 
 enum AroundNode{

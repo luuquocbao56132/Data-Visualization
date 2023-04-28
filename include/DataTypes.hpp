@@ -17,14 +17,10 @@ public:
     void checkKeyInput(sf::Event& );
     virtual void checkPress(sf::Vector2f);
     virtual void resetAll();
-    void LetsSearch(int );
-    void LetsInsert(int, int);
-    void LetsRemove(int);
-    void LetsUpdate(int, int);
     std::vector <std::shared_ptr<Button>> BaseButton, functionButton;
     std::vector <std::shared_ptr<InputBox>> inputBox;
     std::shared_ptr <Node> newNode;
-    Button mainButton, upSpeed, downSpeed;
+    Button mainButton, upSpeed, downSpeed, previousButton, nextButton;
     sf::Text timeText;
     // InputBox inpBox;
     int buttonState, typeGraph;

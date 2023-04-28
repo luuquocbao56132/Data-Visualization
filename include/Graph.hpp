@@ -29,14 +29,21 @@ public:
     void removeSearchingNode(int, float);
     void setFoundNode(int, float);
     void removeFoundNode(int, float);
-    
+
     void makeNewNode(int, int);
     int getValue(int );
     void setValue(int,int);
     int getSize();
-    int stateGraph, numArrow;
+
+    void resetStep();
+    void getStep(int );
+    void saveStep();
+
+    int stateGraph, numArrow, nowStep;
     std::shared_ptr <int> n;
     std::vector <std::shared_ptr <Node>> listNode;
+    std::vector < std::vector <Node> > stepNode;
+    std::vector <std::string> stepString;
     std::shared_ptr <Node> newNode;
     int leftBound;
     std::set <int> setNumber;

@@ -43,7 +43,7 @@ void Graph::init(int x){
 }
 
 void Graph::init(int x, std::vector <std::string> s){
-    *n = x; listNode.clear(); newNode = nullptr;
+    *n = x; listNode.clear(); newNode = nullptr; resetStep(); nowStep = -1;
     if (!n)return;
 
     leftBound = 800 - (100*(*n) - arrowLength ) / 2;
@@ -263,6 +263,24 @@ void Graph::makeNewNode(int vtx, int value){
     }
     setNumber.insert(value);
     newNode = nullptr;
+}
+
+void Graph::resetStep(){
+    stepNode.clear(); stepString.clear(); nowStep = -1;
+}
+
+void Graph::getStep(int dx){
+    if (stepNode.empty())return;
+    if (nowStep + dx >= stepNode.size() || nowStep + dx < 0)return;
+    nowStep += dx;
+    for (int i = 0; i < listNode.size(); ++i)
+        *listNode[i] = stepNode[nowStep][i];
+}
+
+void Graph::saveStep(){
+    std::vector <Node> res;
+    for (int i = 0; i < listNode.size(); ++i)res.push_back(*listNode[i]);
+    stepNode.push_back(res); ++nowStep;
 }
 
 void Graph::setSearchingNode(int vtx, float ratio){
