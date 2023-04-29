@@ -63,6 +63,8 @@ void Graph::setValue(int vtx, int value){
     setNumber.insert(value);
 }
 
+void Graph::setSize(int nn){*n = nn;}
+
 bool Graph::checkSameNum(int x){
     if (setNumber.find(x) != setNumber.end())return 1;
     return 0;
@@ -170,11 +172,11 @@ void Graph::removeNode(int vtx){
 
     // del = listNode[vtx]
     highlight.setLine(5);
-    listNode[vtx]->setTextBot("del");
     for (int i = 1; i <= numFrame; ++i){
         listNode[vtx]->setPosition(ResourceManager::changePosition(startPosNew, endPosNew, i/numFrame));
         setDelNode(vtx,i/numFrame);
         setNode();
+        listNode[vtx]->setTextBot("del");
         gameGlobal->runBreak();
     }
     if (vtx < nn){
@@ -194,16 +196,21 @@ void Graph::removeNode(int vtx){
     highlight.setLine(6);
     std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(vtx), ResourceManager::getFont(), 
                                     textSize, NewNodeColor,sf::Vector2f(listNode[vtx]->getNodePosition()));
-    
-    if (typeGraph >= LINKEDLIST)listNode[vtx-1]->nextNode = res; listNode[vtx-1]->setArrow();
-    if (typeGraph == DOUBLYLINKEDLIST)res->prevNode = listNode[vtx-1]; res->setArrow();
+    std::shared_ptr <Node> res1 = std::make_shared <Node> (CircleRad, std::to_string(vtx), ResourceManager::getFont(), 
+                                    textSize, NewNodeColor,sf::Vector2f(listNode[vtx]->getNodePosition()));
+    if (typeGraph == DOUBLYLINKEDLIST)listNode[vtx+1]->prevNode = res1, listNode[vtx+1]->setArrow();
+    if (typeGraph >= LINKEDLIST)listNode[vtx-1]->nextNode = res, listNode[vtx-1]->setArrow();
 
+    // std::cout << 1 << std::endl; Sleep(2000);
     startPosNew = listNode[vtx]->getNodePosition();
     if (vtx == nn)endPosNew = listNode[vtx-1]->getNodePosition(); 
         else endPosNew = listNode[vtx+1]->getNodePosition();
     for (int i = 1; i <= numFrame; ++i){
         res->setPosition(ResourceManager::changePosition(startPosNew, endPosNew, i/numFrame));
-        listNode[vtx-1]->setArrow(); res->setArrow();
+        if (typeGraph == DOUBLYLINKEDLIST)
+            res1->setPosition(ResourceManager::changePosition(startPosNew, listNode[vtx-1]->getNodePosition(), i/numFrame));
+        listNode[vtx-1]->setArrow(); 
+        if (typeGraph == DOUBLYLINKEDLIST)listNode[vtx+1]->setArrow(); 
         gameGlobal->runBreak();
     }
     saveStep();
@@ -256,6 +263,7 @@ void Graph::makeNewNode(int vtx, int value){
     }
     saveStep();
 
+    //newNode.next = aft, aft.prev = newNode
     if (vtx < getSize()){
         std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
                                     textSize, NewNodeColor,sf::Vector2f(newNode->getNodePosition().x, 350.f));
@@ -268,21 +276,44 @@ void Graph::makeNewNode(int vtx, int value){
             gameGlobal->runBreak();
         }
         newNode->nextNode = listNode[vtx];
-        saveStep();
+        if (typeGraph != DOUBLYLINKEDLIST)saveStep();
+
+        if (typeGraph == DOUBLYLINKEDLIST){
+            res = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
+                                    textSize, NewNodeColor,sf::Vector2f(listNode[vtx]->getNodePosition()));
+            listNode[vtx]->prevNode = res; listNode[vtx]->setArrow();
+
+            if (vtx == 0)highlight.setLine(3);
+            for (int i = 1; i <= numFrame; ++i){
+                res->setPosition(ResourceManager::changePosition(listNode[vtx]->getNodePosition(), newNode->getNodePosition(), i/numFrame));
+                listNode[vtx]->setArrow();
+                gameGlobal->runBreak();
+            }
+            listNode[vtx]->prevNode = newNode;
+            saveStep();
+        }
     }
 
+    //pre.next = newNode, newNode.prev = pre
     if (vtx-1 >= 0){
         std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
                                     textSize, NewNodeColor,sf::Vector2f(listNode[vtx-1]->getNodePosition()));
         listNode[vtx-1]->nextNode = res; listNode[vtx-1]->setArrow();
+        
+        std::shared_ptr <Node> res1 = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
+                                    textSize, NewNodeColor,sf::Vector2f(newNode->getNodePosition().x, 350.f));
+        if (typeGraph == DOUBLYLINKEDLIST)newNode->prevNode = res1; newNode->setArrow();
 
         if (vtx == getSize())highlight.setLine(2); else highlight.setLine(7);
         for (int i = 1; i <= numFrame; ++i){
             res->setPosition(ResourceManager::changePosition(listNode[vtx-1]->getNodePosition(), newNode->getNodePosition(), i/numFrame));
+            res1->setPosition(ResourceManager::changePosition(newNode->getNodePosition(), listNode[vtx-1]->getNodePosition(), i/numFrame));
             listNode[vtx-1]->setArrow();
+            if (typeGraph == DOUBLYLINKEDLIST)newNode->setArrow();
             gameGlobal->runBreak();
         }
         listNode[vtx-1]->nextNode = newNode;
+        if (typeGraph == DOUBLYLINKEDLIST)newNode->prevNode = listNode[vtx-1];
         saveStep();
     }
 
@@ -294,7 +325,10 @@ void Graph::makeNewNode(int vtx, int value){
     for (int i = getSize() - 1; i > vtx; --i)listNode[i] = listNode[i-1];
     listNode[vtx] = newNode;
 
-    if (vtx == 0 || vtx == getSize()-1)highlight.setLine(3);
+    if (vtx == 0 || vtx == getSize()-1){
+        if (typeGraph == DOUBLYLINKEDLIST && !vtx)highlight.setLine(4);
+            else highlight.setLine(3);
+    }
     for (int i = 1; i <= numFrame; ++i){
         newNode->setPosition(ResourceManager::changePosition(startPosNew, endPosNew, i/numFrame));
         setNode();

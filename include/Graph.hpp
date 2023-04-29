@@ -35,6 +35,7 @@ public:
     int getValue(int );
     void setValue(int,int);
     int getSize();
+    void setSize(int);
 
     void resetStep();
     void getStep(int );
