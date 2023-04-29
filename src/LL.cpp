@@ -81,62 +81,108 @@ LL::LL(const sf::Vector2f& position, const sf::Vector2f& size,
 
 void LL::LetsSearch(int X){
     mainGraph = firstGraph; mainGraph.resetStep();
-    if (mainGraph.getSize() == 0)return;
+    mainGraph.highlight.addImage("./Image/LL_Search.png"); mainGraph.highlight.setHL(1);
+    if (mainGraph.getSize() == 0){
+        mainGraph.highlight.setLine(1);
+        return;
+    }
 
     // std::cout << "List rad of search graph: \n";
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
-        // std::cout << mainGraph.listNode[i]->getRad() << " "; std::cout << '\n';
 
-    // std::cout << "value to find: " << X << '\n';
     int flag = 100;
-    // std::cout << "numFrame: " << numFrame << '\n';
-    for (int vtx = 0; vtx < mainGraph.getSize(); ++vtx){
+    for (int stt = 1; stt <= numFrame; ++stt){
+        mainGraph.setSearchingNode(0, stt/numFrame);
+        gameGlobal->runBreak();
+    }
+    mainGraph.highlight.setLine(2);
+    mainGraph.saveStep();
+    if (mainGraph.getValue(0) == X){
+        mainGraph.highlight.setLine(6);
+        mainGraph.saveStep();
+        return;
+    }
+
+    for (int vtx = 1; vtx < mainGraph.getSize(); ++vtx){
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.removeSearchingNode(vtx-1, stt/numFrame);
+            gameGlobal->runBreak();
+        }
+        mainGraph.highlight.setLine(3);
+        mainGraph.saveStep();
+
         for (int stt = 1; stt <= numFrame; ++stt){
             mainGraph.setSearchingNode(vtx, stt/numFrame);
             gameGlobal->runBreak();
         }
+        mainGraph.highlight.setLine(4);
         mainGraph.saveStep();
-        if (mainGraph.getValue(vtx) == X){flag = vtx; break;}
-        
-        for (int stt = 1; stt <= numFrame; ++stt){
-            mainGraph.removeSearchingNode(vtx, stt/numFrame);
-            gameGlobal->runBreak();
+
+        if (mainGraph.getValue(vtx) == X){
+            flag = vtx; 
+            mainGraph.highlight.setLine(6);
+            mainGraph.saveStep();
+            return;
         }
-        mainGraph.saveStep();
     }
+
+    for (int stt = 1; stt <= numFrame; ++stt){
+        mainGraph.removeSearchingNode(mainGraph.getSize()-1, stt/numFrame);
+        gameGlobal->runBreak();
+    }
+    mainGraph.highlight.setLine(5); mainGraph.saveStep();
 }
 
 void LL::LetsInsert(int vtx, int value){
     mainGraph = firstGraph; mainGraph.resetStep();
     if (mainGraph.getSize() == maxSize)return;
+    if (vtx == 0)mainGraph.highlight.addImage("./Image/LL_Insert0.png"); else 
+    if (vtx == mainGraph.getSize())mainGraph.highlight.addImage("./Image/LL_InsertN.png"); else
+        mainGraph.highlight.addImage("./Image/LL_InsertMid.png"); 
+    mainGraph.highlight.setHL(1);
+    
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
-
-    if (vtx != mainGraph.getSize())
-    for (int i = 0; i <= vtx; ++i){
+    
+    if (vtx != mainGraph.getSize() && vtx){
         for (int stt = 1; stt <= numFrame; ++stt){
-            mainGraph.setSearchingNode(i, stt/numFrame);
+            mainGraph.setSearchingNode(0, stt/numFrame);
             gameGlobal->runBreak();
         } 
-        if (i == vtx)break;   
-        for (int stt = 1; stt <= numFrame; ++stt){
-            mainGraph.removeSearchingNode(i, stt/numFrame);
-            gameGlobal->runBreak();
+        mainGraph.highlight.setLine(1);
+        mainGraph.saveStep();
+        for (int i = 1; i < vtx; ++i){
+            for (int stt = 1; stt <= numFrame; ++stt){
+                mainGraph.removeSearchingNode(i-1, stt/numFrame);
+                gameGlobal->runBreak();
+            }
+            mainGraph.highlight.setLine(2);
+            mainGraph.saveStep();
+
+            for (int stt = 1; stt <= numFrame; ++stt){
+                mainGraph.setSearchingNode(i, stt/numFrame);
+                gameGlobal->runBreak();
+            } 
+            mainGraph.highlight.setLine(3);
+            mainGraph.saveStep();
         }
-    }
-    if (vtx && vtx < mainGraph.getSize())
         for (int stt = 1; stt <= numFrame; ++stt){
             mainGraph.setFoundNode(vtx, stt/numFrame);
             gameGlobal->runBreak();
-        }
-
+        } 
+        mainGraph.highlight.setLine(4);
+        mainGraph.saveStep();
+    }
     mainGraph.makeNewNode(vtx, value);
     firstGraph = mainGraph;
 }
 
 void LL::LetsRemove(int vtx){
     mainGraph = firstGraph; mainGraph.resetStep();
+    if (vtx == 0)mainGraph.highlight.addImage("./Image/LL_Remove0.png"); else 
+    if (vtx == mainGraph.getSize())mainGraph.highlight.addImage("./Image/LL_RemoveN.png"); else
+        mainGraph.highlight.addImage("./Image/LL_RemoveMid.png"); 
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
 
@@ -145,19 +191,51 @@ void LL::LetsRemove(int vtx){
             mainGraph.setSearchingNode(i, stt/numFrame);
             gameGlobal->runBreak();
         } 
+        mainGraph.saveStep();
         if (i == vtx - (vtx == 0 ? 0 : 1))break;   
         for (int stt = 1; stt <= numFrame; ++stt){
             mainGraph.removeSearchingNode(i, stt/numFrame);
             gameGlobal->runBreak();
         }
+        mainGraph.saveStep();
     }
     mainGraph.removeNode(vtx);
     firstGraph = mainGraph;
 }
 
-void LL::LetsUpdate(int vtx, int value){
-    LetsSearch(mainGraph.listNode[vtx]->getValue());
-    mainGraph.setValue(vtx, value); mainGraph.saveStep();
+void LL::LetsUpdate(int vt, int value){
+    mainGraph = firstGraph; mainGraph.resetStep();
+    mainGraph.highlight.addImage("./Image/LL_Update.png"); mainGraph.highlight.setHL(1);
+
+    for (int i = 0; i < mainGraph.getSize(); ++i)
+        mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
+
+    for (int stt = 1; stt <= numFrame; ++stt){
+        mainGraph.setSearchingNode(0, stt/numFrame);
+        gameGlobal->runBreak();
+    }
+    mainGraph.highlight.setLine(1);
+    mainGraph.saveStep();
+
+    for (int vtx = 1; vtx <= vt; ++vtx){
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.removeSearchingNode(vtx-1, stt/numFrame);
+            gameGlobal->runBreak();
+        }
+        mainGraph.highlight.setLine(2);
+        mainGraph.saveStep();
+
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.setSearchingNode(vtx, stt/numFrame);
+            gameGlobal->runBreak();
+        }
+        mainGraph.highlight.setLine(3);
+        mainGraph.saveStep();
+    }
+    
+    mainGraph.setValue(vt, value); 
+    mainGraph.highlight.setLine(4);
+    mainGraph.saveStep();
     gameGlobal->runBreak();
     firstGraph = mainGraph;
 }

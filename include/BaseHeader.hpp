@@ -184,6 +184,43 @@ public:
     bool empty() const {
         return head == nullptr;
     }
+
+    void resize(std::size_t newSize, const T& value = T()) {
+    if (newSize == 0) {
+        clear();
+        return;
+    }
+    if (newSize < size()) {
+        Node* temp = head;
+        for (std::size_t i = 0; i < newSize - 1; i++) {
+            temp = temp->next;
+        }
+        Node* del = temp->next;
+        temp->next = nullptr;
+        while (del) {
+            Node* next = del->next;
+            delete del;
+            del = next;
+        }
+    } else if (newSize > size()) {
+        std::size_t numToAdd = newSize - size();
+        Node* temp = head;
+        if (!temp) {
+            head = new Node(value);
+            numToAdd--;
+            temp = head;
+        } else {
+            while (temp->next) {
+                temp = temp->next;
+            }
+        }
+        for (std::size_t i = 0; i < numToAdd; i++) {
+            temp->next = new Node(value);
+            temp = temp->next;
+        }
+    }
+}
+
 };
 
 

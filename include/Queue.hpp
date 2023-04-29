@@ -14,6 +14,7 @@ public:
     void LetsPeek(int );
     void LetsPush(int);
     void LetsPop();
+    void LetsClear();
     void draw(sf::RenderTarget& , sf::RenderStates ) const override;
     void getFromFile();
     void checkPress(sf::Vector2f ) override;

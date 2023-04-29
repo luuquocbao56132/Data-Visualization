@@ -8,17 +8,16 @@ Graph::Graph(){
     init(*n);
 }
 
-Graph::Graph(int state){
-    stateGraph = state;
+Graph::Graph(int type){
+    typeGraph = type;
     n = std::make_shared <int> (ResourceManager::random(3,8));
     init(*n);
 }
 
-// check firstgraph co dung gia tri sau khi gan = chua
 
 Graph& Graph::operator=(Graph& other) {
     if (this != &other) { 
-        this->stateGraph = other.stateGraph;
+        this->typeGraph = other.typeGraph;
         this->init(other.getSize());
         //kich co size text thay doi nen setText trong node se gap van de
         for (int i = 0; i < other.getSize(); ++i)
@@ -44,6 +43,7 @@ void Graph::init(int x){
 
 void Graph::init(int x, LinkedList <std::string> s){
     *n = x; listNode.clear(); newNode = nullptr; resetStep(); nowStep = -1;
+    highlight.addImage("./Image/Blank.png"); highlight.setHL(0);
     if (!n)return;
 
     leftBound = 800 - (100*(*n) - arrowLength ) / 2;
@@ -92,11 +92,11 @@ void Graph::setNode(){
     int nn = *n;
     // std::cout << nn << '\n';
     if (!nn){listNode.clear(); return;}
-    if (stateGraph != ARRAY){
+    if (typeGraph != ARRAY){
         for (int i = 0; i < nn-1; ++i)listNode[i]->nextNode = listNode[i+1];
         listNode[nn-1]->nextNode = nullptr;
     }
-    if (stateGraph == DOUBLYLINKEDLIST){
+    if (typeGraph == DOUBLYLINKEDLIST){
         for (int i = 1; i < nn; ++i)listNode[i]->prevNode = listNode[i-1];
         listNode[0]->prevNode = nullptr;
     }
@@ -138,7 +138,8 @@ void Graph::removeNode(int vtx){
 
     if (!vtx){
         if (getSize() > 2)listNode[1]->setTextBot("head"), listNode[0]->setTextBot("tmp");
-        gameGlobal->runBreak();
+        gameGlobal->runBreak(); 
+        saveStep();
         for (int i = 1; i < numFrame; ++i){
             listNode[0]->changeSizeNode(CircleRad / numFrame);
             gameGlobal->runBreak();
@@ -150,6 +151,7 @@ void Graph::removeNode(int vtx){
             setNode();
             gameGlobal->runBreak();
         }
+        saveStep();
         return;
     }
 
@@ -164,19 +166,24 @@ void Graph::removeNode(int vtx){
         gameGlobal->runBreak();
     }
     listNode[vtx]->setTextBot("tmp");
+    saveStep();
     
     //node[vtx].next = tmp.next;
     std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(vtx), ResourceManager::getFont(), 
                                     textSize, NewNodeColor,sf::Vector2f(listNode[vtx]->getNodePosition()));
-    listNode[vtx-1]->nextNode = res; listNode[vtx-1]->setArrow();
+    
+    if (typeGraph >= LINKEDLIST)listNode[vtx-1]->nextNode = res; listNode[vtx-1]->setArrow();
+    if (typeGraph == DOUBLYLINKEDLIST)res->prevNode = listNode[vtx-1]; res->setArrow();
+
     startPosNew = listNode[vtx]->getNodePosition();
     if (vtx == nn)endPosNew = listNode[vtx-1]->getNodePosition(); 
         else endPosNew = listNode[vtx+1]->getNodePosition();
     for (int i = 1; i <= numFrame; ++i){
         res->setPosition(ResourceManager::changePosition(startPosNew, endPosNew, i/numFrame));
-        listNode[vtx-1]->setArrow();
+        listNode[vtx-1]->setArrow(); res->setArrow();
         gameGlobal->runBreak();
     }
+    saveStep();
 
     //del(tmp)
     newNode = listNode[vtx];
@@ -188,10 +195,10 @@ void Graph::removeNode(int vtx){
         setNode();
         gameGlobal->runBreak();
     }
+    saveStep();
     setNumber.erase(newNode->getValue());
     newNode = nullptr;
     gameGlobal->runBreak();
-    std::cout << 1 << '\n'; 
 }
 
 void Graph::makeNewNode(int vtx, int value){
@@ -215,24 +222,29 @@ void Graph::makeNewNode(int vtx, int value){
         endPos.push_back(sf::Vector2f(listNode[i]->getNodePosition().x + hieu, listNode[i]->getNodePosition().y));
     }
 
+    if (vtx == 0 || vtx == getSize())highlight.setLine(1);
+        else highlight.setLine(5);
     for (int i = 2; i < numFrame; ++i){
         for (int j = 0; j < getSize(); ++j)listNode[j]->setPosition(ResourceManager::changePosition(startPos[j], endPos[j], ((float)i)/numFrame));
         setNode();
         newNode->changeSizeNode(-CircleRad/numFrame);
         gameGlobal->runBreak();
     }
+    saveStep();
 
-     if (vtx < getSize()){
+    if (vtx < getSize()){
         std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
                                     textSize, NewNodeColor,sf::Vector2f(newNode->getNodePosition().x, 350.f));
         newNode->nextNode = res; newNode->setArrow();
 
+        if (vtx > 0)highlight.setLine(6); else highlight.setLine(2);
         for (int i = 1; i <= numFrame; ++i){
             res->setPosition(ResourceManager::changePosition(newNode->getNodePosition(), listNode[vtx]->getNodePosition(), i/numFrame));
             newNode->setArrow();
             gameGlobal->runBreak();
         }
         newNode->nextNode = listNode[vtx];
+        saveStep();
     }
 
     if (vtx-1 >= 0){
@@ -240,12 +252,14 @@ void Graph::makeNewNode(int vtx, int value){
                                     textSize, NewNodeColor,sf::Vector2f(listNode[vtx-1]->getNodePosition()));
         listNode[vtx-1]->nextNode = res; listNode[vtx-1]->setArrow();
 
+        if (vtx == getSize())highlight.setLine(2); else highlight.setLine(7);
         for (int i = 1; i <= numFrame; ++i){
             res->setPosition(ResourceManager::changePosition(listNode[vtx-1]->getNodePosition(), newNode->getNodePosition(), i/numFrame));
             listNode[vtx-1]->setArrow();
             gameGlobal->runBreak();
         }
         listNode[vtx-1]->nextNode = newNode;
+        saveStep();
     }
 
     sf::Vector2f startPosNew = newNode->getNodePosition();
@@ -256,38 +270,72 @@ void Graph::makeNewNode(int vtx, int value){
     for (int i = getSize() - 1; i > vtx; --i)listNode[i] = listNode[i-1];
     listNode[vtx] = newNode;
 
+    if (vtx == 0 || vtx == getSize()-1)highlight.setLine(3);
     for (int i = 1; i <= numFrame; ++i){
         newNode->setPosition(ResourceManager::changePosition(startPosNew, endPosNew, i/numFrame));
         setNode();
         gameGlobal->runBreak();
     }
+    saveStep();
     setNumber.insert(value);
     newNode = nullptr;
 }
 
 void Graph::resetStep(){
-    stepNode.clear(); stepString.clear(); nowStep = -1;
+    stepNode.clear(); stepString.clear(); nowStep = -1; stepNewNode.clear();
 }
 
 void Graph::getStep(int dx){
     if (stepNode.empty())return;
     if (nowStep + dx >= stepNode.size() || nowStep + dx < 0)return;
     nowStep += dx;
-    for (int i = 0; i < listNode.size(); ++i)
-        *listNode[i] = stepNode[nowStep][i];
+    
+    listNode.resize(stepNode[nowStep].size()); 
+    *n = listNode.size();
+    listNode = stepNode[nowStep];
+    newNode = stepNewNode[nowStep];
+    highlight.setLine(stepString[nowStep]); highlight.setHL(1);
+
+    for (int i = 0; i < listNode.size(); ++i)listNode[i]->setArrow();
+    // if (newNode)newNode->setArrow();
 }
 
 void Graph::saveStep(){
-    LinkedList <Node> res;
-    for (int i = 0; i < listNode.size(); ++i)res.push_back(*listNode[i]);
+    LinkedList <std::shared_ptr <Node> > res;
+
+    if (newNode == nullptr)stepNewNode.push_back(nullptr);
+        else stepNewNode.push_back(std::make_shared <Node> (*newNode));
+    for (int i = 0; i < getSize(); ++i)res.push_back(std::make_shared <Node> (*listNode[i]));
+
+    for (int i = 0; i < getSize(); ++i){
+        if (i > 0 && listNode[i]->prevNode == listNode[i-1])
+            res[i]->prevNode = res[i-1];
+        if (i < getSize()-1 && listNode[i]->nextNode == listNode[i+1])
+            res[i]->nextNode = res[i+1];
+        
+        if (listNode[i]->nextNode == newNode) 
+            res[i]->nextNode = stepNewNode[stepNewNode.size()-1];
+        if (listNode[i]->prevNode == newNode) 
+            res[i]->prevNode = stepNewNode[stepNewNode.size()-1];
+
+        if (newNode){
+            if (newNode->prevNode == listNode[i])
+                stepNewNode[stepNewNode.size()-1]->prevNode = res[i];
+            if (newNode->nextNode == listNode[i])
+                stepNewNode[stepNewNode.size()-1]->nextNode = res[i]; 
+        }
+    }
+
     stepNode.push_back(res); ++nowStep;
+    stepString.push_back(highlight.getLine()+1);
+    // std::cout << stepNode.size() << '\n';
 }
 
 void Graph::setSearchingNode(int vtx, float ratio){
     listNode[vtx]->setOutlineColor(ResourceManager::changeColor(sf::Color::Black, SearchingNodeColor, ratio));
     listNode[vtx]->setNodeColor(ResourceManager::changeColor(FirstNodeColor, SearchingNodeColor, ratio));
     listNode[vtx]->setTextColor(ResourceManager::changeColor(textColorStart, textColorEnd, ratio));
-    if (vtx && stateGraph != ARRAY)setArrowColor(vtx-1, ratio);
+    if (vtx && typeGraph != ARRAY)setArrowColor(vtx-1, ratio);
 }
 
 void Graph::removeSearchingNode(int vtx, float ratio){
@@ -315,6 +363,8 @@ void Graph::removeFoundNode(int vtx, float ratio){
 }
 
 void Graph::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    // std::cout << stepImageSprite.getTexture()->getSize().x << '\n';
+    target.draw(highlight);
     if (newNode != nullptr)target.draw(*newNode);
     if (listNode.empty())return;
     for (int i = 0; i < *n; ++i)target.draw(*listNode[i]);

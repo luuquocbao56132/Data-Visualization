@@ -82,6 +82,18 @@ void Queue::LetsPop(){
     firstGraph = mainGraph;
 }
 
+void Queue::LetsClear(){
+    mainGraph = firstGraph; mainGraph.resetStep();
+    if (!mainGraph.getSize())return;
+    for (int i = 0; i < mainGraph.getSize(); ++i)
+        mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
+    while (mainGraph.getSize()){
+        mainGraph.removeNode(mainGraph.getSize()-1);
+        mainGraph.saveStep();
+    }
+    firstGraph = mainGraph;
+}
+
 void Queue::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     DataTypes::draw(target, states);
     target.draw(mainGraph);
@@ -160,7 +172,7 @@ void Queue::checkPress(sf::Vector2f mousePos){
                 break;
             case CLEAR:
                 if (mainGraph.getSize() == 0)break;
-                if (res->checkPress(mousePos))mainGraph.init(0), inputBox.clear(), firstGraph = mainGraph;
+                if (res->checkPress(mousePos))LetsClear(), inputBox.clear();
                 break;
         }
     }

@@ -40,7 +40,7 @@ Node::Node(float radius, const std::string& text, const sf::Font& font, float te
     m_text_directions[LEFT].setPosition(sf::Vector2f(position.x - radius - text_size, position.y));
 
     nextArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x + radius + 3, position.y), 0.f);
-    prevArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x - radius - 3, position.y), 0.f);
+    prevArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x + radius + 3, position.y), 0.f); 
     nextNode = nullptr; prevNode = nullptr;
 }
 
@@ -48,6 +48,7 @@ void Node::setColor(const sf::Color& color){
     m_color = color;
     m_circle.setFillColor(color);
     nextArrow.setColor(color);
+    prevArrow.setColor(color);
 }
 
 void Node::setNodeColor(sf::Color color){
@@ -110,21 +111,23 @@ void Node::setPosition(sf::Vector2f position){
     m_text_directions[BOT].setPosition(sf::Vector2f(position.x, position.y + CircleRad + textSize));
     m_text_directions[LEFT].setPosition(sf::Vector2f(position.x - CircleRad - textSize, position.y));
     nextArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x + CircleRad + 3, position.y), 0.f);
-    prevArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x - CircleRad - 3, position.y), 0.f);
-    prevArrow.setRotation(180);
+    prevArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x + CircleRad + 3, position.y), 0.f);
+    //prevArrow.setRotation(180);
     m_text.setPosition(m_position);
 }
 
 void Node::setArrow(){
-    if (nextNode == nullptr)return;
-    float length = dist2Node(getNodePosition(), nextNode->getNodePosition());
-    rotateArrow(rad2Node(getNodePosition(), nextNode->getNodePosition()));
-    nextArrow.minimizeArrow(nextArrow.getLength() - length);
+    if (nextNode != nullptr){
+        float length = dist2Node(getNodePosition(), nextNode->getNodePosition());
+        rotateNextArrow(rad2Node(getNodePosition(), nextNode->getNodePosition()));
+        nextArrow.minimizeArrow(nextArrow.getLength() - length);
+    }
 
-    if (prevNode == nullptr)return;
-    length = dist2Node(getNodePosition(), prevNode->getNodePosition());
-    rotateArrow(rad2Node(getNodePosition(), prevNode->getNodePosition()));
-    prevArrow.minimizeArrow(prevArrow.getLength() - length);
+    if (prevNode != nullptr){
+        float length = dist2Node(getNodePosition(), prevNode->getNodePosition());
+        rotatePrevArrow(rad2Node(getNodePosition(), prevNode->getNodePosition()));
+        prevArrow.minimizeArrow(prevArrow.getLength() - length);
+    }
 }
 
 void Node::changeText(Direction i, std::string text){
@@ -156,13 +159,19 @@ void Node::setPartialColor(float ratio){
     nextArrow.setPartialColor(ratio);
 }
 
-void Node::rotateArrow(float degrees){
+void Node::rotateNextArrow(float degrees){
     nextArrow.setRotation(degrees);
     nextArrow.setPosition(sf::Vector2f(m_position.x + m_radius * std::cos(degrees * M_PI / 180.f), m_position.y + m_radius * std::sin(degrees * M_PI / 180.f)));
 }
 
+void Node::rotatePrevArrow(float degrees){
+    prevArrow.setRotation(degrees);
+    prevArrow.setPosition(sf::Vector2f(m_position.x + m_radius * std::cos(degrees * M_PI / 180.f), m_position.y + m_radius * std::sin(degrees * M_PI / 180.f)));
+}
+
 void Node::changeSizeArrow(float length){
     nextArrow.minimizeArrow(length);
+    prevArrow.minimizeArrow(length);
 }
 
 float Node::getLengthArrow(){

@@ -3,6 +3,7 @@
 
 #include <BaseHeader.hpp>
 #include <Node.hpp>
+#include <Highlight.hpp>
 
 class Game;
 
@@ -39,11 +40,13 @@ public:
     void getStep(int );
     void saveStep();
 
-    int stateGraph, numArrow, nowStep;
+    int typeGraph, numArrow, nowStep;
     std::shared_ptr <int> n;
     LinkedList <std::shared_ptr <Node>> listNode;
-    LinkedList < LinkedList <Node> > stepNode;
-    LinkedList <std::string> stepString;
+    LinkedList < LinkedList <std::shared_ptr<Node> > > stepNode;
+    LinkedList < std::shared_ptr <Node> > stepNewNode;
+    LinkedList <int> stepString;
+    Highlight highlight;
     std::shared_ptr <Node> newNode;
     int leftBound;
     std::set <int> setNumber;

@@ -2,8 +2,8 @@
 
 extern std::shared_ptr <Game> gameGlobal;
 
-Game::Game(): mWindow(sf::VideoMode(1600,800), "Data Visualization", sf::Style::Default, sf::ContextSettings(0, 0, 15)), mWorld{}{
-    mWindow.setFramerateLimit(105);
+Game::Game(): mWindow(sf::VideoMode(1700,900), "Data Visualization", sf::Style::Default, sf::ContextSettings(0, 0, 15)), mWorld{}{
+    mWindow.setFramerateLimit(110);
 }
 
 void Game::run(){
@@ -82,6 +82,8 @@ void Game::render(){
         for (int stt = 2; stt <= numFrame; ++stt){
             for (int i = 0; i < mWorld.liveData->mainGraph.listNode.size(); ++i)
                 mWorld.liveData->mainGraph.listNode[i]->changeSizeNode(-CircleRad / numFrame);
+            if (mWorld.liveData->mainGraph.newNode)
+                mWorld.liveData->mainGraph.newNode->changeSizeNode(-CircleRad / numFrame);
             // std::cout << "radius last: " << mWorld.liveData->mainGraph.listNode[0]->getRad() << '\n';
             // std::cout << "stt " << stt << "\n";
             gameGlobal->runBreak();

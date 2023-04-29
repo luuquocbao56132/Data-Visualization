@@ -28,7 +28,8 @@ public:
 
     void setPartialColor(float );
 
-    void rotateArrow(float );
+    void rotateNextArrow(float );
+    void rotatePrevArrow(float );
 
     void changeSizeArrow(float );
 
