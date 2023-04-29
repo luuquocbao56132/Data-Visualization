@@ -46,16 +46,17 @@ Stack::Stack(const sf::Vector2f& position, const sf::Vector2f& size,
 
 void Stack::LetsPeek(int t){
     mainGraph = firstGraph; mainGraph.resetStep();
-    if (mainGraph.getSize() == 0)return;
-
-    // std::cout << "List rad of search graph: \n";
+    mainGraph.highlight.addImage("./Image/S_Peek.png"); mainGraph.highlight.setHL(1);
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
-        // std::cout << mainGraph.listNode[i]->getRad() << " "; std::cout << '\n';
+    if (mainGraph.getSize() == 0){
+        mainGraph.highlight.setLine(1);
+        return;
+    }
 
-    if (t) t = mainGraph.getSize()-1;
+    mainGraph.highlight.setLine(2);
     for (int stt = 1; stt <= numFrame; ++stt){
-        mainGraph.setSearchingNode(t, stt/numFrame);
+        mainGraph.setSearchingNode(0, stt/numFrame);
         gameGlobal->runBreak();
     }
     mainGraph.saveStep();
@@ -63,7 +64,7 @@ void Stack::LetsPeek(int t){
 
 void Stack::LetsPush(int value){
     mainGraph = firstGraph; mainGraph.resetStep();
-    if (mainGraph.getSize() == maxSize)return;
+    mainGraph.highlight.addImage("./Image/S_Push.png"); mainGraph.highlight.setHL(1);
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
 
@@ -73,11 +74,38 @@ void Stack::LetsPush(int value){
 
 void Stack::LetsPop(){
     mainGraph = firstGraph; mainGraph.resetStep();
+    mainGraph.highlight.addImage("./Image/S_Pop.png"); mainGraph.highlight.setHL(1);
+    if (mainGraph.getSize() == 0){
+        mainGraph.highlight.setLine(1);
+        return;
+    }
+    for (int i = 0; i < mainGraph.getSize(); ++i)
+        mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
+    
+    for (int stt = 1; stt <= numFrame; ++stt){
+        mainGraph.setSearchingNode(0, stt/numFrame);
+        gameGlobal->runBreak();
+    }
+    mainGraph.removeNode(0);
+    firstGraph = mainGraph;
+}
+
+void Stack::LetsClear(){
+    mainGraph = firstGraph; mainGraph.resetStep();
+    mainGraph.highlight.addImage("./Image/S_Clear.png"); mainGraph.highlight.setHL(1);
     if (!mainGraph.getSize())return;
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
 
-    mainGraph.removeNode(0);
+    while (mainGraph.getSize()){
+        mainGraph.highlight.setLine(1); Sleep(1000*(numFrame/110));
+        mainGraph.saveStep();
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.setSearchingNode(0, stt/numFrame);
+            gameGlobal->runBreak();
+        }
+        mainGraph.removeNode(0);
+    }
     firstGraph = mainGraph;
 }
 
@@ -139,7 +167,6 @@ void Stack::checkPress(sf::Vector2f mousePos){
                 }
                 break;
             case PEEK:
-                if (mainGraph.getSize() == 0)break;
                 if (res->checkPress(mousePos))LetsPeek(0), inputBox.clear();
                 break;
             case PUSH:
@@ -154,12 +181,11 @@ void Stack::checkPress(sf::Vector2f mousePos){
                 }
                 break;
             case POP:
-                if (mainGraph.getSize() == 0)break;
                 if (res->checkPress(mousePos))LetsPop(), inputBox.clear();
                 break;
             case CLEAR:
                 if (mainGraph.getSize() == 0)break;
-                if (res->checkPress(mousePos))mainGraph.init(0), inputBox.clear(), firstGraph = mainGraph;
+                if (res->checkPress(mousePos))LetsClear(), inputBox.clear();
                 break;
         }
     }

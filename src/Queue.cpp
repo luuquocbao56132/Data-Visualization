@@ -47,14 +47,18 @@ Queue::Queue(const sf::Vector2f& position, const sf::Vector2f& size,
 
 void Queue::LetsPeek(int t){
     mainGraph = firstGraph; mainGraph.resetStep();
-    if (mainGraph.getSize() == 0)return;
-
-    // std::cout << "List rad of search graph: \n";
+    std::string s;
+    if (t) t = mainGraph.getSize()-1, s = "./Image/Q_PeekB.png";
+        else s = "./Image/Q_PeekF.png";
+    mainGraph.highlight.addImage(s); mainGraph.highlight.setHL(1);
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
-        // std::cout << mainGraph.listNode[i]->getRad() << " "; std::cout << '\n';
+    if (mainGraph.getSize() == 0){
+        mainGraph.highlight.setLine(1);
+        return;
+    }
 
-    if (t) t = mainGraph.getSize()-1;
+    mainGraph.highlight.setLine(2);
     for (int stt = 1; stt <= numFrame; ++stt){
         mainGraph.setSearchingNode(t, stt/numFrame);
         gameGlobal->runBreak();
@@ -64,32 +68,47 @@ void Queue::LetsPeek(int t){
 
 void Queue::LetsPush(int value){
     mainGraph = firstGraph; mainGraph.resetStep();
-    if (mainGraph.getSize() == maxSize)return;
+    mainGraph.highlight.addImage("./Image/Q_Push.png"); mainGraph.highlight.setHL(1);
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
 
-    mainGraph.makeNewNode(0, value);
+    mainGraph.makeNewNode(mainGraph.getSize(), value);
     firstGraph = mainGraph;
 }
 
 void Queue::LetsPop(){
     mainGraph = firstGraph; mainGraph.resetStep();
-    if (!mainGraph.getSize())return;
+    mainGraph.highlight.addImage("./Image/Q_Pop.png"); mainGraph.highlight.setHL(1);
+    if (mainGraph.getSize() == 0){
+        mainGraph.highlight.setLine(1);
+        return;
+    }
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
-
-    mainGraph.removeNode(mainGraph.getSize()-1);
+    
+    for (int stt = 1; stt <= numFrame; ++stt){
+        mainGraph.setSearchingNode(0, stt/numFrame);
+        gameGlobal->runBreak();
+    }
+    mainGraph.removeNode(0);
     firstGraph = mainGraph;
 }
 
 void Queue::LetsClear(){
     mainGraph = firstGraph; mainGraph.resetStep();
+    mainGraph.highlight.addImage("./Image/Q_Clear.png"); mainGraph.highlight.setHL(1);
     if (!mainGraph.getSize())return;
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
+
     while (mainGraph.getSize()){
-        mainGraph.removeNode(mainGraph.getSize()-1);
+        mainGraph.highlight.setLine(1); Sleep(1000*(numFrame/110));
         mainGraph.saveStep();
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.setSearchingNode(0, stt/numFrame);
+            gameGlobal->runBreak();
+        }
+        mainGraph.removeNode(0);
     }
     firstGraph = mainGraph;
 }
@@ -100,13 +119,13 @@ void Queue::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 }
 
 void Queue::getFromFile(){
-    std::ifstream file("customInput.txt"); // open the file
+    std::ifstream file("customInput.txt");
     std::string line;
-    if (file.is_open()) { // check if the file is successfuQueuey opened
-        while (std::getline(file, line)) { // read the file line by line
-            std::cout << line << '\n'; // print each line to the console
+    if (file.is_open()) { 
+        while (std::getline(file, line)) { 
+            std::cout << line << '\n'; 
         }
-        file.close(); // close the file
+        file.close(); 
     }
     else {
         std::cerr << "Unable to open file\n";
@@ -167,7 +186,6 @@ void Queue::checkPress(sf::Vector2f mousePos){
                 }
                 break;
             case POP:
-                if (mainGraph.getSize() == 0)break;
                 if (res->checkPress(mousePos))LetsPop(), inputBox.clear();
                 break;
             case CLEAR:
