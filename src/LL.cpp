@@ -179,24 +179,39 @@ void LL::LetsInsert(int vtx, int value){
 }
 
 void LL::LetsRemove(int vtx){
-    mainGraph = firstGraph; mainGraph.resetStep();
+    mainGraph = firstGraph; mainGraph.resetStep(); mainGraph.highlight.setHL(1);
     if (vtx == 0)mainGraph.highlight.addImage("./Image/LL_Remove0.png"); else 
-    if (vtx == mainGraph.getSize())mainGraph.highlight.addImage("./Image/LL_RemoveN.png"); else
+    if (vtx == mainGraph.getSize()-1)mainGraph.highlight.addImage("./Image/LL_RemoveN.png"); else
         mainGraph.highlight.addImage("./Image/LL_RemoveMid.png"); 
+    if (mainGraph.getSize() == 0){
+        mainGraph.highlight.setLine(1);
+        return;
+    }
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
 
-    for (int i = 0; i <= vtx - (vtx == 0 ? 0 : 1); ++i){
+    for (int stt = 1; stt <= numFrame; ++stt){
+        mainGraph.setSearchingNode(0, stt/numFrame);
+        gameGlobal->runBreak();
+    }
+    if (vtx){
+        mainGraph.highlight.setLine(2);
+        mainGraph.saveStep();
+    }
+
+    for (int i = 1; i < vtx; ++i){
+        mainGraph.highlight.setLine(3);
+        for (int stt = 1; stt <= numFrame; ++stt){
+            mainGraph.removeSearchingNode(i-1, stt/numFrame);
+            gameGlobal->runBreak();
+        }
+        mainGraph.saveStep();
+
+        mainGraph.highlight.setLine(4);
         for (int stt = 1; stt <= numFrame; ++stt){
             mainGraph.setSearchingNode(i, stt/numFrame);
             gameGlobal->runBreak();
         } 
-        mainGraph.saveStep();
-        if (i == vtx - (vtx == 0 ? 0 : 1))break;   
-        for (int stt = 1; stt <= numFrame; ++stt){
-            mainGraph.removeSearchingNode(i, stt/numFrame);
-            gameGlobal->runBreak();
-        }
         mainGraph.saveStep();
     }
     mainGraph.removeNode(vtx);
@@ -332,7 +347,6 @@ void LL::checkPress(sf::Vector2f mousePos){
                 }
                 break;
             case REMOVE:
-                if (mainGraph.getSize() == 0)break;
                 if (res->minButton[0]->checkPress(mousePos))LetsRemove(0), inputBox.clear();
                 if (res->minButton[1]->checkPress(mousePos))LetsRemove(mainGraph.getSize()-1), inputBox.clear();
                 if (res->minButton[2]->checkPress(mousePos) && mainGraph.getSize() > 2){

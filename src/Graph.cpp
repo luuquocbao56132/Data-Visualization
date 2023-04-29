@@ -137,9 +137,19 @@ void Graph::removeNode(int vtx){
     }
 
     if (!vtx){
-        if (getSize() > 2)listNode[1]->setTextBot("head"), listNode[0]->setTextBot("tmp");
+        highlight.setLine(2);
+        listNode[0]->setTextBot("tmp");
         gameGlobal->runBreak(); 
+        Sleep(1000* (numFrame/110));
         saveStep();
+
+        highlight.setLine(3);
+        if (getSize() > 2)listNode[1]->setTextBot("head");
+        gameGlobal->runBreak(); 
+        Sleep(1000* (numFrame/110));
+        saveStep();
+        
+        highlight.setLine(4);
         for (int i = 1; i < numFrame; ++i){
             listNode[0]->changeSizeNode(CircleRad / numFrame);
             gameGlobal->runBreak();
@@ -158,17 +168,30 @@ void Graph::removeNode(int vtx){
     sf::Vector2f startPosNew = listNode[vtx]->getNodePosition();
     sf::Vector2f endPosNew = sf::Vector2f(listNode[vtx]->getNodePosition().x, 350.f);
 
-    //tmp = node[vtx].next;
+    // del = listNode[vtx]
+    highlight.setLine(5);
+    listNode[vtx]->setTextBot("del");
     for (int i = 1; i <= numFrame; ++i){
         listNode[vtx]->setPosition(ResourceManager::changePosition(startPosNew, endPosNew, i/numFrame));
         setDelNode(vtx,i/numFrame);
         setNode();
         gameGlobal->runBreak();
     }
-    listNode[vtx]->setTextBot("tmp");
+    if (vtx < nn){
+        for (int i = 1; i <= numFrame; ++i){
+            setSearchingNode(vtx+1,i/numFrame);
+            // setNode();
+        }
+        for (int i = 1; i <= numFrame; ++i){
+            setFoundNode(vtx+1,i/numFrame);
+            // setNode();
+            gameGlobal->runBreak();
+        }
+    }
     saveStep();
     
-    //node[vtx].next = tmp.next;
+    //chuyen mui ten pre.next = null
+    highlight.setLine(6);
     std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(vtx), ResourceManager::getFont(), 
                                     textSize, NewNodeColor,sf::Vector2f(listNode[vtx]->getNodePosition()));
     
@@ -186,6 +209,7 @@ void Graph::removeNode(int vtx){
     saveStep();
 
     //del(tmp)
+    highlight.setLine(7);
     newNode = listNode[vtx];
     for (int i = vtx; i < nn; ++i)listNode[i] = listNode[i+1]; listNode[nn] = nullptr;
     *n = nn; setNode();
@@ -195,10 +219,10 @@ void Graph::removeNode(int vtx){
         setNode();
         gameGlobal->runBreak();
     }
-    saveStep();
     setNumber.erase(newNode->getValue());
     newNode = nullptr;
     gameGlobal->runBreak();
+    saveStep();
 }
 
 void Graph::makeNewNode(int vtx, int value){
