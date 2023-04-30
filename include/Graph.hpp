@@ -14,7 +14,6 @@ public:
     Graph& operator=(Graph& other);
     void init(int, LinkedList <std::string> );
     void init(int );
-    void initnodraw(int );
     void init();
     void setNode();
     bool checkSameNum(int );
@@ -49,7 +48,7 @@ public:
     LinkedList <int> stepString;
     Highlight highlight;
     std::shared_ptr <Node> newNode;
-    int leftBound;
+    int leftBound, numberNow;
     std::set <int> setNumber;
 };
 

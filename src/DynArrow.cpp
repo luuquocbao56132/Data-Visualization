@@ -20,7 +20,7 @@ DynArrow::DynArrow(float length, sf::Color color, sf::Vector2f position, float a
 
     m_particle.setFillColor(SearchingNodeColor);
     m_particle.setSize(sf::Vector2f(0.f,3.f));
-    setPosition(position);
+    setPosition(position); 
 }
 
 void DynArrow::setColor(const sf::Color& color){

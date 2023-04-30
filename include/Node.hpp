@@ -3,13 +3,14 @@
 
 #include <BaseHeader.hpp>
 #include <DynArrow.hpp>
+#include <CircleArrow.hpp>
 
 class Node;
 
 class Node : public sf::Drawable, public sf::Transformable{
 public:
     Node();
-    Node(float radius, const std::string& , const sf::Font& , float , const sf::Color& , const sf::Vector2f& );
+    Node(float radius, const std::string& , const sf::Font& , float , const sf::Color& , const sf::Vector2f& , bool);
 
     void setColor(const sf::Color& );
 
@@ -54,11 +55,15 @@ public:
     DynArrow nextArrow, prevArrow;
 
     sf::Text m_text_directions[4];
-
+    void updateCircle();
+    void setCircle(bool);
     int numArrow;
-
+    bool stateCircle;
+    CircleArrow circle;
 private:
+    bool typeNode;
     sf::CircleShape m_circle;
+    sf::RectangleShape m_rectangle;
     sf::Color m_color;
     sf::Vector2f m_position;
     sf::Text m_text;

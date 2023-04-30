@@ -9,7 +9,7 @@ DataTypes::DataTypes(const sf::Vector2f& position, const sf::Vector2f& size,
            const std::string& text, const sf::Font& font, unsigned int characterSize, int numInput, int graphType):
         mainButton(position, size, text, ResourceManager::getFont(), characterSize,0),
         buttonSize(sf::Vector2f(90.f, 50.f)), buttonSpacing(sf::Vector2f(0.f, 5.f)),
-        buttonPosition(sf::Vector2f(10.f, 550.f)), buttonRange(buttonSize + buttonSpacing),
+        buttonPosition(sf::Vector2f(10.f, 500.f)), buttonRange(buttonSize + buttonSpacing),
         buttonState(-1),
         mainGraph(graphType), typeGraph(graphType){
             upSpeed = Button(sf::Vector2f(980,10), sf::Vector2f(mainButton.getSize().y/2,mainButton.getSize().y/2), 

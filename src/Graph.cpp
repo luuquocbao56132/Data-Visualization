@@ -14,7 +14,6 @@ Graph::Graph(int type){
     init(*n);
 }
 
-
 Graph& Graph::operator=(Graph& other) {
     if (this != &other) { 
         this->typeGraph = other.typeGraph;
@@ -49,7 +48,7 @@ void Graph::init(int x, LinkedList <std::string> s){
     leftBound = 800 - (100*(*n) - arrowLength ) / 2;
     for (int i = 0; i < s.size(); ++i){
         listNode.push_back(std::make_shared <Node> (19.f, s[i], ResourceManager::getFont(), 
-                                    textSize, backgroundColor,sf::Vector2f(leftBound + 10 + 100*i, 250.f)));
+                                    textSize, backgroundColor,sf::Vector2f(leftBound + 10 + 100*i, 250.f),typeGraph));
     }        
     // std::cout << 3 << '\n';
     setNode();              
@@ -98,19 +97,26 @@ void Graph::setNode(){
         for (int i = 0; i < nn-1; ++i)listNode[i]->nextNode = listNode[i+1];
         listNode[nn-1]->nextNode = nullptr;
     }
+    std::cout << listNode[nn-1]->nextNode << '\n';
     if (typeGraph == DOUBLYLINKEDLIST){
         for (int i = 1; i < nn; ++i)listNode[i]->prevNode = listNode[i-1];
         listNode[0]->prevNode = nullptr;
     }
     for (int i = 0; i < nn; ++i){
+        listNode[i]->setCircle(0);
         listNode[i]->changeSizeNode(listNode[i]->getRad() - CircleRad);
         listNode[i]->setArrow();
         listNode[i]->setTextBot("");
         listNode[i]->setTextTop(std::to_string(i));
     }
+    if (typeGraph == CIRCULARLINKEDLIST && nn > 1){
+        listNode[nn-1]->nextNode = listNode[0];
+        listNode[nn-1]->updateCircle();
+    }
+    std::cout << listNode[nn-1]->nextNode << '\n';
     if (listNode.empty())return;
-    listNode[nn-1]->setTextBot("tail");
-    listNode[0]->setTextBot("head");
+    
+    if (typeGraph)listNode[nn-1]->setTextBot("tail"), listNode[0]->setTextBot("head");
 }
 
 void Graph::setNodeColor(int vtx, sf::Color color){
@@ -195,9 +201,9 @@ void Graph::removeNode(int vtx){
     //chuyen mui ten pre.next = null
     highlight.setLine(6);
     std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(vtx), ResourceManager::getFont(), 
-                                    textSize, NewNodeColor,sf::Vector2f(listNode[vtx]->getNodePosition()));
+                                    textSize, NewNodeColor,sf::Vector2f(listNode[vtx]->getNodePosition()),typeGraph);
     std::shared_ptr <Node> res1 = std::make_shared <Node> (CircleRad, std::to_string(vtx), ResourceManager::getFont(), 
-                                    textSize, NewNodeColor,sf::Vector2f(listNode[vtx]->getNodePosition()));
+                                    textSize, NewNodeColor,sf::Vector2f(listNode[vtx]->getNodePosition()),typeGraph);
     if (typeGraph == DOUBLYLINKEDLIST)listNode[vtx+1]->prevNode = res1, listNode[vtx+1]->setArrow();
     if (typeGraph >= LINKEDLIST)listNode[vtx-1]->nextNode = res, listNode[vtx-1]->setArrow();
 
@@ -237,7 +243,7 @@ void Graph::makeNewNode(int vtx, int value){
     int hieu = abs(leftBound - (800 - (100*nn - arrowLength ) / 2));
     leftBound = 800 - (100*nn - arrowLength ) / 2;
     newNode = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
-                                    textSize, NewNodeColor,sf::Vector2f(leftBound + 10 + 100*vtx, 350.f));
+                                    textSize, NewNodeColor,sf::Vector2f(leftBound + 10 + 100*vtx, 350.f),typeGraph);
     newNode->setOutlineColor(NewNodeColor);
     newNode->changeSizeNode(CircleRad / numFrame * (numFrame-1));
     newNode->setTextColor(sf::Color::White);
@@ -266,7 +272,7 @@ void Graph::makeNewNode(int vtx, int value){
     //newNode.next = aft, aft.prev = newNode
     if (vtx < getSize()){
         std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
-                                    textSize, NewNodeColor,sf::Vector2f(newNode->getNodePosition().x, 350.f));
+                                    textSize, NewNodeColor,sf::Vector2f(newNode->getNodePosition().x, 350.f),typeGraph);
         newNode->nextNode = res; newNode->setArrow();
 
         if (vtx > 0)highlight.setLine(6); else highlight.setLine(2);
@@ -280,7 +286,7 @@ void Graph::makeNewNode(int vtx, int value){
 
         if (typeGraph == DOUBLYLINKEDLIST){
             res = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
-                                    textSize, NewNodeColor,sf::Vector2f(listNode[vtx]->getNodePosition()));
+                                    textSize, NewNodeColor,sf::Vector2f(listNode[vtx]->getNodePosition()), typeGraph);
             listNode[vtx]->prevNode = res; listNode[vtx]->setArrow();
 
             if (vtx == 0)highlight.setLine(3);
@@ -297,11 +303,11 @@ void Graph::makeNewNode(int vtx, int value){
     //pre.next = newNode, newNode.prev = pre
     if (vtx-1 >= 0){
         std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
-                                    textSize, NewNodeColor,sf::Vector2f(listNode[vtx-1]->getNodePosition()));
+                                    textSize, NewNodeColor,sf::Vector2f(listNode[vtx-1]->getNodePosition()),typeGraph);
         listNode[vtx-1]->nextNode = res; listNode[vtx-1]->setArrow();
         
         std::shared_ptr <Node> res1 = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
-                                    textSize, NewNodeColor,sf::Vector2f(newNode->getNodePosition().x, 350.f));
+                                    textSize, NewNodeColor,sf::Vector2f(newNode->getNodePosition().x, 350.f),typeGraph);
         if (typeGraph == DOUBLYLINKEDLIST)newNode->prevNode = res1; newNode->setArrow();
 
         if (vtx == getSize())highlight.setLine(2); else highlight.setLine(7);
@@ -354,7 +360,10 @@ void Graph::getStep(int dx){
     newNode = stepNewNode[nowStep];
     highlight.setLine(stepString[nowStep]); highlight.setHL(1);
 
-    for (int i = 0; i < listNode.size(); ++i)listNode[i]->setArrow();
+    for (int i = 0; i < listNode.size(); ++i){
+        listNode[i]->setArrow();
+        if (listNode[i]->stateCircle)listNode[i]->updateCircle();
+    }
     // if (newNode)newNode->setArrow();
 }
 

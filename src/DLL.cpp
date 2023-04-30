@@ -206,7 +206,7 @@ void DLL::LetsRemove(int vtx){
         mainGraph.highlight.setLine(4);
         if (vtx){
             std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(vtx), ResourceManager::getFont(), 
-                                    textSize, NewNodeColor,sf::Vector2f(mainGraph.listNode[vtx]->getNodePosition()));
+                                    textSize, NewNodeColor,sf::Vector2f(mainGraph.listNode[vtx]->getNodePosition()),1);
             mainGraph.listNode[vtx-1]->nextNode = res;
             for (int i = 1; i <= numFrame; ++i){
                 res->setPosition(ResourceManager::changePosition(mainGraph.listNode[vtx]->getNodePosition(), mainGraph.listNode[vtx-1]->getNodePosition(), i/numFrame));

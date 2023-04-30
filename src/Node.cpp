@@ -2,20 +2,30 @@
 
 Node::Node(){}
 
-Node::Node(float radius, const std::string& text, const sf::Font& font, float text_size, const sf::Color& color, const sf::Vector2f& position) :
+Node::Node(float radius, const std::string& text, const sf::Font& font, float text_size, const sf::Color& color, const sf::Vector2f& position, bool type) :
     m_radius(radius),
     m_color(color),
     m_position(position),
     m_text(text, font, text_size),
+    circle(0), stateCircle(0), typeNode(type),
     m_text_directions {sf::Text("", font, text_size), sf::Text("",font,text_size), sf::Text("",font,text_size), sf::Text("",font,text_size)}
 {
         // Set the position and color of the circle shape
-    m_circle.setRadius(radius);
-    m_circle.setOrigin(sf::Vector2f(radius,radius));
-    m_circle.setPosition(position);
-    m_circle.setOutlineColor(sf::Color::Black);
-    m_circle.setOutlineThickness(3.f);
-    m_circle.setFillColor(color);
+    if (typeNode){
+        m_circle.setRadius(radius);
+        m_circle.setOrigin(sf::Vector2f(radius,radius));
+        m_circle.setPosition(position);
+        m_circle.setOutlineColor(sf::Color::Black);
+        m_circle.setOutlineThickness(3.f);
+        m_circle.setFillColor(color);
+    } else {
+        m_rectangle.setSize(sf::Vector2f(radius*2,radius*2));
+        m_rectangle.setOrigin(sf::Vector2f(radius,radius));
+        m_rectangle.setPosition(position);
+        m_rectangle.setOutlineColor(sf::Color::Black);
+        m_rectangle.setOutlineThickness(3.f);
+        m_rectangle.setFillColor(color);
+    }
 
       // Set the position and color of the text
     m_text.setFillColor(sf::Color::Black);
@@ -46,18 +56,21 @@ Node::Node(float radius, const std::string& text, const sf::Font& font, float te
 
 void Node::setColor(const sf::Color& color){
     m_color = color;
-    m_circle.setFillColor(color);
+    if (typeNode)m_circle.setFillColor(color);
+        else m_rectangle.setFillColor(color);
     nextArrow.setColor(color);
     prevArrow.setColor(color);
 }
 
 void Node::setNodeColor(sf::Color color){
     m_color = color;
-    m_circle.setFillColor(color);
+    if (typeNode)m_circle.setFillColor(color);
+        else m_rectangle.setFillColor(color);
 }
 
 void Node::setOutlineColor(sf::Color color){
-    m_circle.setOutlineColor(color);
+    if (typeNode)m_circle.setOutlineColor(color);
+        else m_rectangle.setOutlineColor(color);
 }
 
 void Node::setTextColor(sf::Color color){
@@ -65,7 +78,7 @@ void Node::setTextColor(sf::Color color){
 }
 
 float Node::getRad(){
-    return m_circle.getRadius();
+    return (typeNode == 1 ? m_circle.getRadius() : m_rectangle.getSize().x/2);
 }
 
 float dist2Node(sf::Vector2f x, sf::Vector2f y){
@@ -83,13 +96,19 @@ float rad2Node(sf::Vector2f x, sf::Vector2f y){
 
 void Node::changeSizeNode(float rad){
     float rate = (m_radius-rad) / m_radius;
-    sf::Vector2f position = m_circle.getPosition();
+    sf::Vector2f position = (typeNode == 1 ? m_circle.getPosition() : m_rectangle.getPosition());
     // std::cout << " (m_radius-rad) / m_radius: " << rate << '\n';
     m_radius -= rad;
     
-    m_circle.setRadius(m_radius);
-    m_circle.setOrigin(sf::Vector2f(m_radius, m_radius));
-    m_circle.setPosition(position);
+    if (typeNode){
+        m_circle.setRadius(m_radius);
+        m_circle.setOrigin(sf::Vector2f(m_radius, m_radius));
+        m_circle.setPosition(position);
+    } else {
+        m_rectangle.setSize(sf::Vector2f(m_radius*2, m_radius*2));
+        m_rectangle.setOrigin(sf::Vector2f(m_radius, m_radius));
+        m_rectangle.setPosition(position);
+    }
 
     // m_text.setCharacterSize(std::min(std::ceil(m_text.getCharacterSize()*rate), textSize));
     m_text.setCharacterSize(m_radius/CircleRad * textSize);
@@ -105,7 +124,8 @@ void Node::changeSizeNode(float rad){
 
 void Node::setPosition(sf::Vector2f position){
     m_position = position;
-    m_circle.setPosition(position);
+    if (typeNode)m_circle.setPosition(position);
+        else m_rectangle.setPosition(position);
     m_text_directions[TOP].setPosition(sf::Vector2f(position.x, position.y - CircleRad - textSize));
     m_text_directions[RIGHT].setPosition(sf::Vector2f(position.x + CircleRad + textSize, position.y));
     m_text_directions[BOT].setPosition(sf::Vector2f(position.x, position.y + CircleRad + textSize));
@@ -117,13 +137,17 @@ void Node::setPosition(sf::Vector2f position){
 }
 
 void Node::setArrow(){
-    if (nextNode != nullptr){
+    if (stateCircle){
+        updateCircle();
+    }
+
+    if (nextNode != nullptr && !stateCircle){
         float length = dist2Node(getNodePosition(), nextNode->getNodePosition());
         rotateNextArrow(rad2Node(getNodePosition(), nextNode->getNodePosition()));
         nextArrow.minimizeArrow(nextArrow.getLength() - length);
     }
 
-    if (prevNode != nullptr){
+    if (prevNode != nullptr && !stateCircle){
         float length = dist2Node(getNodePosition(), prevNode->getNodePosition());
         rotatePrevArrow(rad2Node(getNodePosition(), prevNode->getNodePosition()));
         prevArrow.minimizeArrow(prevArrow.getLength() - length);
@@ -179,7 +203,8 @@ float Node::getLengthArrow(){
 }
 
 sf::Vector2f Node::getNodePosition(){
-    return m_circle.getPosition();
+    if (typeNode)return m_circle.getPosition();
+    return m_rectangle.getPosition();
 }
 
 int Node::getValue(){
@@ -192,12 +217,23 @@ bool Node::getString(int t){
     for (int i = s.size()-1; i >= 0; --i)res += l*(s[i] - '0'), l *= 10;
     return (t == res);
 }
+
+void Node::updateCircle(){
+    circle.setPosition(nextNode->getNodePosition(), getNodePosition());
+    setCircle(1);
+}
+
+void Node::setCircle(bool t){
+    stateCircle = t; circle.setState(t);
+}
     
 void Node::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform *= getTransform();
-    target.draw(m_circle, states);
-    if (nextNode != nullptr)target.draw(nextArrow, states);
-    if (prevNode != nullptr)target.draw(prevArrow, states);
+    if (stateCircle)target.draw(circle);
+    if (typeNode)target.draw(m_circle, states);
+        target.draw(m_rectangle, states);
+    if (nextNode != nullptr && !stateCircle)target.draw(nextArrow, states);
+    if (prevNode != nullptr && !stateCircle)target.draw(prevArrow, states);
     target.draw(m_text, states);
     for (const auto& text : m_text_directions)
     {

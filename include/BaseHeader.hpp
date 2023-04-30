@@ -33,7 +33,8 @@ enum Function{
     REMOVE,
     POP = REMOVE,
     UPDATE,
-    CLEAR = UPDATE
+    CLEAR = UPDATE,
+    ACCESS
 };
 
 enum AroundNode{
@@ -44,7 +45,8 @@ enum AroundNode{
 enum TypeGraph{
     ARRAY,
     LINKEDLIST,
-    DOUBLYLINKEDLIST
+    DOUBLYLINKEDLIST,
+    CIRCULARLINKEDLIST
 };
 
 static float CircleRad = 19;
@@ -59,6 +61,7 @@ static sf::Color SearchingNodeColor(255, 138, 39);
 static sf::Color FoundNodeColor(46, 187, 209);
 static sf::Color NewNodeColor(82, 188, 105);
 static sf::Color DelNodeColor(217, 81, 60);
+static sf::Color BlurNodeColor(62,62,62);
 static sf::Vector2f inputButtonSize = sf::Vector2f(60,50);
 static int maxValue = 99;
 static int maxSize = 15;
