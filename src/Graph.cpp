@@ -195,11 +195,26 @@ void Graph::removeNode(int vtx){
             // setNode();
             gameGlobal->runBreak();
         }
+    } else if (vtx == nn && listNode[vtx]->stateCircle){
+        for (int i = 1; i <= numFrame; ++i){
+            setSearchingNode(0,i/numFrame);
+            // setNode();
+        }
+        for (int i = 1; i <= numFrame; ++i){
+            setFoundNode(0,i/numFrame);
+            // setNode();
+            gameGlobal->runBreak();
+        }
     }
     saveStep();
     
     //chuyen mui ten pre.next = null
     highlight.setLine(6);
+    if (typeGraph == CIRCULARLINKEDLIST && vtx == getSize()-1){
+        listNode[vtx-1]->nextNode = listNode[0];
+        listNode[vtx-1]->updateCircle();
+        listNode[vtx-1]->setArrow();
+    } else {
     std::shared_ptr <Node> res = std::make_shared <Node> (CircleRad, std::to_string(vtx), ResourceManager::getFont(), 
                                     textSize, NewNodeColor,sf::Vector2f(listNode[vtx]->getNodePosition()),typeGraph);
     std::shared_ptr <Node> res1 = std::make_shared <Node> (CircleRad, std::to_string(vtx), ResourceManager::getFont(), 
@@ -218,7 +233,7 @@ void Graph::removeNode(int vtx){
         listNode[vtx-1]->setArrow(); 
         if (typeGraph == DOUBLYLINKEDLIST)listNode[vtx+1]->setArrow(); 
         gameGlobal->runBreak();
-    }
+    }}
     saveStep();
 
     //del(tmp)

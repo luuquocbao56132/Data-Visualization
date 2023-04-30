@@ -137,8 +137,8 @@ void CLL::LetsSearch(int X){
 void CLL::LetsInsert(int vtx, int value){
     mainGraph = firstGraph; mainGraph.resetStep();
     if (mainGraph.getSize() == maxSize)return;
-    if (vtx == 0)mainGraph.highlight.addImage("./Image/LL_Insert0.png"); else 
-    if (vtx == mainGraph.getSize())mainGraph.highlight.addImage("./Image/LL_InsertN.png"); else
+    if (vtx == 0)mainGraph.highlight.addImage("./Image/CLL_Insert0.png"); else 
+    if (vtx == mainGraph.getSize())mainGraph.highlight.addImage("./Image/CLL_InsertN.png"); else
         mainGraph.highlight.addImage("./Image/LL_InsertMid.png"); 
     mainGraph.highlight.setHL(1);
     
@@ -174,14 +174,15 @@ void CLL::LetsInsert(int vtx, int value){
         mainGraph.highlight.setLine(4);
         mainGraph.saveStep();
     }
+    if (vtx == mainGraph.getSize())mainGraph.listNode[vtx-1]->setCircle(0);
     mainGraph.makeNewNode(vtx, value);
     firstGraph = mainGraph;
 }
 
 void CLL::LetsRemove(int vtx){
     mainGraph = firstGraph; mainGraph.resetStep(); mainGraph.highlight.setHL(1);
-    if (vtx == 0)mainGraph.highlight.addImage("./Image/LL_Remove0.png"); else 
-    if (vtx == mainGraph.getSize()-1)mainGraph.highlight.addImage("./Image/LL_RemoveN.png"); else
+    if (vtx == 0)mainGraph.highlight.addImage("./Image/CLL_Remove0.png"); else 
+    if (vtx == mainGraph.getSize()-1)mainGraph.highlight.addImage("./Image/LL_RemoveMid.png"); else
         mainGraph.highlight.addImage("./Image/LL_RemoveMid.png"); 
     if (mainGraph.getSize() == 0){
         mainGraph.highlight.setLine(1);
