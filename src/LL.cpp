@@ -326,7 +326,7 @@ void LL::checkPress(sf::Vector2f mousePos){
             case INSERT:
                 for (int i = 0; i < 3; ++i){
                     if (res->minButton[i]->checkPress(mousePos)){
-                        if (!mainGraph.getSize() && i == 2)continue;
+                        if (!firstGraph.getSize() && i == 2)continue;
                         inputBox = res->minButton[i]->inputButton;
                         for (auto ii : inputBox) ii->resetValue();
                         // std::cout << "InputBox: " << inputBox.size();
@@ -336,11 +336,11 @@ void LL::checkPress(sf::Vector2f mousePos){
                             if (inputBox[j] == res->minButton[i]->inputButton[j]){
                                 inputBox[j]->checkPress(mousePos);
                                 if (i < 2 && inputBox[j]->Go->checkPress(mousePos)){
-                                    if (mainGraph.getSize() == maxSize || mainGraph.checkSameNum(inputBox[j]->getValue()))break;
+                                    if (firstGraph.getSize() == maxSize || firstGraph.checkSameNum(inputBox[j]->getValue()))break;
                                     if (i == 0)LetsInsert(0,inputBox[j]->getValue()), inputBox.clear();
-                                    if (i == 1)LetsInsert(mainGraph.getSize(),inputBox[j]->getValue()), inputBox.clear();
+                                    if (i == 1)LetsInsert(firstGraph.getSize(),inputBox[j]->getValue()), inputBox.clear();
                                 }
-                                if (i == 2 && j == 1 && inputBox[j]->Go->checkPress(mousePos) && mainGraph.getSize() < maxSize && mainGraph.getSize() && !mainGraph.checkSameNum(inputBox[j]->getValue()))
+                                if (i == 2 && j == 1 && inputBox[j]->Go->checkPress(mousePos) && firstGraph.getSize() < maxSize && firstGraph.getSize() && !firstGraph.checkSameNum(inputBox[j]->getValue()))
                                     LetsInsert(inputBox[j-1]->getValue(),inputBox[j]->getValue()), inputBox.clear();
                             } else break;
                         }
@@ -348,14 +348,14 @@ void LL::checkPress(sf::Vector2f mousePos){
                 break;
             case REMOVE:
                 if (res->minButton[0]->checkPress(mousePos))LetsRemove(0), inputBox.clear();
-                if (res->minButton[1]->checkPress(mousePos))LetsRemove(mainGraph.getSize()-1), inputBox.clear();
-                if (res->minButton[2]->checkPress(mousePos) && mainGraph.getSize() > 2){
+                if (res->minButton[1]->checkPress(mousePos))LetsRemove(firstGraph.getSize()-1), inputBox.clear();
+                if (res->minButton[2]->checkPress(mousePos) && firstGraph.getSize() > 2){
                     inputBox = res->minButton[2]->inputButton;  
                     for (auto i : inputBox)i->resetValue();
                 }
                 if (!inputBox.empty() && inputBox[0] == res->minButton[2]->inputButton[0]){
                     inputBox[0]->checkPress(mousePos);
-                    if (inputBox[0]->Go->checkPress(mousePos) && inputBox[0]->getValue() > 0 && inputBox[0]->getValue() < mainGraph.getSize())
+                    if (inputBox[0]->Go->checkPress(mousePos) && inputBox[0]->getValue() > 0 && inputBox[0]->getValue() < firstGraph.getSize())
                         LetsRemove(inputBox[0]->getValue()), inputBox.clear();
                 }
                 break;
@@ -370,8 +370,8 @@ void LL::checkPress(sf::Vector2f mousePos){
                             inputBox[j]->checkPress(mousePos);
                             if (j == 1 && inputBox[j]->Go->checkPress(mousePos) && 
                                 inputBox[j-1]->getValue() >= 0 && 
-                                inputBox[j-1]->getValue() < mainGraph.getSize() &&
-                                !mainGraph.checkSameNum(inputBox[j]->getValue()))
+                                inputBox[j-1]->getValue() < firstGraph.getSize() &&
+                                !firstGraph.checkSameNum(inputBox[j]->getValue()))
                                 LetsUpdate(inputBox[j-1]->getValue(), inputBox[j]->getValue()), inputBox.clear();
                         } else break;
                     }

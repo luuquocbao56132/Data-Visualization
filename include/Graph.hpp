@@ -43,12 +43,12 @@ public:
     int typeGraph, numArrow, nowStep;
     std::shared_ptr <int> n;
     LinkedList <std::shared_ptr <Node>> listNode;
-    LinkedList < LinkedList <std::shared_ptr<Node> > > stepNode;
-    LinkedList < std::shared_ptr <Node> > stepNewNode;
-    LinkedList <int> stepString;
+    LinkedList < LinkedList <std::shared_ptr<Node> > > stepNode, stepListNew;
+    LinkedList < std::shared_ptr <Node> > stepNewNode, listNew;
+    LinkedList <int> stepString, stepIsListNew;
     Highlight highlight;
     std::shared_ptr <Node> newNode;
-    int leftBound, numberNow;
+    int leftBound, numberNow, isListNew;
     std::set <int> setNumber;
 };
 

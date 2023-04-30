@@ -41,7 +41,7 @@ void Graph::init(int x){
 }
 
 void Graph::init(int x, LinkedList <std::string> s){
-    *n = x; listNode.clear(); newNode = nullptr; resetStep(); nowStep = -1;
+    *n = x; listNode.clear(); newNode = nullptr; resetStep(); nowStep = -1; isListNew = 0;
     highlight.addImage("./Image/Blank.png"); highlight.setHL(0);
     if (!n)return;
 
@@ -347,6 +347,7 @@ void Graph::makeNewNode(int vtx, int value){
 
 void Graph::resetStep(){
     stepNode.clear(); stepString.clear(); nowStep = -1; stepNewNode.clear();
+    stepIsListNew.clear(); stepListNew.clear();
 }
 
 void Graph::getStep(int dx){
@@ -364,6 +365,9 @@ void Graph::getStep(int dx){
         listNode[i]->setArrow();
         if (listNode[i]->stateCircle)listNode[i]->updateCircle();
     }
+
+    isListNew = stepIsListNew[nowStep];
+    listNew = stepListNew[nowStep];
     // if (newNode)newNode->setArrow();
 }
 
@@ -395,6 +399,13 @@ void Graph::saveStep(){
 
     stepNode.push_back(res); ++nowStep;
     stepString.push_back(highlight.getLine()+1);
+
+    stepIsListNew.push_back(isListNew);
+    res.clear();
+    if (isListNew){
+        for (int i = 0; i < listNew.size(); ++i)
+            res.push_back(std::make_shared <Node> (*listNew[i]));
+    } stepListNew.push_back(res);
     // std::cout << stepNode.size() << '\n';
 }
 
@@ -432,6 +443,7 @@ void Graph::removeFoundNode(int vtx, float ratio){
 void Graph::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // std::cout << stepImageSprite.getTexture()->getSize().x << '\n';
     target.draw(highlight);
+    if (isListNew)for (int i = 0; i < listNew.size(); ++i)target.draw(*listNew[i]);
     if (newNode != nullptr)target.draw(*newNode);
     if (listNode.empty())return;
     for (int i = 0; i < *n; ++i)target.draw(*listNode[i]);

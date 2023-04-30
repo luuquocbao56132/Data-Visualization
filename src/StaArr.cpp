@@ -111,7 +111,7 @@ void StaArr::LetsSearch(int X){
         mainGraph.listNode[i]->setOutlineColor(sf::Color::Black),
         mainGraph.setValue(i,0);
     mainGraph.highlight.addImage("./Image/Arr_Search.png"); mainGraph.highlight.setHL(1);
-    if (mainGraph.getSize() == 0){
+    if (number == 0){
         mainGraph.highlight.setLine(1);
         return;
     }
@@ -363,7 +363,7 @@ void StaArr::checkPress(sf::Vector2f mousePos){
             case INSERT:
                 for (int i = 0; i < 3; ++i){
                     if (res->minButton[i]->checkPress(mousePos)){
-                        if (!mainGraph.getSize() && i == 2)continue;
+                        if (!firstGraph.getSize() && i == 2)continue;
                         inputBox = res->minButton[i]->inputButton;
                         for (auto ii : inputBox) ii->resetValue();
                         // std::cout << "InputBox: " << inputBox.size();
@@ -373,11 +373,11 @@ void StaArr::checkPress(sf::Vector2f mousePos){
                             if (inputBox[j] == res->minButton[i]->inputButton[j]){
                                 inputBox[j]->checkPress(mousePos);
                                 if (i < 2 && inputBox[j]->Go->checkPress(mousePos)){
-                                    if (number == mainGraph.getSize() || mainGraph.checkSameNum(inputBox[j]->getValue()))break;
+                                    if (number == firstGraph.getSize() || firstGraph.checkSameNum(inputBox[j]->getValue()))break;
                                     if (i == 0)LetsInsert(0,inputBox[j]->getValue()), inputBox.clear();
                                     if (i == 1)LetsInsert(number,inputBox[j]->getValue()), inputBox.clear();
                                 }
-                                if (i == 2 && j == 1 && inputBox[j]->Go->checkPress(mousePos) && number < mainGraph.getSize() && !mainGraph.checkSameNum(inputBox[j]->getValue()))
+                                if (i == 2 && j == 1 && inputBox[j]->Go->checkPress(mousePos) && number < firstGraph.getSize() && !firstGraph.checkSameNum(inputBox[j]->getValue()))
                                     LetsInsert(inputBox[j-1]->getValue(),inputBox[j]->getValue()), inputBox.clear();
                             } else break;
                         }
@@ -408,7 +408,7 @@ void StaArr::checkPress(sf::Vector2f mousePos){
                             if (j == 1 && inputBox[j]->Go->checkPress(mousePos)){
                                 if (inputBox[j-1]->getValue() >= 0 && 
                                     inputBox[j-1]->getValue() < number &&
-                                    !mainGraph.checkSameNum(inputBox[j]->getValue()))
+                                    !firstGraph.checkSameNum(inputBox[j]->getValue()))
                                         LetsUpdate(inputBox[j-1]->getValue(), inputBox[j]->getValue());
                                 inputBox.clear();
                             }

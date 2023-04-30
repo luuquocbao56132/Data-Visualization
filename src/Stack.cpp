@@ -176,7 +176,7 @@ void Stack::checkPress(sf::Vector2f mousePos){
                 }
                 if (!inputBox.empty() && inputBox[0] == res->inputButton[0]){
                     inputBox[0]->checkPress(mousePos);
-                    if (inputBox[0]->Go->checkPress(mousePos) && !mainGraph.checkSameNum(inputBox[0]->getValue())  && mainGraph.getSize() < maxSize)
+                    if (inputBox[0]->Go->checkPress(mousePos) && !firstGraph.checkSameNum(inputBox[0]->getValue())  && firstGraph.getSize() < maxSize)
                         LetsPush(inputBox[0]->getValue()), inputBox.clear();
                 }
                 break;
@@ -184,7 +184,7 @@ void Stack::checkPress(sf::Vector2f mousePos){
                 if (res->checkPress(mousePos))LetsPop(), inputBox.clear();
                 break;
             case CLEAR:
-                if (mainGraph.getSize() == 0)break;
+                if (firstGraph.getSize() == 0)break;
                 if (res->checkPress(mousePos))LetsClear(), inputBox.clear();
                 break;
         }
