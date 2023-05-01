@@ -7,7 +7,7 @@ DLL::DLL(){};
 
 DLL::DLL(const sf::Vector2f& position, const sf::Vector2f& size,
            const std::string& text, const sf::Font& font, unsigned int characterSize):
-        DataTypes(position, size, "DLL", ResourceManager::getFont(), characterSize,0, DOUBLYLINKEDLIST)
+        DataTypes(position, size, "Doubly\nLinked List", ResourceManager::getFont(), characterSize-11,0, DOUBLYLINKEDLIST)
         {
 
             std::shared_ptr<Button> Create (new Button(buttonPosition + sf::Vector2f(buttonPosition.x, buttonRange.y*1),

@@ -7,7 +7,7 @@ DynArr::DynArr(){};
 
 DynArr::DynArr(const sf::Vector2f& position, const sf::Vector2f& size,
            const std::string& text, const sf::Font& font, unsigned int characterSize):
-        DataTypes(position, size, "DynArr", ResourceManager::getFont(), characterSize,0, ARRAY)
+        DataTypes(position, size, "Dynamic\nArray", ResourceManager::getFont(), characterSize-4,0, ARRAY)
         {
             std::shared_ptr<Button> Create (new Button(buttonPosition + sf::Vector2f(buttonPosition.x, buttonRange.y*1),
                             buttonSize, "Create", font, 20,0));
@@ -38,7 +38,7 @@ DynArr::DynArr(const sf::Vector2f& position, const sf::Vector2f& size,
                                                                         inputButtonSize,"i = ",1));
             Access->inputButton[0]->setValueLimit(mainGraph.n);
 
-            Create->createMinButton({"Empty","Random","Random Fixed Size","Custom"},
+            Create->createMinButton({"Empty (Allocate)","Random","Random Fixed Size","Custom"},
                                     {0,0,1,1});
             Create->minButton[2]->inputButton.push_back(std::make_shared <InputBox>(
                         sf::Vector2f(Create->minButton[2]->getPosition().x + 55, 
