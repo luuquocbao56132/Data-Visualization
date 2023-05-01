@@ -76,12 +76,13 @@ DLL::DLL(const sf::Vector2f& position, const sf::Vector2f& size,
                             Update->getPosition().y), 
                         inputButtonSize, "v = ", 1));
             // isTurn = 0;
+            //setTheme();
             firstGraph = mainGraph;
         }
 
 void DLL::LetsSearch(int X){
     mainGraph = firstGraph; mainGraph.resetStep();
-    mainGraph.highlight.addImage("./Image/DLL_Search.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"DLL_Search.png"); mainGraph.highlight.setHL(1);
     if (mainGraph.getSize() == 0){
         mainGraph.highlight.setLine(1);
         return;
@@ -137,9 +138,9 @@ void DLL::LetsSearch(int X){
 void DLL::LetsInsert(int vtx, int value){
     mainGraph = firstGraph; mainGraph.resetStep();
     if (mainGraph.getSize() == maxSize)return;
-    if (vtx == 0)mainGraph.highlight.addImage("./Image/DLL_Insert0.png"); else 
-    if (vtx == mainGraph.getSize())mainGraph.highlight.addImage("./Image/DLL_InsertN.png"); else
-        mainGraph.highlight.addImage("./Image/DLL_InsertMid.png"); 
+    if (vtx == 0)mainGraph.highlight.addImage("./Image/"+theme+"DLL_Insert0.png"); else 
+    if (vtx == mainGraph.getSize())mainGraph.highlight.addImage("./Image/"+theme+"DLL_InsertN.png"); else
+        mainGraph.highlight.addImage("./Image/"+theme+"DLL_InsertMid.png"); 
     mainGraph.highlight.setHL(1);
     
     for (int i = 0; i < mainGraph.getSize(); ++i)
@@ -180,9 +181,9 @@ void DLL::LetsInsert(int vtx, int value){
 
 void DLL::LetsRemove(int vtx){
     mainGraph = firstGraph; mainGraph.resetStep(); mainGraph.highlight.setHL(1);
-    if (vtx == 0)mainGraph.highlight.addImage("./Image/DLL_Remove0.png"); else 
-    if (vtx == mainGraph.getSize()-1)mainGraph.highlight.addImage("./Image/DLL_RemoveN.png"); else
-        mainGraph.highlight.addImage("./Image/DLL_RemoveMid.png"); 
+    if (vtx == 0)mainGraph.highlight.addImage("./Image/"+theme+"DLL_Remove0.png"); else 
+    if (vtx == mainGraph.getSize()-1)mainGraph.highlight.addImage("./Image/"+theme+"DLL_RemoveN.png"); else
+        mainGraph.highlight.addImage("./Image/"+theme+"DLL_RemoveMid.png"); 
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
     if (mainGraph.getSize() == 0){
@@ -218,8 +219,8 @@ void DLL::LetsRemove(int vtx){
         
         mainGraph.highlight.setLine(5);
         int nn = mainGraph.getSize() - 1;
-        int hieu = abs(mainGraph.leftBound - (800 - (100*nn - arrowLength ) / 2));
-        mainGraph.leftBound = 800 - (100*nn - arrowLength ) / 2;
+        int hieu = abs(mainGraph.leftBound - (850 - (100*nn - arrowLength ) / 2));
+        mainGraph.leftBound = 850 - (100*nn - arrowLength ) / 2;
         LinkedList <sf::Vector2f> startPos, endPos;
         for (int i = 0; i < vtx; ++i){
             startPos.push_back(mainGraph.listNode[i]->getNodePosition());
@@ -278,7 +279,7 @@ void DLL::LetsRemove(int vtx){
 
 void DLL::LetsUpdate(int vt, int value){
     mainGraph = firstGraph; mainGraph.resetStep();
-    mainGraph.highlight.addImage("./Image/DLL_Update.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"DLL_Update.png"); mainGraph.highlight.setHL(1);
 
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);

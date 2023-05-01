@@ -17,8 +17,9 @@ InputBox::InputBox (sf::Vector2f position, sf::Vector2f size, std::string textLe
     
     m_textLeft.setFont(ResourceManager::getFont());
     m_textLeft.setCharacterSize(19);
-    m_textLeft.setFillColor(sf::Color::Black);
+    m_textLeft.setFillColor(sf::Color::Yellow);
     m_textLeft.setString(textLeft);
+    m_textLeft.setStyle(sf::Text::Bold);
     m_textLeft.setPosition(sf::Vector2f(position.x - 35, position.y));
 
         // Set up the cursor shape
@@ -28,8 +29,12 @@ InputBox::InputBox (sf::Vector2f position, sf::Vector2f size, std::string textLe
     charLength = 10;
     std::cout << "charLength: " << charLength;
 
-    if (isGo)Go = std::make_shared <Button> (sf::Vector2f(position.x + size.x + 20, position.y), sf::Vector2f(60,40),
+    if (isGo){
+        Go = std::make_shared <Button> (sf::Vector2f(position.x + size.x + 20, position.y), sf::Vector2f(60,40),
                                                 "Go", ResourceManager::getFont(), 19, 0);
+        Go->setFillColor(sf::Color::Yellow);
+        Go->m_text.setFillColor(sf::Color::Black);
+    }                    
         else Go = nullptr;
 }
 

@@ -11,6 +11,7 @@ Highlight::Highlight(): sizeShape(22), shapeOn(0){
 
 void Highlight::addImage(std::string urll){
     url = urll;
+    hlShape.setOutlineColor(TextColor[typeTheme]);
     stepImageSprite.setScale(1.0f, 1.0f);
     stepImage.loadFromFile(url);
     stepImageSprite.setTexture(stepImage);

@@ -40,13 +40,13 @@ Stack::Stack(const sf::Vector2f& position, const sf::Vector2f& size,
             Push->inputButton.push_back(std::make_shared <InputBox> (sf::Vector2f(Push->getPosition().x + Push->getSize().x + 40, 
                                                                             Push->getPosition().y), 
                                                                         inputButtonSize,"v = ",1));
-            
+            //setTheme();
             firstGraph = mainGraph;
         }
 
 void Stack::LetsPeek(int t){
     mainGraph = firstGraph; mainGraph.resetStep();
-    mainGraph.highlight.addImage("./Image/S_Peek.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"S_Peek.png"); mainGraph.highlight.setHL(1);
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
     if (mainGraph.getSize() == 0){
@@ -64,7 +64,7 @@ void Stack::LetsPeek(int t){
 
 void Stack::LetsPush(int value){
     mainGraph = firstGraph; mainGraph.resetStep();
-    mainGraph.highlight.addImage("./Image/S_Push.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"S_Push.png"); mainGraph.highlight.setHL(1);
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
 
@@ -74,7 +74,7 @@ void Stack::LetsPush(int value){
 
 void Stack::LetsPop(){
     mainGraph = firstGraph; mainGraph.resetStep();
-    mainGraph.highlight.addImage("./Image/S_Pop.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"S_Pop.png"); mainGraph.highlight.setHL(1);
     if (mainGraph.getSize() == 0){
         mainGraph.highlight.setLine(1);
         return;
@@ -92,7 +92,7 @@ void Stack::LetsPop(){
 
 void Stack::LetsClear(){
     mainGraph = firstGraph; mainGraph.resetStep();
-    mainGraph.highlight.addImage("./Image/S_Clear.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"S_Clear.png"); mainGraph.highlight.setHL(1);
     if (!mainGraph.getSize())return;
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);

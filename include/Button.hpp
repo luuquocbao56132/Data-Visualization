@@ -12,6 +12,7 @@ public:
            const std::string& , const sf::Font& , unsigned int , int);
 
     void setFillColor(const sf::Color& ); 
+    void setColor(); 
 
     void setOutlineColor(const sf::Color& );
 

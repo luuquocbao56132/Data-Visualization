@@ -27,6 +27,7 @@ public:
 
 public:
     World();
+    void updateTheme();
     void HoverCheck(sf::Vector2f);
     void draw(sf::RenderTarget& , sf::RenderStates ) const override;
     void checkPress(sf::Vector2f);

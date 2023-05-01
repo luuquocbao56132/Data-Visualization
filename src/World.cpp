@@ -20,13 +20,20 @@ World::World(){
     nStaArr = std::make_shared <StaArr> (position, buttonSize, "StaArr", ResourceManager::getFont(), characterSize);
     position.x += buttonSize.x + 10; 
     nDynArr = std::make_shared <DynArr> (position, buttonSize, "DynArr", ResourceManager::getFont(), characterSize);
-    
+    // nLL->mainButton.setColor();
+    // nDLL->mainButton.setColor();
+    // nCLL->mainButton.setColor();
+    // nQueue->mainButton.setColor();
+    // nStack->mainButton.setColor();
+    // nStaArr->mainButton.setColor();
+    // nDynArr->mainButton.setColor();
     liveData = nLL;
 }
 
 void World::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // // Draw the buttons
     // liveData->draw(window, sf::RenderStates::Default);
+    target.draw(*liveData);
     target.draw(nLL->mainButton);
     target.draw(nDLL->mainButton);
     target.draw(nCLL->mainButton);
@@ -34,7 +41,16 @@ void World::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(nQueue->mainButton);
     target.draw(nStaArr->mainButton);
     target.draw(nDynArr->mainButton);
-    target.draw(*liveData);
+}
+
+void World::updateTheme(){
+    nLL->setTheme();
+    nCLL->setTheme();
+    nDLL->setTheme();
+    nQueue->setTheme();
+    nStack->setTheme();
+    nStaArr->setTheme();
+    nDynArr->setTheme();
 }
 
 void World::HoverCheck(sf::Vector2f mousePos){

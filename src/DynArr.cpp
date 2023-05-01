@@ -82,7 +82,7 @@ DynArr::DynArr(const sf::Vector2f& position, const sf::Vector2f& size,
                             Update->getPosition().y), 
                         inputButtonSize, "v = ", 1));
             // isTurn = 0;
-            LetsCreate(-1);
+            LetsCreate(-1); //setTheme();
             firstGraph = mainGraph;
         }
 
@@ -96,7 +96,7 @@ void DynArr::LetsCreate(int t){
 
 void DynArr::LetsSearch(int X){
     mainGraph = firstGraph; mainGraph.resetStep(); mainGraph.isListNew = 0;
-    mainGraph.highlight.addImage("./Image/Arr_Search.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"Arr_Search.png"); mainGraph.highlight.setHL(1);
     if (mainGraph.getSize() == 0){
         mainGraph.highlight.setLine(1);
         return;
@@ -145,12 +145,12 @@ void DynArr::LetsInsert(int vtx, int value){
     if (vtx > mainGraph.getSize())return;
 
     mainGraph.resetStep(); mainGraph.isListNew = 0;
-    mainGraph.highlight.addImage("./Image/DynArr_Insert.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"DynArr_Insert.png"); mainGraph.highlight.setHL(1);
     
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
 
-    int leftBound = 800 - (100*(mainGraph.getSize()+1) - arrowLength ) / 2;
+    int leftBound = 850 - (100*(mainGraph.getSize()+1) - arrowLength ) / 2;
     mainGraph.isListNew = 1; mainGraph.listNew.clear();
     for (int i = 0; i <= mainGraph.getSize(); ++i){
         mainGraph.listNew.push_back(std::make_shared <Node> (19.f, "", ResourceManager::getFont(), 
@@ -247,7 +247,7 @@ void DynArr::LetsRemove(int vtx){
     mainGraph = firstGraph;
     if (vtx >= mainGraph.getSize())return;
     mainGraph.resetStep(); mainGraph.isListNew = 0;
-    mainGraph.highlight.addImage("./Image/DynArr_Remove.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"DynArr_Remove.png"); mainGraph.highlight.setHL(1);
 
     if (mainGraph.getSize() == 0){
         mainGraph.highlight.setLine(1);
@@ -259,7 +259,7 @@ void DynArr::LetsRemove(int vtx){
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
 
-    int leftBound = 800 - (100*(mainGraph.getSize()-1) - arrowLength ) / 2;
+    int leftBound = 850 - (100*(mainGraph.getSize()-1) - arrowLength ) / 2;
     mainGraph.isListNew = 1; mainGraph.listNew.clear();
     for (int i = 0; i < mainGraph.getSize()-1; ++i){
         mainGraph.listNew.push_back(std::make_shared <Node> (19.f, "", ResourceManager::getFont(), 
@@ -342,7 +342,7 @@ void DynArr::LetsRemove(int vtx){
 
 void DynArr::LetsUpdate(int vt, int value){
     mainGraph = firstGraph; mainGraph.resetStep(); mainGraph.isListNew = 0;
-    mainGraph.highlight.addImage("./Image/Arr_Update.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"Arr_Update.png"); mainGraph.highlight.setHL(1);
 
     // std::cout << "List rad of search graph: \n";
     for (int i = 0; i < mainGraph.getSize(); ++i)
@@ -363,7 +363,7 @@ void DynArr::LetsAccess(int vt){
     mainGraph = firstGraph;
     if (vt >= mainGraph.getSize())return;
     mainGraph.resetStep(); mainGraph.isListNew = 0;
-    mainGraph.highlight.addImage("./Image/Arr_Access.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"Arr_Access.png"); mainGraph.highlight.setHL(1);
 
     // std::cout << "List rad of search graph: \n";
     for (int i = 0; i < mainGraph.getSize(); ++i)

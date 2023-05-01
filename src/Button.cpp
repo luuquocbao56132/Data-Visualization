@@ -1,4 +1,8 @@
 #include <Button.hpp>
+#include <BaseHeader.hpp>
+
+extern int typeTheme;
+extern std::string theme;
 
 Button::Button(){};
 
@@ -10,10 +14,18 @@ Button::Button(const sf::Vector2f& position, const sf::Vector2f& size,
     m_isHovered(false),
     onInput(1)
 {
-    m_rect.setFillColor(sf::Color::White);
+    // m_rect.setFillColor(sf::Color::White);
+    // m_rect.setOutlineThickness(2.f);
+    // m_rect.setOutlineColor(sf::Color::Black);
+    // m_text.setFillColor(sf::Color::Black);
+
+    // std::cout << "TextColor: " << (int)TextColor[typeTheme].r << '\n';
+    // m_rect.setFillColor(ButtonColor[typeTheme]);
     m_rect.setOutlineThickness(2.f);
-    m_rect.setOutlineColor(sf::Color::Black);
-    m_text.setFillColor(sf::Color::Black);
+    // m_rect.setOutlineColor(TextColor[typeTheme]);
+    // m_text.setFillColor(TextColor[typeTheme]);
+    setColor();
+    
     setPosition(position);
     isInput = numInput;
 }
@@ -22,12 +34,18 @@ void Button::centerOrigin(const sf::Vector2f& pos) {
         m_rect.setOrigin(pos);
         m_text.setOrigin(pos);
         //if (m_rect.getOrigin() == m_text.getOrigin())std::cout << 1;
-    }
+}
 
 void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform *= getTransform();
     target.draw(m_rect, states);
     target.draw(m_text, states);    
+}
+
+void Button::setColor(){
+    setFillColor(ButtonColor[typeTheme]);
+    setOutlineColor(TextColor[typeTheme]);
+    m_text.setFillColor(TextColor[typeTheme]);
 }
 
 void Button::setFillColor(const sf::Color& color) {
@@ -65,12 +83,12 @@ bool Button::isHovered() const {
 
 void Button::hover() {
     m_isHovered = true;
-    m_rect.setFillColor(sf::Color(220, 100, 220));
+    m_rect.setFillColor(HoverColor[typeTheme]);
 }
 
 void Button::unhover() {
     m_isHovered = false;
-    m_rect.setFillColor(sf::Color::White);
+    m_rect.setFillColor(ButtonColor[typeTheme]);
 }
 
 sf::FloatRect Button::getGlobalBounds() const {
@@ -91,7 +109,7 @@ void Button::createMinButton(std::initializer_list<std::string> names, std::init
         std::shared_ptr<Button> newButton (new Button(newPos, newSize, Name[i], ResourceManager::getFont(), 16, numInput[i]));
         newButton -> setSize(sf::Vector2f(newButton->m_text.getGlobalBounds().width,newButton->getSize().y));
         minButton.push_back(newButton);
-        std::cout << newPos.x << '\n';
+        // std::cout << newPos.x << '\n';
 
         prevPos = newButton->getPosition();
         prevSize = newButton->getSize();

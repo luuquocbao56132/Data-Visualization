@@ -52,6 +52,9 @@ enum TypeGraph{
 static float CircleRad = 19;
 static float nodeDistance = 60;
 static float textSize = 19;
+static sf::Color TextColor[2] = {sf::Color(40, 42, 54), sf::Color(237, 242, 245)};
+static sf::Color ButtonColor[2] = {sf::Color(255,255,255), sf::Color(48, 59, 89)};
+static sf::Color HoverColor[2] = {sf::Color(124, 152, 231), sf::Color(25, 38, 74)};
 static sf::Color textColorStart = sf::Color::Black;
 static sf::Color textColorEnd = sf::Color::White;
 static sf::Color backgroundColor(238,238,238);
@@ -69,6 +72,9 @@ static float timeLength = 1000;
 static float arrowLength = 60;
 static float nodeRadius = 19;
 static float TimePerFrame = 1/60;
+extern std::string theme;
+extern int typeTheme;
+extern bool isThemeChange;
 extern float numFrame;
 extern float xtime;
 

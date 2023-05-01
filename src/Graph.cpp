@@ -42,10 +42,10 @@ void Graph::init(int x){
 
 void Graph::init(int x, LinkedList <std::string> s){
     *n = x; listNode.clear(); newNode = nullptr; resetStep(); nowStep = -1; isListNew = 0;
-    highlight.addImage("./Image/Blank.png"); highlight.setHL(0);
+    highlight.addImage("./Image/" + theme + "Blank.png"); highlight.setHL(0);
     if (!n)return;
 
-    leftBound = 800 - (100*(*n) - arrowLength ) / 2;
+    leftBound = 850 - (100*(*n) - arrowLength ) / 2;
     for (int i = 0; i < s.size(); ++i){
         listNode.push_back(std::make_shared <Node> (19.f, s[i], ResourceManager::getFont(), 
                                     textSize, backgroundColor,sf::Vector2f(leftBound + 10 + 100*i, 250.f),typeGraph));
@@ -132,8 +132,8 @@ void Graph::setArrowColor(int vtx, float ratio){
 
 void Graph::removeNode(int vtx){
     int nn = *n-1;
-    int hieu = abs(leftBound - (800 - (100*nn - arrowLength ) / 2));
-    leftBound = 800 - (100*nn - arrowLength ) / 2;
+    int hieu = abs(leftBound - (850 - (100*nn - arrowLength ) / 2));
+    leftBound = 850 - (100*nn - arrowLength ) / 2;
     LinkedList <sf::Vector2f> startPos, endPos;
     for (int i = 0; i < vtx; ++i){
         startPos.push_back(listNode[i]->getNodePosition());
@@ -255,8 +255,8 @@ void Graph::removeNode(int vtx){
 
 void Graph::makeNewNode(int vtx, int value){
     int nn = getSize()+1;
-    int hieu = abs(leftBound - (800 - (100*nn - arrowLength ) / 2));
-    leftBound = 800 - (100*nn - arrowLength ) / 2;
+    int hieu = abs(leftBound - (850 - (100*nn - arrowLength ) / 2));
+    leftBound = 850 - (100*nn - arrowLength ) / 2;
     newNode = std::make_shared <Node> (CircleRad, std::to_string(value), ResourceManager::getFont(), 
                                     textSize, NewNodeColor,sf::Vector2f(leftBound + 10 + 100*vtx, 350.f),typeGraph);
     newNode->setOutlineColor(NewNodeColor);

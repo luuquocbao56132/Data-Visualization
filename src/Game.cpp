@@ -1,6 +1,7 @@
 #include <Game.hpp>
 
 extern std::shared_ptr <Game> gameGlobal;
+bool isThemeChange = 1;
 
 Game::Game(): mWindow(sf::VideoMode(1700,900), "Data Visualization", sf::Style::Default, sf::ContextSettings(0, 0, 15)), mWorld{}{
     mWindow.setFramerateLimit(110);
@@ -10,6 +11,7 @@ void Game::run(){
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
     sf::Time TimePerFrame = sf::milliseconds(8);
+    mWorld.updateTheme();
     while (mWindow.isOpen()){
         processEvents();
         timeSinceLastUpdate += clock.restart();
@@ -45,7 +47,7 @@ void Game::processEventsBreak(){
 
 void Game::processEvents(){
     sf::Event event;
-
+    if (isThemeChange == 0) mWorld.updateTheme(), isThemeChange = 1;
     while (mWindow.pollEvent(event)){
         switch (event.type){
             case sf::Event::Closed:

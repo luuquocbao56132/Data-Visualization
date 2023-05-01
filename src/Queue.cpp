@@ -41,15 +41,15 @@ Queue::Queue(const sf::Vector2f& position, const sf::Vector2f& size,
             Push->inputButton.push_back(std::make_shared <InputBox> (sf::Vector2f(Push->getPosition().x + Push->getSize().x + 40, 
                                                                             Push->getPosition().y), 
                                                                         inputButtonSize,"v = ",1));
-            
+            //setTheme();
             firstGraph = mainGraph;
         }
 
 void Queue::LetsPeek(int t){
     mainGraph = firstGraph; mainGraph.resetStep();
     std::string s;
-    if (t) t = mainGraph.getSize()-1, s = "./Image/Q_PeekB.png";
-        else s = "./Image/Q_PeekF.png";
+    if (t) t = mainGraph.getSize()-1, s = "./Image/"+theme+"Q_PeekB.png";
+        else s = "./Image/"+theme+"Q_PeekF.png";
     mainGraph.highlight.addImage(s); mainGraph.highlight.setHL(1);
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
@@ -68,7 +68,7 @@ void Queue::LetsPeek(int t){
 
 void Queue::LetsPush(int value){
     mainGraph = firstGraph; mainGraph.resetStep();
-    mainGraph.highlight.addImage("./Image/Q_Push.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"Q_Push.png"); mainGraph.highlight.setHL(1);
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
 
@@ -78,7 +78,7 @@ void Queue::LetsPush(int value){
 
 void Queue::LetsPop(){
     mainGraph = firstGraph; mainGraph.resetStep();
-    mainGraph.highlight.addImage("./Image/Q_Pop.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"Q_Pop.png"); mainGraph.highlight.setHL(1);
     if (mainGraph.getSize() == 0){
         mainGraph.highlight.setLine(1);
         return;
@@ -96,7 +96,7 @@ void Queue::LetsPop(){
 
 void Queue::LetsClear(){
     mainGraph = firstGraph; mainGraph.resetStep();
-    mainGraph.highlight.addImage("./Image/Q_Clear.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"Q_Clear.png"); mainGraph.highlight.setHL(1);
     if (!mainGraph.getSize())return;
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);

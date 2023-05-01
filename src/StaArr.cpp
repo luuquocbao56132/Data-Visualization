@@ -82,7 +82,7 @@ StaArr::StaArr(const sf::Vector2f& position, const sf::Vector2f& size,
                             Update->getPosition().y), 
                         inputButtonSize, "v = ", 1));
             // isTurn = 0;
-            LetsCreate(-1);
+            LetsCreate(-1); //setTheme();
             firstGraph = mainGraph;
         }
 
@@ -110,7 +110,7 @@ void StaArr::LetsSearch(int X){
         mainGraph.listNode[i]->setNodeColor(BlurNodeColor),
         mainGraph.listNode[i]->setOutlineColor(sf::Color::Black),
         mainGraph.setValue(i,0);
-    mainGraph.highlight.addImage("./Image/Arr_Search.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"Arr_Search.png"); mainGraph.highlight.setHL(1);
     if (number == 0){
         mainGraph.highlight.setLine(1);
         return;
@@ -159,7 +159,7 @@ void StaArr::LetsInsert(int vtx, int value){
         mainGraph.listNode[i]->setNodeColor(BlurNodeColor),
         mainGraph.listNode[i]->setOutlineColor(sf::Color::Black),
         mainGraph.setValue(i,0);
-    mainGraph.highlight.addImage("./Image/StaArr_Insert.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"StaArr_Insert.png"); mainGraph.highlight.setHL(1);
     if (number == mainGraph.getSize()){
         mainGraph.highlight.setLine(1);
         return;
@@ -212,7 +212,7 @@ void StaArr::LetsRemove(int vtx){
         mainGraph.listNode[i]->setNodeColor(BlurNodeColor),
         mainGraph.listNode[i]->setOutlineColor(sf::Color::Black),
         mainGraph.setValue(i,0);
-    mainGraph.highlight.addImage("./Image/StaArr_Remove.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"StaArr_Remove.png"); mainGraph.highlight.setHL(1);
 
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
@@ -252,7 +252,7 @@ void StaArr::LetsUpdate(int vt, int value){
         mainGraph.listNode[i]->setNodeColor(BlurNodeColor),
         mainGraph.listNode[i]->setOutlineColor(sf::Color::Black),
         mainGraph.setValue(i,0);
-    mainGraph.highlight.addImage("./Image/Arr_Update.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"Arr_Update.png"); mainGraph.highlight.setHL(1);
 
     // std::cout << "List rad of search graph: \n";
     for (int i = 0; i < mainGraph.getSize(); ++i)
@@ -276,7 +276,7 @@ void StaArr::LetsAccess(int vt){
         mainGraph.listNode[i]->setNodeColor(BlurNodeColor),
         mainGraph.listNode[i]->setOutlineColor(sf::Color::Black),
         mainGraph.setValue(i,0);
-    mainGraph.highlight.addImage("./Image/Arr_Access.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"Arr_Access.png"); mainGraph.highlight.setHL(1);
 
     // std::cout << "List rad of search graph: \n";
     for (int i = 0; i < mainGraph.getSize(); ++i)

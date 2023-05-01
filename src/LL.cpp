@@ -76,12 +76,13 @@ LL::LL(const sf::Vector2f& position, const sf::Vector2f& size,
                             Update->getPosition().y), 
                         inputButtonSize, "v = ", 1));
             // isTurn = 0;
+            //setTheme();
             firstGraph = mainGraph;
         }
 
 void LL::LetsSearch(int X){
     mainGraph = firstGraph; mainGraph.resetStep();
-    mainGraph.highlight.addImage("./Image/LL_Search.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/" + theme + "LL_Search.png"); mainGraph.highlight.setHL(1);
     if (mainGraph.getSize() == 0){
         mainGraph.highlight.setLine(1);
         return;
@@ -137,9 +138,9 @@ void LL::LetsSearch(int X){
 void LL::LetsInsert(int vtx, int value){
     mainGraph = firstGraph; mainGraph.resetStep();
     if (mainGraph.getSize() == maxSize)return;
-    if (vtx == 0)mainGraph.highlight.addImage("./Image/LL_Insert0.png"); else 
-    if (vtx == mainGraph.getSize())mainGraph.highlight.addImage("./Image/LL_InsertN.png"); else
-        mainGraph.highlight.addImage("./Image/LL_InsertMid.png"); 
+    if (vtx == 0)mainGraph.highlight.addImage("./Image/"+theme+"LL_Insert0.png"); else 
+    if (vtx == mainGraph.getSize())mainGraph.highlight.addImage("./Image/"+theme+"LL_InsertN.png"); else
+        mainGraph.highlight.addImage("./Image/"+theme+"LL_InsertMid.png"); 
     mainGraph.highlight.setHL(1);
     
     for (int i = 0; i < mainGraph.getSize(); ++i)
@@ -180,9 +181,9 @@ void LL::LetsInsert(int vtx, int value){
 
 void LL::LetsRemove(int vtx){
     mainGraph = firstGraph; mainGraph.resetStep(); mainGraph.highlight.setHL(1);
-    if (vtx == 0)mainGraph.highlight.addImage("./Image/LL_Remove0.png"); else 
-    if (vtx == mainGraph.getSize()-1)mainGraph.highlight.addImage("./Image/LL_RemoveN.png"); else
-        mainGraph.highlight.addImage("./Image/LL_RemoveMid.png"); 
+    if (vtx == 0)mainGraph.highlight.addImage("./Image/" + theme + "LL_Remove0.png"); else 
+    if (vtx == mainGraph.getSize()-1)mainGraph.highlight.addImage("./Image/" + theme + "LL_RemoveN.png"); else
+        mainGraph.highlight.addImage("./Image/" + theme + "LL_RemoveMid.png"); 
     if (mainGraph.getSize() == 0){
         mainGraph.highlight.setLine(1);
         return;
@@ -220,7 +221,7 @@ void LL::LetsRemove(int vtx){
 
 void LL::LetsUpdate(int vt, int value){
     mainGraph = firstGraph; mainGraph.resetStep();
-    mainGraph.highlight.addImage("./Image/LL_Update.png"); mainGraph.highlight.setHL(1);
+    mainGraph.highlight.addImage("./Image/"+theme+"LL_Update.png"); mainGraph.highlight.setHL(1);
 
     for (int i = 0; i < mainGraph.getSize(); ++i)
         mainGraph.listNode[i]->changeSizeNode(mainGraph.listNode[i]->getRad() - CircleRad);
