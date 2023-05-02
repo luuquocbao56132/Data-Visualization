@@ -43,7 +43,7 @@ DynArr::DynArr(const sf::Vector2f& position, const sf::Vector2f& size,
             Create->minButton[2]->inputButton.push_back(std::make_shared <InputBox>(
                         sf::Vector2f(Create->minButton[2]->getPosition().x + 55, 
                             Create->minButton[2]->getPosition().y + Create->minButton[2]->getSize().y + 5), 
-                        inputButtonSize,"c = ",1));
+                        inputButtonSize,"n = ",1));
             Create->minButton[2]->inputButton[0]->setValueLimit(std::make_shared <int> (maxSize));
             
             Insert->createMinButton({"i = 0 (Head), specify v = ","i = N (After tail), specify v = ", "i in {1..N-1} and v = "},
@@ -218,14 +218,20 @@ void DynArr::LetsInsert(int vtx, int value){
     mainGraph.highlight.setLine(7);
     LinkedList <sf::Vector2f> startPos;
     for (int i = 0; i < mainGraph.listNew.size(); ++i)startPos.push_back(mainGraph.listNew[i]->getNodePosition());
+    mainGraph.listNode[vtx]->setText("");
     for (int stt = 1; stt <= numFrame; ++stt){
         for (int i = 0; i < mainGraph.listNew.size(); ++i){
             mainGraph.listNode[i]->setPosition(ResourceManager::changePosition(startPos[i], sf::Vector2f(startPos[i].x, 250), stt/numFrame));
             if (i != vtx){
                 mainGraph.listNode[i]->setNodeColor(ResourceManager::changeColor(FoundNodeColor, FirstNodeColor, stt/numFrame));
                 mainGraph.listNode[i]->setTextColor(ResourceManager::changeColor(sf::Color::White, sf::Color::Black, stt/numFrame));
+            } else {
+                mainGraph.listNew[vtx]->setNodeColor(ResourceManager::changeColor(BlurNodeColor, FirstNodeColor, stt/numFrame));
+                mainGraph.listNew[vtx]->setOutlineColor(ResourceManager::changeColor(BlurNodeColor, sf::Color::Black, stt/numFrame));
+                // mainGraph.listNew[vtx]->setTextColor(ResourceManager::changeColor(sf::Color::Black, sf::Color::White, stt/numFrame));
             }
         }
+
         gameGlobal->runBreak();
     }
     mainGraph.saveStep();
@@ -233,8 +239,8 @@ void DynArr::LetsInsert(int vtx, int value){
     mainGraph.highlight.setLine(8);
     mainGraph.setValue(vtx, value);
     for (int stt = 1; stt <= numFrame; ++stt){
-        mainGraph.listNew[vtx]->setNodeColor(ResourceManager::changeColor(BlurNodeColor, FoundNodeColor, stt/numFrame));
-        mainGraph.listNew[vtx]->setOutlineColor(ResourceManager::changeColor(BlurNodeColor, FoundNodeColor, stt/numFrame));
+        mainGraph.listNew[vtx]->setNodeColor(ResourceManager::changeColor(FirstNodeColor, FoundNodeColor, stt/numFrame));
+        mainGraph.listNew[vtx]->setOutlineColor(ResourceManager::changeColor(FirstNodeColor, FoundNodeColor, stt/numFrame));
         mainGraph.listNew[vtx]->setTextColor(ResourceManager::changeColor(sf::Color::Black, sf::Color::White, stt/numFrame));
         gameGlobal->runBreak();
     }

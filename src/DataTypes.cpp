@@ -51,6 +51,10 @@ void DataTypes::resetAll(){
     firstGraph = mainGraph;
     for (int i = 0; i < firstGraph.listNode.size(); ++i)
         firstGraph.listNode[i]->changeSizeNode(firstGraph.listNode[i]->getRad() - CircleRad);
+    timeText = sf::Text(std::to_string((int)xtime) + "x", ResourceManager::getFont(), 25);
+    timeText.setPosition(sf::Vector2f(upSpeed.getPosition().x - 50,mainButton.getSize().y/2-10));
+    timeText.setFillColor(TextColor[typeTheme]);
+    numFrame = 1.f/xtime * 60;
     // for (int i = 0; i < firstGraph.listNode.size(); ++i)
     //     std::cout << firstGraph.listNode[i]->getValue() << " "; std::cout << '\n';
 }

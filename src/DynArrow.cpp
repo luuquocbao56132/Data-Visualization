@@ -51,6 +51,7 @@ void DynArrow::setPartialColor(float ratio){
 }
 
 void DynArrow::minimizeArrow(float length){
+    float ratio_particle = m_particle.getSize().x / m_length;
     m_length -= length;
     // std::cout << "mlength: " << m_length << '\n';
     sf::Vector2f res = m_head.getPoint(0);
@@ -60,6 +61,7 @@ void DynArrow::minimizeArrow(float length){
 
     res = m_body.getPosition();
     m_body.setSize(sf::Vector2f(m_length,3.f));
+    if (m_particle.getSize().x > 0)m_particle.setSize(sf::Vector2f(m_length * ratio_particle, 3.f));
 
     //std::cout << m_length << " " << length * Sinn << " " << res.x << '\n';
 
