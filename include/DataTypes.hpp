@@ -10,8 +10,7 @@
 class DataTypes: public sf::Drawable, public sf::Transformable{
 public:
     DataTypes();
-    DataTypes(const sf::Vector2f& , const sf::Vector2f& ,
-        const std::string& , const sf::Font& , unsigned int ,int , int);
+    DataTypes(int);
     virtual void draw(sf::RenderTarget& , sf::RenderStates ) const override;
     void checkHover(sf::Vector2f);
     void checkKeyInput(sf::Event& );
@@ -21,7 +20,7 @@ public:
     LinkedList <std::shared_ptr<Button>> BaseButton, functionButton;
     LinkedList <std::shared_ptr<InputBox>> inputBox;
     std::shared_ptr <Node> newNode;
-    Button mainButton, upSpeed, downSpeed, previousButton, nextButton, themeButton;
+    Button upSpeed, downSpeed, previousButton, nextButton, themeButton;
     sf::Texture backGroundTexture;
     sf::Sprite backGroundSprite;
     sf::RectangleShape graphSquare;

@@ -3,7 +3,7 @@
 extern std::shared_ptr <Game> gameGlobal;
 bool isThemeChange = 1;
 
-Game::Game(): mWindow(sf::VideoMode(1700,900), "Data Visualization", sf::Style::Default, sf::ContextSettings(0, 0, 15)), mWorld{}{
+Game::Game(): mWindow(sf::VideoMode(1700,900), "Data Visualization", sf::Style::Default, sf::ContextSettings(0, 0, 16)), mWorld{}{
     mWindow.setFramerateLimit(110);
 }
 
@@ -90,6 +90,8 @@ void Game::render(){
             // std::cout << "stt " << stt << "\n";
             gameGlobal->runBreak();
         }
+        for (int i = 0; i < mWorld.liveData->mainGraph.listNode.size(); ++i)
+            mWorld.liveData->mainGraph.listNode[i]->changeSizeNode(mWorld.liveData->mainGraph.listNode[i]->getRad() - CircleRad);
         mWorld.liveData->mainGraph.setNode();
     }
     mWindow.draw(mWorld);

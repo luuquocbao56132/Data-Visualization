@@ -3,23 +3,19 @@
 
 extern std::shared_ptr <Game> gameGlobal;
 
-LL::LL(){};
-
-LL::LL(const sf::Vector2f& position, const sf::Vector2f& size,
-           const std::string& text, const sf::Font& font, unsigned int characterSize):
-        DataTypes(position, size, "Linked\nList", ResourceManager::getFont(), characterSize-5,0, LINKEDLIST)
+LL::LL():DataTypes(LINKEDLIST)
         {
 
             std::shared_ptr<Button> Create (new Button(buttonPosition + sf::Vector2f(buttonPosition.x, buttonRange.y*1),
-                            buttonSize, "Create", font, 20,0));
+                            buttonSize, "Create", ResourceManager::getFont(), 20,0));
             std::shared_ptr<Button> Search (new Button(buttonPosition + sf::Vector2f(buttonPosition.x, buttonRange.y*2),
-                            buttonSize, "Search", font, 20,1));
+                            buttonSize, "Search", ResourceManager::getFont(), 20,1));
             std::shared_ptr<Button> Insert (new Button(buttonPosition + sf::Vector2f(buttonPosition.x, buttonRange.y*3),
-                            buttonSize, "Insert", font, 20,0));
+                            buttonSize, "Insert", ResourceManager::getFont(), 20,0));
             std::shared_ptr<Button> Remove (new Button(buttonPosition + sf::Vector2f(buttonPosition.x, buttonRange.y*4),
-                            buttonSize, "Remove", font, 20,0));
+                            buttonSize, "Remove", ResourceManager::getFont(), 20,0));
             std::shared_ptr<Button> Update (new Button(buttonPosition + sf::Vector2f(buttonPosition.x, buttonRange.y*5),
-                            buttonSize, "Update", font, 20,2));
+                            buttonSize, "Update", ResourceManager::getFont(), 20,2));
 
             //BaseButton.push_back(std::make_shared<Button>(Create));
             BaseButton.push_back(Create);

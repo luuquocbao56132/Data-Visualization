@@ -16,14 +16,9 @@
 
 class World: public sf::Drawable, private sf::NonCopyable {
 public:
-    std::shared_ptr <LL> nLL;
-    std::shared_ptr <DLL> nDLL;
-    std::shared_ptr <CLL> nCLL;
-    std::shared_ptr <DynArr> nDynArr;
-    std::shared_ptr <StaArr> nStaArr;
-    std::shared_ptr <Stack> nStack;
-    std::shared_ptr <Queue> nQueue;
     std::shared_ptr <DataTypes> liveData;
+
+    Button bLL,bDLL,bCLL,bDynArr,bStaArr,bStack,bQueue;
 
 public:
     World();
