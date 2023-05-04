@@ -132,6 +132,7 @@ void Node::setPosition(sf::Vector2f position){
     m_text_directions[LEFT].setPosition(sf::Vector2f(position.x - CircleRad - textSize, position.y));
     nextArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x + CircleRad + 3, position.y), 0.f);
     prevArrow = DynArrow(60, sf::Color::Black, sf::Vector2f(position.x + CircleRad + 3, position.y), 0.f);
+    rotatePrevArrow(180);
     //prevArrow.setRotation(180);
     m_text.setPosition(m_position);
 }
@@ -185,12 +186,18 @@ void Node::setPartialColor(float ratio){
 
 void Node::rotateNextArrow(float degrees){
     nextArrow.setRotation(degrees);
-    nextArrow.setPosition(sf::Vector2f(m_position.x + m_radius * std::cos(degrees * M_PI / 180.f), m_position.y + m_radius * std::sin(degrees * M_PI / 180.f)));
+    float dx = 0, dy = 0;
+    if (nextNode != nullptr)
+        if (nextNode->prevNode != nullptr){
+            dx = 6*std::sin(degrees * M_PI / 180);
+            dy = -6*std::cos(degrees * M_PI / 180);
+        } 
+    nextArrow.setPosition(sf::Vector2f(m_position.x + m_radius * std::cos(degrees * M_PI / 180.f) + dx, m_position.y + m_radius * std::sin(degrees * M_PI / 180.f) + dy));
 }
 
 void Node::rotatePrevArrow(float degrees){
     prevArrow.setRotation(degrees);
-    prevArrow.setPosition(sf::Vector2f(m_position.x + m_radius * std::cos(degrees * M_PI / 180.f), m_position.y + m_radius * std::sin(degrees * M_PI / 180.f)));
+    prevArrow.setPosition(sf::Vector2f(m_position.x + m_radius * std::cos(degrees * M_PI / 180.f) + 6*std::sin(degrees * M_PI / 180), m_position.y + m_radius * std::sin(degrees * M_PI / 180.f) - 6*std::cos(degrees * M_PI / 180)));
 }
 
 void Node::changeSizeArrow(float length){
