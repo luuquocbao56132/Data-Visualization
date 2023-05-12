@@ -13,6 +13,7 @@ public:
     void setPartialColor(float );
     void minimizeArrow(float );
     float getLength();
+    float getAngle();
     void draw(sf::RenderTarget& , sf::RenderStates ) const override;
 
 private:

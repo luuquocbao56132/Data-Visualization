@@ -7,32 +7,19 @@ World::World(){
     
     // calculate the button positions
     sf::Vector2f position(10.f, 10.f);
-    // nLL = std::make_shared <LL> (position, buttonSize, "LL", ResourceManager::getFont(), characterSize);
-    // position.x += buttonSize.x + 10; 
-    // nDLL = std::make_shared <DLL> (position, buttonSize, "DLL", ResourceManager::getFont(), characterSize);
-    // position.x += buttonSize.x + 10; 
-    // nCLL = std::make_shared <CLL> (position, buttonSize, "CLL", ResourceManager::getFont(), characterSize);
-    // position.x += buttonSize.x + 10; 
-    // nStack = std::make_shared <Stack> (position, buttonSize, "Stack", ResourceManager::getFont(), characterSize);
-    // position.x += buttonSize.x + 10; 
-    // nQueue = std::make_shared <Queue> (position, buttonSize, "Queue", ResourceManager::getFont(), characterSize);
-    // position.x += buttonSize.x + 10; 
-    // nStaArr = std::make_shared <StaArr> (position, buttonSize, "StaArr", ResourceManager::getFont(), characterSize);
-    // position.x += buttonSize.x + 10; 
-    // nDynArr = std::make_shared <DynArr> (position, buttonSize, "DynArr", ResourceManager::getFont(), characterSize);
-    bLL = Button(position, buttonSize, "LL", ResourceManager::getFont(), characterSize,0);
+    bLL = Button(position, buttonSize, "Linked\nList", ResourceManager::getFont(), characterSize-3,0);
     position.x += buttonSize.x + 10; 
-    bDLL = Button(position, buttonSize, "DLL", ResourceManager::getFont(), characterSize,0);
+    bDLL = Button(position, buttonSize, "Doubly\nLinked List", ResourceManager::getFont(), characterSize-11,0);
     position.x += buttonSize.x + 10; 
-    bCLL = Button(position, buttonSize, "CLL", ResourceManager::getFont(), characterSize,0);
+    bCLL = Button(position, buttonSize, "Circular\nLinked List", ResourceManager::getFont(), characterSize-11,0);
     position.x += buttonSize.x + 10; 
     bStack = Button(position, buttonSize, "Stack", ResourceManager::getFont(), characterSize,0);
     position.x += buttonSize.x + 10; 
     bQueue = Button(position, buttonSize, "Queue", ResourceManager::getFont(), characterSize,0);
     position.x += buttonSize.x + 10; 
-    bStaArr = Button(position, buttonSize, "StaArr", ResourceManager::getFont(), characterSize,0);
+    bStaArr = Button(position, buttonSize, "Static\nArray", ResourceManager::getFont(), characterSize-4,0);
     position.x += buttonSize.x + 10; 
-    bDynArr = Button(position, buttonSize, "DynArr", ResourceManager::getFont(), characterSize,0);
+    bDynArr = Button(position, buttonSize, "Dynamic\nArray", ResourceManager::getFont(), characterSize-4,0);
     liveData = std::make_shared <LL> ();
 }
 

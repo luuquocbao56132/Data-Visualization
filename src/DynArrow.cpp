@@ -33,6 +33,7 @@ void DynArrow::setRotation(float degrees){
     m_body.setRotation(degrees);
     m_head.setRotation(degrees);
     m_particle.setRotation(degrees);
+    m_angle = degrees;
 }
 
 void DynArrow::setPosition(sf::Vector2f position){
@@ -71,6 +72,9 @@ float DynArrow::getLength(){
     return m_length;
 }
 
+float DynArrow::getAngle(){
+    return m_angle;
+}
 
 void DynArrow::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     states.transform *= getTransform();
